@@ -1,0 +1,394 @@
+{
+  "Q1": {
+    "question": "Wie würden Sie Ihren Gesundheitszustand im allgemeinen beschreiben?",
+    "default": 0,
+    "answers": [
+      "Ausgezeichnet",
+      "Sehr gut",
+      "Gut",
+      "Weniger gut",
+      "Schlecht"
+    ]
+  },
+  "Q2": {
+    "question": "Im Vergleich zum vergangenen Jahr, wie würden Sie Ihren derzeitigen Gesundheitszustand beschreiben?",
+        "default": 2,
+    "answers": [
+      "Derzeit viel besser als vor einem Jahr",
+      "Derzeit etwas besser als vor einem  Jahr",
+      "Etwa so wie vor einem Jahr",
+      "Derzeit etwas schlechter als vor einem Jahr",
+      "Derzeit viel schlechter als vor einem Jahr"
+    ]
+  },
+  "Q3": {
+    "question": "Die folgenden Fragen beschreiben Tätigkeiten, die Sie vielleicht an einem normalen Tag ausüben. Sind Sie durch Ihren derzeitigen Gesundheitszustand bei diesen Tätigkeiten eingeschränkt? Wenn ja, wie stark?"
+  },
+  "Q3a": {
+    "question": "Anstrengende Tätigkeiten, z.B. schnell laufen, schwere Gegenstände heben, anstrengenden Sport treiben",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3b": {
+    "question": "Mittelschwere Tätigkeiten, z.B. einen Tisch verschieben, staubsaugen, kegeln, Golf spielen",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3c": {
+    "question": "Einkaufstaschen heben oder tragen",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3d": {
+    "question": "Mehrere Treppenabsätze steigen",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3e": {
+    "question": "Einen Treppenabsatz steigen",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3f": {
+    "question": "Sich beugen, knien, bücken",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3g": {
+    "question": "Mehr als einen Kilometer zu Fuß gehen",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3h": {
+    "question": "Mehrere hundert Meter zu Fuß gehen",
+        "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3i": {
+    "question": "Einhundert Meter zu Fuß gehen",
+            "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q3j": {
+    "question": "Sich baden oder anziehen",
+            "default": 2,
+    "answers": [
+      "Ja, stark eingeschränkt",
+      "Ja, etwas eingeschränkt",
+      "Nein, überhaupt nicht eingeschränkt"
+    ]
+  },
+  "Q4": {
+    "question": "Wie oft hatten Sie in den vergangenen 4 Wochen aufgrund Ihrer körperlichen Gesundheit irgendwelche Schwierigkeiten bei der Arbeit oder anderen alltäglichen Tätigkeiten im Beruf bzw. zu Hause?"
+  },
+  "Q4a": {
+    "question": "Ich konnte nicht so lange wie üblich tätig sein",
+            "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q4b": {
+    "question": "Ich habe weniger geschafft als ich wollte",
+    "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q4c": {
+    "question": "Ich konnte nur bestimmte Dinge tun",
+    "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q4d": {
+    "question": "Ich hatte Schwierigkeiten bei der Ausführung (z.B. ich musste mich besonders anstrengen)",
+    "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q5": {
+    "question": "Wie oft hatten Sie in den vergangenen 4 Wochen aufgrund seelischer Probleme irgendwelche Schwierigkeiten bei der Arbeit oder anderen alltäglichen Tätigkeiten im Beruf bzw. zu Hause (z.B. weil Sie sich niedergeschlagen oder ängstlich fühlten)?"
+  },
+  "Q5a": {
+    "question": "Ich konnte nicht so lange wie üblich tätig sein",
+    "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q5b": {
+    "question": "Ich habe weniger geschafft als ich wollte",
+    "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q5c": {
+    "question": "Ich konnte nicht so sorgfältig wie üblich arbeiten",
+    "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q6": {
+    "question": "Wie sehr haben Ihre körperliche Gesundheit oder seelischen Probleme in den vergangenen 4 Wochen Ihre normalen Kontakte zu Familienangehörigen, Freunden, Nachbarn oder zum Bekanntenkreis beeinträchtigt?",
+    "default": 0,
+    "answers": [
+      " Überhaupt nicht",
+      "Etwas",
+      "Mäßig",
+      "Ziemlich",
+      "Sehr"
+    ]
+  },
+  "Q7": {
+    "question": "Wie stark waren Ihre Schmerzen in den vergangenen 4 Wochen?",
+        "default": 0,
+    "answers": [
+      "Keine Schmerzen",
+      "Sehr leicht",
+      "Leicht",
+      "Mäßig",
+      "Stark",
+      "Sehr stark"
+    ]
+  },
+  "Q8": {
+    "question": "Inwieweit haben die Schmerzen Sie in den vergangenen 4 Wochen bei der Ausübung Ihrer Alltagstätigkeiten zu Hause und im Beruf behindert?",
+       "default": 0,
+    "answers": [
+      " Überhaupt nicht",
+      "Etwas",
+      "Mäßig",
+      "Ziemlich",
+      "Sehr"
+    ]
+  },
+  "Q9": {
+    "question": "In diesen Fragen geht es darum, wie Sie sich fühlen und wie es Ihnen in den\n    vergangenen 4 Wochen gegangen ist. (Bitte kreuzen Sie in jeder Zeile die Zahl an, die Ihrem Befinden am ehesten entspricht). Wie oft waren Sie in den vergangenen 4 Wochen..."
+  },
+  "Q9a": {
+    "question": "voller Leben?",
+        "default": 0,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9b": {
+    "question": "sehr nervös?",
+        "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9c": {
+    "question": "so niedergeschlagen, dass nichts Sie aufheitern konnte?",
+        "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9d": {
+    "question": "ruhig und gelassen?",
+        "default": 0,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9e": {
+    "question": "voller Energie?",
+        "default": 0,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9f": {
+    "question": "entmutigt und traurig?",
+        "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9g": {
+    "question": "erschöpft?",
+        "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9h": {
+    "question": "glücklich?",
+        "default": 0,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q9i": {
+    "question": "müde?",
+        "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q10": {
+    "question": " Wie häufig haben Ihre körperliche Gesundheit oder seelischen Probleme in den vergangenen 4 Wochen Ihre Kontakte zu anderen Menschen (Besuche bei Freunden, Verwandten usw.) beeinträchtigt?",
+        "default": 4,
+    "answers": [
+      "Immer",
+      "Meistens",
+      "Manchmal",
+      "Selten",
+      "Nie"
+    ]
+  },
+  "Q11": {
+    "question": "Inwieweit trifft jede der folgenden Aussagen auf Sie zu?"
+  },
+  "Q11a": {
+    "question": "Ich scheine etwas leichter als andere krank zu werden",
+        "default": 4,
+    "answers": [
+      "Trifft ganz zu",
+      "Trifft weitgehend zu",
+      "Weiß nicht",
+      "Trifft weitgehend nicht zu",
+      "Trifft überhaupt nicht zu"
+    ]
+  },
+  "Q11b": {
+    "question": "Ich bin genauso gesund wie andere Menschen, die ich kenne",
+        "default": 0,
+    "answers": [
+      "Trifft ganz zu",
+      "Trifft weitgehend zu",
+      "Weiß nicht",
+      "Trifft weitgehend nicht zu",
+      "Trifft überhaupt nicht zu"
+    ]
+  },
+  "Q11c": {
+    "question": "Ich erwarte, dass mein Gesundheitszustand sich verschlechtert",
+        "default": 4,
+    "answers": [
+      "Trifft ganz zu",
+      "Trifft weitgehend zu",
+      "Weiß nicht",
+      "Trifft weitgehend nicht zu",
+      "Trifft überhaupt nicht zu"
+    ]
+  },
+  "Q11d": {
+    "question": "Mein Gesundheitszustand ist ausgezeichnet",
+        "default": 0,
+    "answers": [
+      "Trifft ganz zu",
+      "Trifft weitgehend zu",
+      "Weiß nicht",
+      "Trifft weitgehend nicht zu",
+      "Trifft überhaupt nicht zu"
+    ]
+  }
+}

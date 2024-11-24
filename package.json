@@ -1,0 +1,39 @@
+{
+  "name": "icfx-app2",
+  "private": true,
+  "version": "2.2.5",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode development",
+    "build": "vite build --mode production",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@dicebear/collection": "^7.0.1",
+    "@dicebear/core": "^7.0.1",
+    "@popperjs/core": "^2.11.8",
+    "@resvg/resvg-js": "^2.5.0",
+    "@vueuse/core": "^11.2.0",
+    "axios": "^1.5.1",
+    "lodash": "^4.17.21",
+    "mdb-ui-kit": "^6.3.1",
+    "mdb-vue-ui-kit": "git+https://oauth2:Eeo4nxNv2qSz2Yx8yH2t@git.mdbootstrap.com/mdb/vue/mdb5/prd/mdb5-vue-ui-kit-pro-essential",
+    "moment": "^2.29.4",
+    "vue": "^3.2.40",
+    "vue-chartjs": "^5.3.1",
+    "vue-google-charts": "^1.1.0",
+    "vue-matomo": "^4.2.0",
+    "vue-plugin-load-script": "^2.1.1",
+    "vue-router": "^4.1.5",
+    "vue-scroll-picker": "^1.2.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.0",
+    "@types/uuid": "^9.0.8",
+    "@vitejs/plugin-vue": "^3.1.0",
+    "typescript": "^5.0.4",
+    "vite": "^3.1.0",
+    "vite-svg-loader": "^4.0.0",
+    "vue-tsc": "^2.1.6"
+  }
+}

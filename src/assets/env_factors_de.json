@@ -1,0 +1,89 @@
+{
+  "1": {
+    "s": "Umweltfaktoren",
+    "t": "Wie beeinflussen äußere Gegebenheiten wie zum Beispiel Klima, Luftqualität, Lärm, und Wohnumfeld Ihr Leben?",
+    "d": "Bitte geben Sie an, inwiefern Ihr derzeitiges Leben durch Umweltfaktoren beeinflusst wird.",
+    "e": [
+      "Haben Faktoren, wie z.B. die Luftfeuchtigkeit, die Lufttemperatur, die Anzahl der Sonnentage, graues Wetter ohne Sonne Einfluss auf Ihr Leben?",
+      "Hat ihr Wohnumfeld, wie z.B. laute Umgebung, oder viel Natur einen Einfluss auf Ihr Leben?"
+    ],
+    "l": "e210,e215,e220,e225,e230,e235,e240,e245,e250,e255,e260",
+    "p": [
+      "burning-forest-fire-destroys-natural-environment-outdoors-generated-by-ai.jpg",
+      "image-portrays-juxtaposition-strength-vulnerability-highlighting-soldier-s.jpg",
+      "environmentally-conscious-world-smoke-billowing-from-globe-with-green-leaf-generative-ai.jpg",
+      "planet-with-green-trees-sun-it.jpg",
+      "electricity-generated-by-pollution-harms-our-environment-generated-by-ai.jpg"
+    ]
+  },
+  "2": {
+    "s": "Gesundheitswesen",
+    "t": "Sind Sie in erheblichem Maße auf Einrichtungen des Gesundheitssystems angewiesen? Ist Ihr Leben positiv oder negativ davon beeinflusst?",
+    "d": "Beziehen Sie sich bitte auf die derzeit von Ihnen benötigten oder bereits genutzten Einrichtungen wie Krankenhäuser, Arztpraxen, Apotheken, etc. Die Antwort kann sich auch darauf beziehen, dass Einrichtungen nicht vorhanden sind.",
+    "e": [
+      "Als Einrichtungen des Gesundheitswesens können neben Krankenhäusern, Pflegeeinrichtungen, Ambulanzen, niedergelassenen Ärzten auch Apotheken und der Medizinprodukt-Fachhandel gesehen werden."
+    ],
+    "l": "e580,",
+    "p": [
+      "modern-hospital-room-with-empty-bed-chair-generated-by-ai.jpg",
+      "blue-screen-with-human-figure-middle-it.jpg",
+      "modern-hospital-machinery-illuminates-blue-mri-scanner-generated-by-ai.jpg",
+      "healthcare-ai-generated-photo.jpg",
+      "group-doctors-blue-scrubs-scrubs-stand-meeting-room.jpg"
+    ]
+  },
+  "3": {
+    "s": "Gesellschaft",
+    "t": "Wirken sich öffentliche Einrichtungen auf die Qualität Ihres Lebens aus?",
+    "d": "Bekommen Sie Unterstützung von öffentlichen Stellen? Werden Sie von öffentlichen Stellen geärgert?",
+    "e": [
+      "Öffentliche Einrichtungen sind u.a. Museen, Sporthallen und -plätze, Parkanlagen, Büchereien, Kirchliche Einrichtungen, Gemeinschaftshäuser und Bildungseinrichtungen.",
+      "öffentliche Einrichtungen sind Einrichtungen die im öffentlichen Interesse von Gemeinden und Kommunen unterhalten werden",
+      "auch das Sozialamt, Integrationsamt, Job-Center o.ä. zählen zu den öffentlichen Stellen"
+    ],
+    "l": "e525,e555,e570,e575,e585,e590",
+    "p": [
+      "businessman-during-presentation-front-his-colleagues-office-created-with-generative-ai-technology.jpg",
+      "one-young-woman-walking-with-modern-luggage-generated-by-ai.jpg",
+      "pair-hands-hold-paper-cutouts-family.jpg",
+      "blue-house-with-blue-roof-sky-background.jpg",
+      "unlocking-symbol-home-ownership-success-generated-by-ai.jpg"
+    ]
+  },
+  "4": {
+    "s": "Soziale Kontakte",
+    "t": "Gibt es soziale Kontakte (Familie, Freunde, Kollegen, Vorgesetzte), die sich aktuell auf Ihr Leben beeinträchtigend oder unterstützend auswirken?",
+    "d": "Bitte geben Sie an, ob Sie von Menschen aus Ihrem Umfeld eher unterstützt oder eher geärgert werden.",
+    "e": [
+      "Soziale Kontakte beziehen sich auf die Interaktion und Beziehungen zwischen Menschen. Sie umfassen den Austausch von Informationen, Emotionen und Ressourcen durch Gespräche, Treffen, gemeinsame Aktivitäten und andere Kommunikationsformen.",
+      "Soziale Kontakte können einerseits als Bereicherung wahrgenommen werden, aber auch als belastend empfunden werden."
+    ],
+    "l": "e310,e315,e320,e325,e330,e335,e340,e350,e355,e360",
+    "p": [
+      "young-adult-businesswoman-smiling-camera-indoors-generated-by-ai.jpg",
+      "man-suit-with-other-people-background.jpg",
+      "cute-caucasian-siblings-embrace-enjoying-christmas-lights-indoors-generated-by-ai.jpg",
+      "man-silhouette-row-care-separated-join.jpg",
+      "relaxed-family-finds-tranquility-holding-hands-during-peaceful-sunset.jpg"
+    ]
+  },
+  "5": {
+    "s": "Technik",
+    "t": "Gibt es bestimmte Aspekte des technischen Fortschritts, der Digitalisierung oder innovative Hilfsmittel, die eine deutliche Auswirkung auf ihr Leben haben?",
+    "d": "Bitte entscheiden Sie, ob Sie durch Errungenschaften des Fortschritts sich eher unterstützt oder bedroht fühlen.",
+    "e": [
+      "Wir alle nutzen im Alltag Hilfsmittel und Technologien, die uns in verschiedenster Form unterstützten, z.B. das Auto, öffentliche Verkehrsmittel oder der Personenaufzug zur Fortbewegung. Oder Radio,  TV und Computer zur Unterhaltung oder um sich zu informieren.",
+      "Digitale Technologien sind längst in unserem Alltag angekommen: Das Smartphone und Apps, die wir damit verwenden, können wesentliche Dinge für uns erledigen, wie z.B. Arzttermine planen und vereinbaren, Rezepte einlösen, Kontakt zu Krankenkassen, Informationen erhalten zu Erkrankungen und Behandlungsmethoden",
+      "Verschiedene Hilfsmittel unterstützen Menschen mit Behinderungen, wie Gehhilfen, Rollstühle oder Orthesen.",
+      "Die Verfügbarkeit von Medikamenten und ausreichende und gute Ernährung zählt hier auch mit dazu."
+    ],
+    "l": "e110,e115,e120,e125,e130,e140,e150,e155,e165",
+    "p": [
+      "female-legs-prosthesis-close-up-walking-outdoor-city-park-woman-amputee-wearing-prosthetic-legs.jpg",
+      "antique-rotary-phone-wood-table-nostalgia-decor-generative-ai.jpg",
+      "one-woman-buying-groceries-modern-supermarket-with-shopping-cart-generated-by-ai.jpg",
+      "shiny-chrome-bumper-vintage-car-gleams-generative-ai.jpg",
+      "one-person-sitting-wheelchair-enjoys-freedom-generated-by-ai.jpg"
+    ]
+  }
+}
