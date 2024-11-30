@@ -125,10 +125,19 @@ class AppStore extends Store<ApplicationData> {
      * @param d
      */
     getWholePatientDatasets() {
-        const whodas = this.state.api_all_patient_records
+        return this.state.api_all_patient_records
             .filter(x=>Object.keys(x.whodas).length!==0)
             .map(x => normalizeWhodasSum(getWhodasSum(x.whodas)))
+    }
 
+    getWhodasWholePatientDatasets() {
+        let target:Record<string,number[]> = {}
+        let filtered_whodas =  this.state.api_all_patient_records.filter(x=>Object.keys(x.whodas).length!==0)
+        for (let i=1; i<13; i++) {
+            let istr = i.toString();
+            target[istr] = filtered_whodas.map(x=>Object.keys(x.whodas).includes(istr) ? x.whodas[istr] : 0)
+        }
+       return target
     }
 
     statisticsCalculator(k: string, d: DataStore) {

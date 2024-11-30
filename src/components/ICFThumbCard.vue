@@ -141,7 +141,7 @@ onMounted(() => {
           :class="(icfitem.selected===0) ? `blurred-thumb-img` : (icfitem.selected===-1) ? `opaque-thumb-img`: ``"
           @click="mouseOverAct($event,code)"
       />
-      <p v-if="(code !== app_store.getState().active_icf)">{{ _icfcodes[code].t }}</p>
+      <p v-if="(code !== app_store.getState().active_icf)">{{ _icfcodes[code]?.t }}</p>
     </div>
 
 
@@ -157,7 +157,7 @@ onMounted(() => {
 
       <div v-if="code === app_store.getState().active_icf">
         <MDBCardHeader>
-          <h5 class="text-primary">{{ _icfcodes[code].t }}</h5>
+          <h5 class="text-primary">{{ _icfcodes[code]?.t }}</h5>
           <router-link :to="`/patientdata/icf-detail/${patientid}/${code}`">
             Was soll das bedeuten?
             <MDBIcon class="ms-3" icon="circle-info"></MDBIcon>

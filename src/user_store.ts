@@ -25,6 +25,7 @@ export interface UserData {
   last_login: string,
   groups: Array<string>,
   institution: InstitutionData
+    diagnoses: string,
 }
 
 
@@ -39,9 +40,9 @@ export interface RemoteInstitutionDataset extends Object {
 export interface RemoteUserAPI {
     id: string,
     pseudonym: string,
-    email: string,
     groups: Array<Record<'name', string>>
     institution: RemoteInstitutionDataset
+    diagnoses: string,
 }
 
 export interface User extends Object {
@@ -53,6 +54,7 @@ export interface User extends Object {
     pseudonym: string,
     institution:RemoteInstitutionDataset | InstitutionData,
     groups: Array<string>,
+    diagnoses: string
 
 }
 
@@ -68,6 +70,7 @@ class UserStore extends Store<User> {
             times_per_page: [default_page_time],
             id: '',
             pseudonym: '',
+            diagnoses:'',
             institution:Object.assign({}, {
                 id: '',
                 created: '',
@@ -91,6 +94,7 @@ class UserStore extends Store<User> {
                 name: '',
                 logo_url: ''})
             this.state.groups= []
+        this.state.diagnoses=''
     }
 
     get_token_from_browser() {
@@ -113,6 +117,7 @@ class UserStore extends Store<User> {
         this.state.id = r.id
         this.state.pseudonym = r.pseudonym
         this.state.groups =  r.groups.map((x) => (typeof x === 'string') ? x :x.name)
+        this.state.diagnoses = r.diagnoses
         this.state.institution = Object.assign({}, r.institution)
     }
 
@@ -153,7 +158,7 @@ class UserStore extends Store<User> {
     }
 
     increment_last_time_per_page(increment: number) {
-        if (this.state.times_per_page[this.state.times_per_page.length-1]<120)
+        if (this.state.times_per_page[this.state.times_per_page.length-1]<70) // Deckeln der Zeiten bei 70s pro Seite
          this.state.times_per_page[this.state.times_per_page.length-1]+=increment
     }
 
@@ -174,6 +179,7 @@ class UserStore extends Store<User> {
             this.state.id = r.id
             this.state.pseudonym = r.pseudonym
         this.state.groups = r.groups.map((x: { name: any; }) => x.name)
+            this.state.diagnoses = r.diagnoses
         this.state.institution = Object.assign({}, r.institution_link)
             resolve('assigned')
         })
@@ -280,6 +286,12 @@ class UserStore extends Store<User> {
         })
     }
 
+    updateUserDiagnoses(targetUser: string, diagnoses: string): Promise<Record<string, any>> {
+        //TODO: Writing API Request , CAVE the physician must have rights to change patient user diagnoses
+        return new Promise((resolve, reject) => {
+            console.log('Here should come the API request to change diagnoses')
+        })
+    }
 
     updateAccountDetails(payload: Record<string, any> | null): Promise<Record<string, any>> {
         return new Promise((resolve, reject) => {

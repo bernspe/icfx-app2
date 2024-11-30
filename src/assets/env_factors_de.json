@@ -2,7 +2,7 @@
   "1": {
     "s": "Umweltfaktoren",
     "t": "Wie beeinflussen äußere Gegebenheiten wie zum Beispiel Klima, Luftqualität, Lärm, und Wohnumfeld Ihr Leben?",
-    "d": "Bitte geben Sie an, inwiefern Ihr derzeitiges Leben durch Umweltfaktoren beeinflusst wird.",
+    "d": "Beantworten Sie die Fragen bitte vor dem Hintergrund ihrer aktuellen Situation. Dabei dürfen  z.B. auch negative oder positive Einflüsse von Jahreszeiten oder aktuelle Beeinträchtigungen von z.B. Baulärm mit einfliessen.",
     "e": [
       "Haben Faktoren, wie z.B. die Luftfeuchtigkeit, die Lufttemperatur, die Anzahl der Sonnentage, graues Wetter ohne Sonne Einfluss auf Ihr Leben?",
       "Hat ihr Wohnumfeld, wie z.B. laute Umgebung, oder viel Natur einen Einfluss auf Ihr Leben?"
@@ -18,10 +18,11 @@
   },
   "2": {
     "s": "Gesundheitswesen",
-    "t": "Sind Sie in erheblichem Maße auf Einrichtungen des Gesundheitssystems angewiesen? Ist Ihr Leben positiv oder negativ davon beeinflusst?",
+    "t": "Sollten Sie in erheblichem Maße auf Einrichtungen des Gesundheitssystems angewiesen sein - ist Ihr Leben positiv oder negativ davon beeinflusst?",
     "d": "Beziehen Sie sich bitte auf die derzeit von Ihnen benötigten oder bereits genutzten Einrichtungen wie Krankenhäuser, Arztpraxen, Apotheken, etc. Die Antwort kann sich auch darauf beziehen, dass Einrichtungen nicht vorhanden sind.",
     "e": [
-      "Als Einrichtungen des Gesundheitswesens können neben Krankenhäusern, Pflegeeinrichtungen, Ambulanzen, niedergelassenen Ärzten auch Apotheken und der Medizinprodukt-Fachhandel gesehen werden."
+      "Als Einrichtungen des Gesundheitswesens können neben Krankenhäusern, Pflegeeinrichtungen, Ambulanzen, niedergelassenen Ärzten auch Apotheken und der Medizinprodukt-Fachhandel gesehen werden.",
+      "Haben Sie z. B. Schwierigkeiten einen Arzttermin zu bekommen oder müssen sie lange auf eine gewünschte Behandlung warten. Werden Sie durch ambulante Pflegekräfte versorgt, was Ihnen sehr hilft? Etc…"
     ],
     "l": "e580,",
     "p": [
@@ -34,12 +35,14 @@
   },
   "3": {
     "s": "Gesellschaft",
-    "t": "Wirken sich öffentliche Einrichtungen auf die Qualität Ihres Lebens aus?",
+    "t": "Wie wirken sich öffentliche Einrichtungen auf die Qualität Ihres Lebens aus?",
     "d": "Bekommen Sie Unterstützung von öffentlichen Stellen? Werden Sie von öffentlichen Stellen geärgert?",
     "e": [
       "Öffentliche Einrichtungen sind u.a. Museen, Sporthallen und -plätze, Parkanlagen, Büchereien, Kirchliche Einrichtungen, Gemeinschaftshäuser und Bildungseinrichtungen.",
       "öffentliche Einrichtungen sind Einrichtungen die im öffentlichen Interesse von Gemeinden und Kommunen unterhalten werden",
-      "auch das Sozialamt, Integrationsamt, Job-Center o.ä. zählen zu den öffentlichen Stellen"
+      "auch das Sozialamt, Integrationsamt, Job-Center o.ä. zählen zu den öffentlichen Stellen",
+      "Beurteilen Sie ob sie mit notwendigen Behörden oder öffentlichen Dienstleistungen gut zurechtkommen. Besteht ein Mangel an solchen Einrichtungen? Haben Sie Schwierigkeiten mit Scheiben und Formularen von Behörden/ Einrichtungen( z. B. Landratsamt, Finanzamt)?",
+      "Nutzen sie öffentliche Einrichtungen wie Bibliotheken, Schwimmbäder, Sportanlagen gern und bereichern diese Ihr Leben?"
     ],
     "l": "e525,e555,e570,e575,e585,e590",
     "p": [
@@ -52,7 +55,7 @@
   },
   "4": {
     "s": "Soziale Kontakte",
-    "t": "Gibt es soziale Kontakte (Familie, Freunde, Kollegen, Vorgesetzte), die sich aktuell auf Ihr Leben beeinträchtigend oder unterstützend auswirken?",
+    "t": "Wie wirken sich soziale Kontakte (Familie, Freunde, Kollegen, Vorgesetzte) aktuell auf Ihr Leben aus?",
     "d": "Bitte geben Sie an, ob Sie von Menschen aus Ihrem Umfeld eher unterstützt oder eher geärgert werden.",
     "e": [
       "Soziale Kontakte beziehen sich auf die Interaktion und Beziehungen zwischen Menschen. Sie umfassen den Austausch von Informationen, Emotionen und Ressourcen durch Gespräche, Treffen, gemeinsame Aktivitäten und andere Kommunikationsformen.",

@@ -1,7 +1,7 @@
 {
   "name": "icfx-app2",
   "private": true,
-  "version": "2.2.5",
+  "version": "2.2.7",
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dagrejs/dagre": "^1.1.4",
     "@dicebear/collection": "^7.0.1",
     "@dicebear/core": "^7.0.1",
     "@popperjs/core": "^2.11.8",
@@ -19,6 +20,7 @@
     "mdb-ui-kit": "^6.3.1",
     "mdb-vue-ui-kit": "git+https://oauth2:Eeo4nxNv2qSz2Yx8yH2t@git.mdbootstrap.com/mdb/vue/mdb5/prd/mdb5-vue-ui-kit-pro-essential",
     "moment": "^2.29.4",
+    "v-network-graph": "^0.9.18",
     "vue": "^3.2.40",
     "vue-chartjs": "^5.3.1",
     "vue-google-charts": "^1.1.0",

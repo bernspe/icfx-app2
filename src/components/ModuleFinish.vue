@@ -43,7 +43,7 @@ const nextModuleUrl = computed(()=> {
 const finishtext: Record<string, any> = {
   whodas: {
     heading: 'WHODAS Fragebogen',
-    expl: `Sie haben den WHODAS Fragebogen beendet. Wir haben somit schon ein ziemlich gutes Bild von Ihren Problemen. Probleme sind vergleichbar mit einer Mauer, die es zu überwinden gilt.`,
+    expl: `Sie haben den WHODAS-Fragebogen erfolgreich abgeschlossen. Damit haben wir nun ein klares Bild Ihrer Herausforderungen im Alltag gewonnen. Probleme lassen sich oft mit einer Mauer vergleichen, die es zu überwinden gilt – und Sie haben den ersten Schritt dazu bereits gemacht. Herzlichen Glückwunsch, Sie haben sich ein Abzeichen verdient!`,
     pic: 'wall_looking_at.png',
     startItem: '1',
   },
@@ -76,9 +76,9 @@ const finishtext: Record<string, any> = {
       <h1>{{ finishtext[props.module].heading }}</h1>
     </MDBCardHeader>
     <MDBCardBody>
-      <h2>Geschafft.</h2>
+      <h2>Geschafft!</h2>
       <p>{{ finishtext[props.module].expl }}</p>
-      <p>Sie haben sich ein Abzeichen verdient!</p>
+
       <img :src="imageServer()+'gold-medal.png'">
       <h2>Wie möchten Sie nun weitermachen?</h2>
       <MDBListGroup>

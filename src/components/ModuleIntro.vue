@@ -37,13 +37,14 @@ const expectedModuleTime = (numberOfItems:number)=> {
 const introtext: Record<string, any> = {
   whodas: {
     heading: 'Der WHODAS-Fragebogen',
-    expl: `In den folgenden 12 Fragen geben Sie bitte Einschränkungen im täglichen Leben an. Bitte benutzen Sie dazu die vorgegebenen Begriffe von ${AuspraegungBeschwerden[0]} bis ${AuspraegungBeschwerden[4]}.`,
+    expl: `In den folgenden Fragen möchten wir von Ihnen wissen, ob und wie stark Sie im Alltag beeinträchtigt sind. Bitte geben Sie an, in welchem Maß Sie Probleme oder Einschränkungen in den genannten Bereichen erleben.
+ Für jede Frage stehen Ihnen die Antwortoptionen von ${AuspraegungBeschwerden[0]} bis ${AuspraegungBeschwerden[4]} zur Verfügung. Wählen Sie bitte die Antwort, die am besten auf Ihre aktuelle Situation zutrifft. Es gibt keine richtigen oder falschen Antworten – wichtig ist Ihre persönliche Einschätzung.`,
     numberquestions: 12,
     startItem: '1',
   },
   env: {
     heading: 'Umweltfaktoren',
-    expl: `Wir sind alle mehr oder weniger auf ein gutes Zusammenspiel mit unserer Umwelt angewiesen. Manche Dinge stören uns, andere wiederum helfen uns. Bitte geben Sie auf den folgenden 5 Seiten an, ob diese Faktoren Sie stören (Auswahl NEGATIV), Ihnen helfen (POSITIV) oder Sie gar nicht besonders beeinflussen (Weder noch).`,
+    expl: `Wir alle sind in unterschiedlichem Maß von unserer Umgebung abhängig. Einige Umwelteinflüsse können uns unterstützen, während andere hinderlich sein können. Auf den nächsten 5 Seiten bitten wir Sie, anzugeben, ob die genannten Faktoren für Sie störend (NEGATIV), hilfreich (POSITIV), beides oder neutral (Weder noch) sind.`,
     numberquestions: 5,
     startItem: '1',
   },
@@ -55,7 +56,7 @@ const introtext: Record<string, any> = {
   },
   sf36: {
     heading: 'Der SF36 Fragebogen',
-    expl: 'In diesem Fragebogen werden verschiedene Aspekte von Gesundheit und Lebensqualität abgefragt. Bitte nehmen Sie sich noch einmal die Zeit für diese wichtigen Angeöegenheiten.',
+    expl: 'In diesem Fragebogen werden verschiedene Aspekte Ihrer Gesundheit und Lebensqualität erfasst. Bitte nehmen Sie sich noch einmal die Zeit, um diese wichtigen Fragen zu beantworten.',
     numberquestions: 36,
     startItem: sf36_keys.value[0],
   }

@@ -31,7 +31,7 @@ onMounted(()=> {
 <template>
 <MDBCard class="m-2 p-2">
   <MDBCardHeader>
-    <h1 class="text-secondary">Ergebnis des Kontextfaktoren-Fragebogens</h1>
+    <h1 class="text-secondary">Ergebnis des Umweltfaktoren-Fragebogens</h1>
   </MDBCardHeader>
   <MDBCardBody>
 

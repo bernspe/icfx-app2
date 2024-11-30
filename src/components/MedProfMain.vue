@@ -16,6 +16,8 @@ import ICFThumbCard from "./ICFThumbCard.vue";
 import InfoButton from "./InfoButton.vue";
 import ICFThumbPanel from "./ICFThumbPanel.vue";
 import ListHeader from "./ListHeader.vue";
+import DiagnosisInput from "./DiagnosisInput.vue";
+import AvatarImage from "./AvatarImage.vue";
 
 
 const props = defineProps({patientid: {type: String, required: true}})
@@ -47,12 +49,12 @@ const core_options = ref(Object.entries(_coresets).map(([k, v], idx) => ({
 
 const loadCoreSetCheckBoxes = () => {
   core_options.value.forEach(code => code.checked = false)
-        const coreset_array = data.value.coreset.toString().split(',')
-      core_options.value.forEach((coreset,idx) => {
-        if (coreset_array.includes(coreset.keycode)) {
-          core_options.value[idx].checked = true
-        }
-      })
+  const coreset_array = data.value.coreset.toString().split(',')
+  core_options.value.forEach((coreset, idx) => {
+    if (coreset_array.includes(coreset.keycode)) {
+      core_options.value[idx].checked = true
+    }
+  })
 }
 
 const selected_icf_keys = computed<Array<string>>(() => {
@@ -61,14 +63,13 @@ const selected_icf_keys = computed<Array<string>>(() => {
   }).flat())]
 })
 
-const lastIcfEdited = computed(()=> {
-   const vals = Object.values(data.value.icf || {})
+const lastIcfEdited = computed(() => {
+  const vals = Object.values(data.value.icf || {})
   if (vals.length > 0) {
     let i = Object.values(data.value.icf || {}).map(x => x.selected != 0).lastIndexOf(true)
-    if (i===-1) return 0
+    if (i === -1) return 0
     else return i
-  }
-  else return 0
+  } else return 0
 })
 
 const icfEdited = computed(() => {
@@ -133,7 +134,11 @@ const preloadData = (autoassign: boolean) => {
 }
 
 watch(icfsFromCoresetData, (newVal, oldVal) => {
-  app_store.setCurrentData({...data.value, icf: newVal, coreset: core_options.value.filter(coreset=>coreset.checked).map(coreset=>coreset.keycode).join(',')})
+  app_store.setCurrentData({
+    ...data.value,
+    icf: newVal,
+    coreset: core_options.value.filter(coreset => coreset.checked).map(coreset => coreset.keycode).join(',')
+  })
   app_store.set_active_icf('')
 })
 
@@ -150,12 +155,15 @@ onMounted(() => {
 <template>
   <MDBRow class="d-flex align-items-center m-2">
     <MDBCol class="d-flex justify-content-start">
-  <h1>{{ patient?.pseudonym }}</h1>
-      </MDBCol>
-          <MDBCol class="d-flex justify-content-end">
-        <InfoButton component_name="MedProfMain"/>
-      </MDBCol>
-    </MDBRow>
+      <AvatarImage :pseudonym="patient?.pseudonym" size="55px" color="blue" label_position="right"/>
+    </MDBCol>
+    <MDBCol class="d-flex justify-content-end">
+      <InfoButton component_name="MedProfMain"/>
+    </MDBCol>
+  </MDBRow>
+  <MDBRow class="d-flex align-items-center m-2">
+    <DiagnosisInput :diagnoses="patient?.diagnoses" :patientid="patientid"/>
+  </MDBRow>
   <MDBListGroup>
     <MDBListGroupItem v-if="show_preload_switch">
       <MDBRow class="d-flex align-items-center">
@@ -175,22 +183,22 @@ onMounted(() => {
           :key="api_data_store_size"/>
     </MDBListGroupItem>
     <MDBListGroupItem>
-      <MDBCheckbox v-for="core in core_options" :label="core.text" inline v-model="core.checked" />
+      <MDBCheckbox v-for="core in core_options" :label="core.text" inline v-model="core.checked"/>
 
     </MDBListGroupItem>
 
     <MDBListGroupItem id="icf">
-                              <ListHeader
-           label="ICFs"
-           :number-icf-items="Object.keys(icfsFromCoresetData).length"
-           :show-details="showIcfDetails"
-           :patientid="patientid"
-           :last-item-edited="Object.keys(icfsFromCoresetData)[lastIcfEdited]"
-           module="icf"
-           :percent-edited="icfEdited"
-           :startButtonActive="true"
-           @show-details-changed="showIcfDetails=$event"
-           ></ListHeader>
+      <ListHeader
+          label="ICFs"
+          :number-icf-items="Object.keys(icfsFromCoresetData).length"
+          :show-details="showIcfDetails"
+          :patientid="patientid"
+          :last-item-edited="Object.keys(icfsFromCoresetData)[lastIcfEdited]"
+          module="icf"
+          :percent-edited="icfEdited"
+          :startButtonActive="true"
+          @show-details-changed="showIcfDetails=$event"
+      ></ListHeader>
 
       <ICFThumbPanel :icfs="icfsFromCoresetData" :patientid="patientid" v-if="showIcfDetails"/>
     </MDBListGroupItem>
