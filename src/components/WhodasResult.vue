@@ -102,7 +102,7 @@ onMounted(() => {
         <p>Das bedeutet, dass Sie <strong
             :style="{'color':AuspraegungTextColor[Math.ceil((getWhodasSum(data.whodas))/12)]}">
           {{ describeWhodasSum(getWhodasSum(data.whodas)) }} Behinderung </strong> erfahren. </p>
-        <p>Achtung: Diese Einschätzung hat nichts mit offiziellen Einschätzung des Grades der Behinderung (GdB) gemein. Wenden Sie sich diesbzgl. bitte an die lokalen Ämter.</p>
+        <p>Achtung: Diese Einschätzung hat nichts mit der offiziellen Einschätzung des Grades der Behinderung (GdB) gemein. Wenden Sie sich diesbzgl. bitte an die lokalen Versorgungsämter.</p>
       </MDBRow>
       <MDBRow>
         <h2 class="text-secondary">Mein Fortschritt</h2>

@@ -1,0 +1,14 @@
+{
+  "Körperliche Funktionsfähigkeit": {
+    "keys": ["Q3a", "Q3b", "Q3c", "Q3d", "Q3e", "Q3f", "Q3g", "Q3h", "Q3i", "Q3j"]
+  },
+  "Körperliche Rollenfunktion": {"keys": ["Q4a", "Q4b", "Q4c", "Q4d"]},
+  "Körperliche Schmerzen": {"keys": ["Q7", "Q8"]},
+  "Allgemeine Gesundheitswahrnehmung": {"keys": ["Q1", "Q11a", "Q11b", "Q11c", "Q11d"]},
+  "Vitalität": {"keys": ["Q9a", "Q9e", "Q9g", "Q9i"]},
+  "Soziale Funktionsfähigkeit": {"keys": ["Q6", "Q10"]},
+  "Emotionale Rollenfunktion": {"keys": ["Q5a", "Q5b", "Q5c"]},
+  "Psychisches Wohlbefinden": {"keys": ["Q9b", "Q9c", "Q9d", "Q9f", "Q9h"]},
+  "Änderung der Gesundheit": {"keys": ["Q2"]},
+  "Durchschnittliche aktuelle Gesundheit": {"keys": ["Q1"]}
+}

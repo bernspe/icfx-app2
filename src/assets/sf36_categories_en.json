@@ -1,0 +1,14 @@
+{
+  "Physical Functioning": {
+    "keys": ["Q3a", "Q3b", "Q3c", "Q3d", "Q3e", "Q3f", "Q3g", "Q3h", "Q3i", "Q3j"]
+  },
+  "Role-Physical": {"keys": ["Q4a", "Q4b", "Q4c", "Q4d"]},
+  "Bodily-Pain": {"keys": ["Q7", "Q8"]},
+  "General Health": {"keys": ["Q1", "Q11a", "Q11b", "Q11c", "Q11d"]},
+  "Vitality": {"keys": ["Q9a", "Q9e", "Q9g", "Q9i"]},
+  "Social Functioning": {"keys": ["Q6", "Q10"]},
+  "Role-Emotional": {"keys": ["Q5a", "Q5b", "Q5c"]},
+  "Mental Health": {"keys": ["Q9b", "Q9c", "Q9d", "Q9f", "Q9h"]},
+  "Reported Health Transition": {"keys": ["Q2"]},
+  "Mean Current Health": {"keys": ["Q1"]}
+}

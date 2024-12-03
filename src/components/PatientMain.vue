@@ -242,7 +242,7 @@ onMounted(() => {
 
       <MDBListGroupItem id="env">
                  <ListHeader
-           label="Kontextfaktoren Fragebogen"
+           label="Umweltfaktoren Fragebogen"
            :number-icf-items="0"
            :show-details="showEnvDetails"
            :patientid="patientid"

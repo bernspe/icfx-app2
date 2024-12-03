@@ -10,13 +10,15 @@ import {
   MDBProgressBar, MDBProgress
 } from 'mdb-vue-ui-kit'
 import {VueScrollPicker} from 'vue-scroll-picker'
-import _sf36 from '../assets/sf36_de.json'
 import {computed, onMounted, ref, watch} from "vue";
 import {AuspraegungBeschwerden, UmweltFaktoren} from "../constants";
 import {app_store, type DataStore} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate} from "vue-router";
 import {imageServer} from "../process_vars";
 import {random} from "lodash";
+import __sf36 from "../assets/sf36_de.json";
+
+const _sf36:Record<string,Record<string,any>> = __sf36
 
 const props = defineProps({
   patientid: {type: String},
