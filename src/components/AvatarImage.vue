@@ -5,6 +5,7 @@ import {imageServer} from "../process_vars";
 import {language} from "../constants";
 import __avtrans from '../assets/avatar_transcriptions.json'
 import {translate_pseudonym} from "../language_helper";
+import {MDBBadge} from "mdb-vue-ui-kit";
 const _avtrans: Record<string,Record<string,string>> = __avtrans;
 
 const props = defineProps({
@@ -26,9 +27,20 @@ const transcribed_pseudonym = computed(()=> {
 
 <template>
   <div class="d-flex align-items-center">
+
     <div class='imgcontainer m-2'>
+      <div class="mask" v-if="label_position==='ontop'"> <p class="small">{{ transcribed_pseudonym }}</p></div>
     <img :src="imageServer()+'avatars/animals/'+noun_img+img_suffix" class='mainpic'/>
+
     <img :src="imageServer()+'avatars/adjectives/'+adjective_img+img_suffix" class='secondarypic'/>
+      <MDBBadge
+           v-if="label_position==='badge'"
+           class="translate-middle p-1"
+              badge="info"
+              pill
+              notification
+          >{{ transcribed_pseudonym }}
+          </MDBBadge>
       <p class="small" v-if="label_position==='bottom'">{{ transcribed_pseudonym }}</p>
     </div>
     <h2 v-if="label_position==='right'">{{ transcribed_pseudonym }}</h2>

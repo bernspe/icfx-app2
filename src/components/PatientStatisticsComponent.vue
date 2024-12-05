@@ -47,10 +47,10 @@ const userFromUserID = (userid: string) => {
 <template>
   <div class="p-1" ref="statsmoduleref">
     <div v-if="mode==='short'">
-              <div class="ms-3 text-center">
-          <div class="fw-bold">{{ app_store.getPatientStatisticsFromAPI(patient_id).length }}</div>
-          <div class="text-muted small">Einträge</div>
-        </div>
+      <div class="ms-3 text-center">
+        <div class="fw-bold">{{ app_store.getPatientStatisticsFromAPI(patient_id).length }}</div>
+        <div class="text-muted small">Einträge</div>
+      </div>
 
     </div>
 
@@ -62,7 +62,7 @@ const userFromUserID = (userid: string) => {
     >
       <MDBCol>
         <p class="m-0">{{ moment(stats_entry.date).format(dateformat) }}</p>
-        <p class="text-secondary m-0">{{moment(stats_entry.date).format('HH:mm')}}</p>
+        <p class="text-secondary m-0">{{ moment(stats_entry.date).format('HH:mm') }}</p>
       </MDBCol>
       <MDBCol>
         <div v-for="g in userFromUserID(stats_entry.creator)?.groups">

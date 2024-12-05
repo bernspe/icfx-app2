@@ -2,87 +2,94 @@
 import {
   MDBListGroup, MDBListGroupItem, MDBChip, MDBRow, MDBCol, MDBBtn, MDBBtnGroup,
   MDBCard, MDBCardHeader, MDBCardBody, MDBCardFooter, MDBTransition, MDBSwitch, MDBCheckbox, MDBIcon, MDBChart,
-    MDBDatatable
+  MDBDatatable
 } from 'mdb-vue-ui-kit'
-  import { VNetworkGraph } from "v-network-graph"
-  import "v-network-graph/lib/style.css"
-  import {ref, reactive, computed} from "vue"
+import {VNetworkGraph} from "v-network-graph"
+import "v-network-graph/lib/style.css"
+import {ref, reactive, computed} from "vue"
 import * as vNG from "v-network-graph"
-import { Nodes, Edges, Layouts } from "v-network-graph"
+import {Nodes, Edges, Layouts} from "v-network-graph"
 
 // dagre: Directed graph layout for JavaScript
 // https://github.com/dagrejs/dagre
 
 import dagre from "@dagrejs/dagre"
-const props = defineProps(['domains'])
 
-  const _domains: Record<string,Record<string,Array<string>>> = props.domains
+const props = defineProps(['domains'])
+const emit = defineEmits(['nodeClicked'])
+
+const _domains: Record<string, Record<string, Array<string>>> = props.domains
 
 const showOnlySiblings = ref(true)
 
-const nodesFromDomainTree = computed(()=> {
-    let target:Nodes = {}
-    if (_domains) {
-      Object.entries(_domains).forEach(([userid, domain_items]) => {
-        let domain_array = Object.entries(domain_items)
-        target[userid] = {name: 'U'+userid.slice(0,2)}
-        domain_array.forEach(domain_a => {
-          target[userid + '_' + domain_a[0]] = {name: domain_a[0]}
-          let icf_array = domain_a[1]
-          icf_array.forEach(icf => {
-            if (showOnlySiblings.value) {
-              if (Object.keys(siblingsFromDomainTree.value).includes(icf)) target[userid + '_' + icf] = {name: icf}
-            } else
+const nodesFromDomainTree = computed(() => {
+  let target: Nodes = {}
+  if (_domains) {
+    Object.entries(_domains).forEach(([userid, domain_items]) => {
+      let domain_array = Object.entries(domain_items)
+      target[userid] = {name: 'U' + userid.slice(0, 2)}
+      domain_array.forEach(domain_a => {
+        target[userid + '_' + domain_a[0]] = {name: domain_a[0]}
+        let icf_array = domain_a[1]
+        icf_array.forEach(icf => {
+          if (showOnlySiblings.value) {
+            if (Object.keys(siblingsFromDomainTree.value).includes(icf)) target['_'+icf] = {name: icf}
+          } else
             target[userid + '_' + icf] = {name: icf}
-          })
         })
       })
-    }
-      return target
+    })
+  }
+  return target
 })
 
-const edgesFromDomainTree = computed(()=> {
-  let target:Edges = {}
-   if (_domains) {
-     Object.entries(_domains).forEach(([userid, domain_items]) => {
-          let domain_array = Object.entries(domain_items)
-       domain_array.forEach(domain_a => {
-          target[userid + '_' + domain_a[0]] = {source: userid, target: userid+'_' + domain_a[0]}
-          let icf_array = domain_a[1]
-          icf_array.forEach(icf => {
-            if (Object.keys(siblingsFromDomainTree.value).includes(icf)) {
-              let siblingusers = siblingsFromDomainTree.value[icf]
-              siblingusers.forEach(siblinguser => {
-                target[userid+'_'+siblinguser+'_'+icf] = {source:userid+'_'+domain_a[0],target:siblinguser+'_'+icf}
-              })
-            } else {
-              if (!showOnlySiblings.value) target[userid + '_' + icf] = {source:userid+'_' + domain_a[0], target:userid+'_' + icf}
+const edgesFromDomainTree = computed(() => {
+  let target: Edges = {}
+  if (_domains) {
+    Object.entries(_domains).forEach(([userid, domain_items]) => {
+      let domain_array = Object.entries(domain_items)
+      domain_array.forEach(domain_a => {
+        target[userid + '_' + domain_a[0]] = {source: userid, target: userid + '_' + domain_a[0]}
+        let icf_array = domain_a[1]
+        icf_array.forEach(icf => {
+          if (Object.keys(siblingsFromDomainTree.value).includes(icf)) {
+            let siblingusers = siblingsFromDomainTree.value[icf]
+            siblingusers.forEach(siblinguser => {
+              target[userid + '_' + icf] = {
+                source: userid + '_' + domain_a[0],
+                target: showOnlySiblings.value ? '_'+icf : userid + '_' + icf
+              }
+            })
+          } else {
+            if (!showOnlySiblings.value) target[userid + '_' + icf] = {
+              source: userid + '_' + domain_a[0],
+              target: userid + '_' + icf
             }
-          })
+          }
         })
-     })
-   }
-   return target
+      })
+    })
+  }
+  return target
 })
 
-const siblingsFromDomainTree = computed(()=> {
-   let target:Record<string,Array<string>> = {}
-   if (_domains) {
-     Object.entries(_domains).forEach(([userid, domain_items]) => {
-          let domain_array = Object.entries(domain_items)
-       domain_array.forEach(domain_a => {
-          let icf_array = domain_a[1]
-          icf_array.forEach(icf => {
-            if (Object.keys(target).includes(icf)) target[icf].push(userid)
-            else target[icf]=[userid]
-          })
+const siblingsFromDomainTree = computed(() => {
+  let target: Record<string, Array<string>> = {}
+  if (_domains) {
+    Object.entries(_domains).forEach(([userid, domain_items]) => {
+      let domain_array = Object.entries(domain_items)
+      domain_array.forEach(domain_a => {
+        let icf_array = domain_a[1]
+        icf_array.forEach(icf => {
+          if (Object.keys(target).includes(icf)) target[icf].push(userid)
+          else target[icf] = [userid]
         })
-     })
-   }
-   let o = Object.fromEntries(Object.entries(target).filter(e=>e[1].length>1))
-   return o
+      })
+    })
+  }
+  let o = Object.fromEntries(Object.entries(target).filter(e => e[1].length > 1))
+  return o
 })
-
 
 
 const layouts: Layouts = reactive({
@@ -97,8 +104,12 @@ const configs = vNG.defineConfigs({
     onBeforeInitialDisplay: () => layout("TB"),
   },
   node: {
-    normal: { radius: nodeSize / 2 },
-    label: { direction: "center", color: "#fff" },
+    normal: {radius: nodeSize / 2},
+    label: {direction: "center", color: "#fff"},
+    selectable: true,
+    focusring: {
+      color: "darkgray",
+    },
   },
   edge: {
     normal: {
@@ -106,10 +117,17 @@ const configs = vNG.defineConfigs({
       width: 3,
     },
     margin: 4,
+
   },
 })
 
 const graph = ref<vNG.VNetworkGraphInstance>()
+
+const eventHandlers: vNG.EventHandlers = {
+  "node:click": ({ node }) => {
+    emit("nodeClicked",node.split('_')[1])
+  },
+}
 
 function layout(direction: "TB" | "LR") {
   if (Object.keys(nodesFromDomainTree.value).length <= 1 || Object.keys(edgesFromDomainTree.value).length == 0) {
@@ -133,7 +151,7 @@ function layout(direction: "TB" | "LR") {
   // metadata about the node. In this case we're going to add labels to each of
   // our nodes.
   Object.entries(nodesFromDomainTree.value).forEach(([nodeId, node]) => {
-    g.setNode(nodeId, { label: node.name, width: nodeSize, height: nodeSize })
+    g.setNode(nodeId, {label: node.name, width: nodeSize, height: nodeSize})
   })
 
   // Add edges to the graph.
@@ -147,7 +165,7 @@ function layout(direction: "TB" | "LR") {
     // update node position
     const x = g.node(nodeId).x
     const y = g.node(nodeId).y
-    layouts.nodes[nodeId] = { x, y }
+    layouts.nodes[nodeId] = {x, y}
   })
 }
 
@@ -162,21 +180,22 @@ function updateLayout(direction: "TB" | "LR") {
 <template>
   <MDBRow class="align-items-center m-2 p-3 d-flex justify-content-end">
     <MDBCol>
-       <MDBBtn color='tertiary' @click="updateLayout('TB')">Update</MDBBtn>
+      <MDBBtn color='tertiary' @click="updateLayout('TB')">Update</MDBBtn>
     </MDBCol>
     <MDBCol>
-      <MDBSwitch label="Nur gemeinsame Objecte anzeigen" v-model="showOnlySiblings"/>
+      <MDBSwitch label="Nur gemeinsame Objekte anzeigen" v-model="showOnlySiblings"/>
     </MDBCol>
   </MDBRow>
 
 
   <VNetworkGraph
-    ref="graph"
-    class="graph"
-    :nodes="nodesFromDomainTree"
-    :edges="edgesFromDomainTree"
-    :layouts="layouts"
-    :configs="configs"
+      ref="graph"
+      class="graph"
+      :nodes="nodesFromDomainTree"
+      :edges="edgesFromDomainTree"
+      :layouts="layouts"
+      :configs="configs"
+      :event-handlers="eventHandlers"
   />
 
 </template>

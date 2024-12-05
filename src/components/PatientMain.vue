@@ -203,7 +203,7 @@ onMounted(() => {
     </MDBRow>
     <MDBListGroup>
       <MDBListGroupItem v-if="app_store.getState().api_patient_records.length>0 && show_preload_switch">
-        <MDBRow class="d-flex align-items-center" v-if="TestBetrieb">
+        <MDBRow class="d-flex align-items-center">
           <MDBCol>
             <h3 class="text-secondary">Vorbelegung mit existierenden Daten</h3>
           </MDBCol>

@@ -2,18 +2,20 @@
 import {
   MDBListGroup, MDBListGroupItem, MDBChip, MDBRow, MDBCol, MDBBtn, MDBBtnGroup,
   MDBCard, MDBCardHeader, MDBCardBody, MDBCardFooter, MDBTransition, MDBSwitch, MDBCheckbox, MDBIcon, MDBChart,
-    MDBDatatable
+  MDBDatatable, MDBTable, MDBBadge
 } from 'mdb-vue-ui-kit'
 
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, useTemplateRef} from "vue";
 import {app_store, type DataStore, ICFItemStructure} from "../app_store";
 import __icfcodes from "../assets/icf_codes3.json";
 
 import {imageServer} from "../process_vars";
-import { VNetworkGraph } from "v-network-graph"
+import {VNetworkGraph} from "v-network-graph"
 import "v-network-graph/lib/style.css"
 import ICFGraph from "./ICFGraph.vue";
-
+import AvatarImage from "./AvatarImage.vue";
+import {user_store} from "../user_store";
+import {AuspraegungColor, UmweltColor} from "../constants";
 
 
 const _icfcodes: Record<string, ICFItemStructure> = __icfcodes;
@@ -30,40 +32,16 @@ const upUrl = computed(() => {
 })
 
 
-const sortedList = ref<Array<[string,Record<string,ConsolidatedICFListEntry>]>>([])
+const sortedList = ref<Array<[string, Record<string, ConsolidatedICFListEntry>]>>([])
 const creators = ref<Array<string>>([])
-const userGroupPicFromUserID = (userid: string) => {
-  if (userid) {
-    let g = app_store.getState().users_of_this_institution.filter(user => user.id === userid)[0].groups
 
-    return g.join(',')
-  }
-  else return ''
-}
-
-const dataset = computed(()=> {
-  return ({
-    columns: ['ICF Code', ...creators.value.map(id=>userGroupPicFromUserID(id))],
-    rows: [
-        ...sortedList.value.map(([code, icf]) => ([icfCode2Pic( code), ...creators.value.map(c => {
-        if (Object.keys(icf).includes(c)) return icf[c].value.toString()
-        else return ''
-      })]))
-    ]
-  });
-})
-
-const icfCode2Pic = (code:string) => {
-  return `<img src='${imageServer()}icf-pics/${code}.jpg' alt='${code}' style="max-height: 40px; width:auto; object-fit: contain"/><p>${_icfcodes[code]?.t}</p>`
-}
-
-const domainsOfEachUser = computed(()=> {
-  let targetDomains:Record<string,Record<string,Array<string>>> = Object.fromEntries(creators.value.map(c => ([c,{}])))
-  sortedList.value.forEach(([code, icf])=> {
-   Object.values(icf).forEach(i=> {
+const domainsOfEachUser = computed(() => {
+  let targetDomains: Record<string, Record<string, Array<string>>> = Object.fromEntries(creators.value.map(c => ([c, {}])))
+  sortedList.value.forEach(([code, icf]) => {
+    Object.values(icf).forEach(i => {
       let d = code.slice(0, 2)
       if (Object.keys(targetDomains[i.creator]).includes(d)) targetDomains[i.creator][d].push(code)
-      else targetDomains[i.creator][d]=[code]
+      else targetDomains[i.creator][d] = [code]
     })
   })
 
@@ -77,22 +55,36 @@ interface ConsolidatedICFListEntry {
   value: number,
   selected: number
 }
-const transformAPIResponseToConsolidatedICFList = (api_response:Array<DataStore>) => {
-  let target:Record<string,Record<string,ConsolidatedICFListEntry>> = {}
-  let c:Array<string>=[]
-  api_response.forEach(r=>{
-    Object.entries(r.icf).forEach(([code,icf_value])=> {
+
+const transformAPIResponseToConsolidatedICFList = (api_response: Array<DataStore>) => {
+  let target: Record<string, Record<string, ConsolidatedICFListEntry>> = {}
+  let c: Array<string> = []
+  api_response.forEach(r => {
+    Object.entries(r.icf).forEach(([code, icf_value]) => {
       let o = {code: code, creator: r.creator, date: r.date, ...icf_value}
       c.push(r.creator)
       if (Object.keys(target).includes(code)) {
-        target[code][r.creator]=o
+        target[code][r.creator] = o
       } else {
-        target[code] = {[r.creator]:o}
+        target[code] = {[r.creator]: o}
       }
     })
   })
-  creators.value=Array.from(new Set(c))
+  creators.value = Array.from(new Set(c))
+  let i = creators.value.indexOf(user_store.getState().id)
+  if (i > 0) {
+    creators.value.splice(i, 1)
+    creators.value.unshift(user_store.getState().id)
+  }
   return target
+}
+
+const activeRows = ref<Array<string>>([])
+const rowRefs = ref<Record<string, Element | any>>({})
+
+const focusIcfCode = (code: string) => {
+  activeRows.value = [code]
+  rowRefs.value['row_' + code]?.scrollIntoView(true)
 }
 const downgrade = (item: any, i: number) => {
   sortedList.value.splice(i, 1)
@@ -121,8 +113,55 @@ onMounted(() => {
     </MDBCardHeader>
     <MDBCardBody>
 
-<ICFGraph v-if="Object.keys(domainsOfEachUser).length!=0" :domains="domainsOfEachUser"/>
-      <MDBDatatable :dataset="dataset"/>
+      <ICFGraph v-if="Object.keys(domainsOfEachUser).length!=0" :domains="domainsOfEachUser"
+                @node-clicked="focusIcfCode"/>
+
+      <MDBTable class="align-middle mb-0 bg-white">
+        <thead class="bg-light">
+        <tr>
+          <th>ICF Item</th>
+          <th v-for="c in creators">
+            <AvatarImage :pseudonym="user_store.getState().pseudonym" v-if="c===user_store.getState().id" size="55px"
+                         label_position="badge"/>
+            <div v-else
+                 v-for="g in app_store.getState().users_of_this_institution.filter(user => user.id === c)[0]?.groups">
+              <img :src="imageServer()+'group-pics/'+g+'.jpg'"
+                   style="width: 55px; height: 55px"/>
+              <MDBBadge
+                  class="translate-middle p-1"
+                  badge="info"
+                  pill
+                  notification
+              >{{ g }}
+              </MDBBadge>
+            </div>
+
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="([code,icf],idx) in sortedList"
+            :class="activeRows.includes(code) ? 'table-active' :'' "
+            :ref="(el) => (rowRefs['row_'+code] = el)"
+        >
+          <td>
+            <div class="thumbimg">
+              <img
+                  :src="imageServer()+`icf-pics/${code}.jpg`"
+                  :alt="code"
+                  style="max-height: 80px; width:auto; object-fit: contain"
+              />
+              <p> {{ _icfcodes[code]?.t }} </p>
+            </div>
+          </td>
+          <td v-for="c in creators">
+            <div v-if="Object.keys(icf).includes(c)"> {{ icf[c].value }}</div>
+
+          </td>
+        </tr>
+        </tbody>
+      </MDBTable>
+
 
     </MDBCardBody>
     <MDBCardFooter>
@@ -136,5 +175,24 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.table-active .thumbimg {
+  zoom: 200%;
+}
 
+.thumbimg {
+  position: relative;
+}
+
+.thumbimg p {
+  position: absolute;
+  bottom: -1em;
+  padding-left: 1em;
+  width: 100%;
+  border: solid #000;
+  border-width: 1px 0;
+  font-size: 0.7em;
+  text-align: left;
+  color: rgb(90%, 90%, 90%);
+  background: gray;
+}
 </style>

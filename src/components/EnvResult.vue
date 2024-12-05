@@ -6,6 +6,7 @@ import {
 import {computed, onMounted, ref} from "vue";
 import {app_store, type DataStore} from "../app_store";
 import {Auspraegung} from "../constants";
+import {imageServer} from "../process_vars";
 
 
 
@@ -34,9 +35,9 @@ onMounted(()=> {
     <h1 class="text-secondary">Ergebnis des Umweltfaktoren-Fragebogens</h1>
   </MDBCardHeader>
   <MDBCardBody>
-
-
-
+  <h2>Sorry für die Baustelle</h2>
+  <img :src="imageServer()+'/whodas-pics/version-1/man-hard-hat-with-helmet-drill-his-hand-is-digging-hole-building.jpg'" style="height:300px; width: auto; object-fit: contain;"/>
+  <p class="lead">Wir arbeiten noch an einer Lösung.</p>
   </MDBCardBody>
   <MDBCardFooter>
           <MDBRow class="d-flex align-items-center">
