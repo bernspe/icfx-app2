@@ -2,7 +2,7 @@
 import {
   MDBListGroup, MDBListGroupItem, MDBChip, MDBRow, MDBCol, MDBBtn, MDBBtnGroup,
   MDBCard, MDBCardHeader, MDBCardBody, MDBCardFooter, MDBTransition, MDBSwitch, MDBCheckbox, MDBIcon, MDBChart,
-  MDBDatatable, MDBTable, MDBBadge
+  MDBDatatable, MDBTable, MDBBadge, MDBAccordion, MDBAccordionItem
 } from 'mdb-vue-ui-kit'
 
 import {computed, onMounted, ref, useTemplateRef} from "vue";
@@ -25,27 +25,51 @@ const props = defineProps({
   patientid: {type: String},
 })
 
-const data = ref<DataStore>(app_store.emptyDataStore())
+const data = ref<Array<DataStore>>([app_store.emptyDataStore()])
+const consolidatedICFDict = computed(()=> {
+  let t = transformAPIResponseToConsolidatedICFDict(data.value)
+  if (filterOmitSoloICFs.value) {
+      t = Object.fromEntries(Object.entries(t).filter(([code, icf]) => Object.keys(icf).length > 1))
+  }
+  return t
+})
+const sortedList = computed<Array<[string, Record<string, ConsolidatedICFListEntry>]>>(()=>Object.entries(consolidatedICFDict.value))
 
 const upUrl = computed(() => {
   return `/patientview/${props.patientid}`
 })
 
+const activeItem = ref('')
 
-const sortedList = ref<Array<[string, Record<string, ConsolidatedICFListEntry>]>>([])
+
 const creators = ref<Array<string>>([])
 
-const domainsOfEachUser = computed(() => {
-  let targetDomains: Record<string, Record<string, Array<string>>> = Object.fromEntries(creators.value.map(c => ([c, {}])))
-  sortedList.value.forEach(([code, icf]) => {
-    Object.values(icf).forEach(i => {
-      let d = code.slice(0, 2)
-      if (Object.keys(targetDomains[i.creator]).includes(d)) targetDomains[i.creator][d].push(code)
-      else targetDomains[i.creator][d] = [code]
-    })
-  })
+/**
+ * Generates Object notation nodelist with
+ * Rootnode
+ * Rootnode.domain
+ * Rootnode.domain.icfcode
+ * or
+ * Rootnode1_Rootnode2.domain.icfcode if not singleNodes
+ * @param cdict
+ * @param singleNodes
+ */
+const makeNodesFromConsolidatedICFDict = (cdict: Record<string, Record<string, ConsolidatedICFListEntry>>, singleNodes?: boolean) => {
+  return Array.from(new Set(Object.entries(cdict).map(([code, creator_icf_record]) => {
+    return Object.keys(creator_icf_record)
+        .map(creator => [creator,
+          creator + '.' + code.slice(0, 2),
+          singleNodes ? creator + '.' + code.slice(0, 2) + '.' + code : Object.keys(creator_icf_record).join('_') + '.' + code.slice(0, 2) + '.' + code])
+  }).flat(2)))
+}
 
-  return targetDomains
+
+
+const filterFuseICFs = ref(true)
+const filterOmitSoloICFs = ref(true)
+
+const currentNodes = computed(() => {
+  return makeNodesFromConsolidatedICFDict(consolidatedICFDict.value,!filterFuseICFs.value)
 })
 
 interface ConsolidatedICFListEntry {
@@ -56,25 +80,29 @@ interface ConsolidatedICFListEntry {
   selected: number
 }
 
-const transformAPIResponseToConsolidatedICFList = (api_response: Array<DataStore>) => {
+const transformAPIResponseToConsolidatedICFDict = (api_response: Array<DataStore>) => {
   let target: Record<string, Record<string, ConsolidatedICFListEntry>> = {}
   let c: Array<string> = []
-  api_response.forEach(r => {
-    Object.entries(r.icf).forEach(([code, icf_value]) => {
-      let o = {code: code, creator: r.creator, date: r.date, ...icf_value}
-      c.push(r.creator)
-      if (Object.keys(target).includes(code)) {
-        target[code][r.creator] = o
-      } else {
-        target[code] = {[r.creator]: o}
-      }
+  if (api_response) {
+    api_response.forEach(r => {
+      Object.entries(r.icf).forEach(([code, icf_value]) => {
+        let o = {code: code, creator: r.creator, date: r.date, ...icf_value}
+        c.push(r.creator)
+        if (Object.keys(target).includes(code)) {
+          target[code][r.creator] = o
+        } else {
+          target[code] = {[r.creator]: o}
+        }
+      })
     })
-  })
-  creators.value = Array.from(new Set(c))
-  let i = creators.value.indexOf(user_store.getState().id)
-  if (i > 0) {
-    creators.value.splice(i, 1)
-    creators.value.unshift(user_store.getState().id)
+    // make creator Array unique and shift current user to first column
+    creators.value = Array.from(new Set(c))
+
+    let i = creators.value.indexOf(user_store.getState().id)
+    if (i > 0) {
+      creators.value.splice(i, 1)
+      creators.value.unshift(user_store.getState().id)
+    }
   }
   return target
 }
@@ -86,21 +114,11 @@ const focusIcfCode = (code: string) => {
   activeRows.value = [code]
   rowRefs.value['row_' + code]?.scrollIntoView(true)
 }
-const downgrade = (item: any, i: number) => {
-  sortedList.value.splice(i, 1)
-  sortedList.value.splice(i + 1, 0, item)
-}
-
-const upgrade = (item: any, i: number) => {
-  sortedList.value.splice(i, 1)
-  sortedList.value.splice(i - 1, 0, item)
-}
 
 onMounted(() => {
   if (props.patientid) {
     app_store.loadDataFromApi(props.patientid).then(r => {
-      data.value = Object.assign({}, r[0])
-      sortedList.value = Object.entries(transformAPIResponseToConsolidatedICFList(r.reverse())) // reverse the list so that the newest comes last to overwrite older entries
+      data.value =  r.reverse() // reverse the list so that the newest comes last to overwrite older entries
     })
   }
 })
@@ -112,13 +130,32 @@ onMounted(() => {
       <h2 class="text-secondary">Ergebnisse der ICFs</h2>
     </MDBCardHeader>
     <MDBCardBody>
+      <MDBAccordion v-model="activeItem" flush>
+        <MDBAccordionItem
+            icon="fas fa-filter fa-sm me-2 opacity-70"
+            headerTitle="Filter"
+            collapseId="collapseFilter"
+        >
+          <MDBRow class="align-items-center m-2 p-3 d-flex justify-content-end">
+            <MDBCol>
+              <MDBCheckbox label="Gemeinsame ICFs fusionieren" v-model="filterFuseICFs"/>
+              <MDBCheckbox label="einzeln stehende ICFs ausblenden" v-model="filterOmitSoloICFs"/>
+            </MDBCol>
+          </MDBRow>
 
-      <ICFGraph v-if="Object.keys(domainsOfEachUser).length!=0" :domains="domainsOfEachUser"
+        </MDBAccordionItem>
+      </MDBAccordion>
+
+
+      <ICFGraph v-if="currentNodes.length!=0"
+                :nodes="currentNodes"
+                :key="currentNodes.length"
                 @node-clicked="focusIcfCode"/>
 
       <MDBTable class="align-middle mb-0 bg-white">
         <thead class="bg-light">
         <tr>
+          <th></th>
           <th>ICF Item</th>
           <th v-for="c in creators">
             <AvatarImage :pseudonym="user_store.getState().pseudonym" v-if="c===user_store.getState().id" size="55px"
@@ -145,6 +182,13 @@ onMounted(() => {
             :ref="(el) => (rowRefs['row_'+code] = el)"
         >
           <td>
+             <div class="table_icf_code">
+              <p> {{ code }}</p>
+            </div>
+          </td>
+          <td>
+
+
             <div class="thumbimg">
               <img
                   :src="imageServer()+`icf-pics/${code}.jpg`"
@@ -194,5 +238,11 @@ onMounted(() => {
   text-align: left;
   color: rgb(90%, 90%, 90%);
   background: gray;
+}
+
+.table_icf_code {
+   writing-mode: vertical-rl;
+   white-space:nowrap;
+   transform:scale(-1);
 }
 </style>

@@ -15,82 +15,42 @@ import {Nodes, Edges, Layouts} from "v-network-graph"
 
 import dagre from "@dagrejs/dagre"
 
-const props = defineProps(['domains'])
+const props = defineProps(['nodes'])
 const emit = defineEmits(['nodeClicked'])
 
-const _domains: Record<string, Record<string, Array<string>>> = props.domains
+const _nodes: Array<string> = props.nodes
 
-const showOnlySiblings = ref(true)
-
-const nodesFromDomainTree = computed(() => {
+const nodesFromNodeObject = computed(()=> {
   let target: Nodes = {}
-  if (_domains) {
-    Object.entries(_domains).forEach(([userid, domain_items]) => {
-      let domain_array = Object.entries(domain_items)
-      target[userid] = {name: 'U' + userid.slice(0, 2)}
-      domain_array.forEach(domain_a => {
-        target[userid + '_' + domain_a[0]] = {name: domain_a[0]}
-        let icf_array = domain_a[1]
-        icf_array.forEach(icf => {
-          if (showOnlySiblings.value) {
-            if (Object.keys(siblingsFromDomainTree.value).includes(icf)) target['_'+icf] = {name: icf}
-          } else
-            target[userid + '_' + icf] = {name: icf}
-        })
-      })
+  if (_nodes) {
+    _nodes.forEach(node => {
+      let n = node.split('.')
+      if (n.length===1) target[node] = {name: 'US'+n[0].slice(0,2)} // this is a user item
+      else {
+        target[node] = {name: n[n.length - 1]}
+      }
     })
   }
   return target
 })
 
-const edgesFromDomainTree = computed(() => {
+const edgesFromNodeObject = computed(()=> {
   let target: Edges = {}
-  if (_domains) {
-    Object.entries(_domains).forEach(([userid, domain_items]) => {
-      let domain_array = Object.entries(domain_items)
-      domain_array.forEach(domain_a => {
-        target[userid + '_' + domain_a[0]] = {source: userid, target: userid + '_' + domain_a[0]}
-        let icf_array = domain_a[1]
-        icf_array.forEach(icf => {
-          if (Object.keys(siblingsFromDomainTree.value).includes(icf)) {
-            let siblingusers = siblingsFromDomainTree.value[icf]
-            siblingusers.forEach(siblinguser => {
-              target[userid + '_' + icf] = {
-                source: userid + '_' + domain_a[0],
-                target: showOnlySiblings.value ? '_'+icf : userid + '_' + icf
-              }
-            })
-          } else {
-            if (!showOnlySiblings.value) target[userid + '_' + icf] = {
-              source: userid + '_' + domain_a[0],
-              target: userid + '_' + icf
-            }
-          }
+  if (_nodes) {
+    _nodes.forEach(node => {
+      let n = node.split('.')
+      if (n.length===3) {
+        let creators = n[0].split('_')
+        creators.forEach(creator => {
+          target[creator + '.' + n[1] + '.' + n[2]] = {source: creator + '.' + n[1], target: node}
         })
-      })
+      } if (n.length===2) {
+        target[node] = {source: n[0], target: node}
+      }
     })
   }
   return target
 })
-
-const siblingsFromDomainTree = computed(() => {
-  let target: Record<string, Array<string>> = {}
-  if (_domains) {
-    Object.entries(_domains).forEach(([userid, domain_items]) => {
-      let domain_array = Object.entries(domain_items)
-      domain_array.forEach(domain_a => {
-        let icf_array = domain_a[1]
-        icf_array.forEach(icf => {
-          if (Object.keys(target).includes(icf)) target[icf].push(userid)
-          else target[icf] = [userid]
-        })
-      })
-    })
-  }
-  let o = Object.fromEntries(Object.entries(target).filter(e => e[1].length > 1))
-  return o
-})
-
 
 const layouts: Layouts = reactive({
   nodes: {},
@@ -125,12 +85,12 @@ const graph = ref<vNG.VNetworkGraphInstance>()
 
 const eventHandlers: vNG.EventHandlers = {
   "node:click": ({ node }) => {
-    emit("nodeClicked",node.split('_')[1])
+    emit("nodeClicked",node.split('.')[2])
   },
 }
 
 function layout(direction: "TB" | "LR") {
-  if (Object.keys(nodesFromDomainTree.value).length <= 1 || Object.keys(edgesFromDomainTree.value).length == 0) {
+  if (Object.keys(nodesFromNodeObject.value).length <= 1 || Object.keys(edgesFromNodeObject.value).length == 0) {
     return
   }
 
@@ -150,12 +110,12 @@ function layout(direction: "TB" | "LR") {
   // Add nodes to the graph. The first argument is the node id. The second is
   // metadata about the node. In this case we're going to add labels to each of
   // our nodes.
-  Object.entries(nodesFromDomainTree.value).forEach(([nodeId, node]) => {
+  Object.entries(nodesFromNodeObject.value).forEach(([nodeId, node]) => {
     g.setNode(nodeId, {label: node.name, width: nodeSize, height: nodeSize})
   })
 
   // Add edges to the graph.
-  Object.values(edgesFromDomainTree.value).forEach(edge => {
+  Object.values(edgesFromNodeObject.value).forEach(edge => {
     g.setEdge(edge.source, edge.target)
   })
 
@@ -163,9 +123,13 @@ function layout(direction: "TB" | "LR") {
 
   g.nodes().forEach((nodeId: string) => {
     // update node position
-    const x = g.node(nodeId).x
-    const y = g.node(nodeId).y
-    layouts.nodes[nodeId] = {x, y}
+    try {
+      const x = g.node(nodeId).x
+      const y = g.node(nodeId).y
+      layouts.nodes[nodeId] = {x, y}
+    } catch {
+      console.error("Unable to layout node " + nodeId)
+    }
   })
 }
 
@@ -178,21 +142,14 @@ function updateLayout(direction: "TB" | "LR") {
 </script>
 
 <template>
-  <MDBRow class="align-items-center m-2 p-3 d-flex justify-content-end">
-    <MDBCol>
-      <MDBBtn color='tertiary' @click="updateLayout('TB')">Update</MDBBtn>
-    </MDBCol>
-    <MDBCol>
-      <MDBSwitch label="Nur gemeinsame Objekte anzeigen" v-model="showOnlySiblings"/>
-    </MDBCol>
-  </MDBRow>
+
 
 
   <VNetworkGraph
       ref="graph"
       class="graph"
-      :nodes="nodesFromDomainTree"
-      :edges="edgesFromDomainTree"
+      :nodes="nodesFromNodeObject"
+      :edges="edgesFromNodeObject"
       :layouts="layouts"
       :configs="configs"
       :event-handlers="eventHandlers"
