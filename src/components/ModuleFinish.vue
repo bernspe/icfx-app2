@@ -1,14 +1,20 @@
 <script setup lang="ts">
 
-import {MDBCard, MDBCardHeader, MDBCardFooter, MDBCardBody, MDBCol, MDBRow, MDBCardImg, MDBListGroup, MDBListGroupItem} from "mdb-vue-ui-kit";
-import {AuspraegungBeschwerden, UmweltFaktoren} from "../constants";
-import {app_store} from "../app_store";
+import {MDBCard, MDBCardHeader, MDBCardFooter, MDBCardBody, MDBCol, MDBRow, MDBCardImg, MDBListGroup, MDBListGroupItem, MDBBtn, MDBIcon} from "mdb-vue-ui-kit";
+import {app_store, type ICFStruct} from "../app_store";
 import {computed} from "vue";
 import {user_store} from "../user_store";
-import moment from "moment";
 import _sf36 from '../assets/sf36_de.json'
-import _ from "lodash";
+import {WhodasEnvItemStructure} from "../app_store";
+import __whodas from '../assets/whodas12_de.json';
+import __env from '../assets/env_factors_de.json'
+const _whodas: Record<string, WhodasEnvItemStructure> = __whodas;
+const _env: Record<string, WhodasEnvItemStructure> = __env;
 import {imageServer} from "../process_vars";
+import {useRoute, useRouter} from "vue-router";
+
+const router = useRouter()
+const route = useRoute()
 
 const sf36_keys = computed(() => Object.keys(_sf36))
 
@@ -24,6 +30,14 @@ const backUrl = computed(() => {
   else return `/medview/${props.patientid}`
 })
 
+const nextModuleUrl = computed(()=> {
+  let ks =  Object.keys(finishtext)
+  let i =ks.indexOf(props.module)
+  if (i<ks.length-1) {
+    return `/moduleintro/${ks[i+1]}/${props.patientid}}`
+  }
+})
+
 const repeatUrl = computed(() => {
   return `/patientdata/${props.module}/${props.patientid}/${finishtext[props.module].startItem}`
 })
@@ -32,12 +46,8 @@ const resultUrl = computed(()=> {
   return `/patientresult/${props.module}/${props.patientid}/`
 })
 
-const nextModuleUrl = computed(()=> {
-  let ks =  Object.keys(finishtext)
-  let i =ks.indexOf(props.module)
-  if (i<ks.length-1) {
-    return `/moduleintro/${ks[i+1]}/${props.patientid}}`
-  }
+const icfRepeatWPatient = computed(()=> {
+    return `/medview/${props.patientid}/patient`
 })
 
 const finishtext: Record<string, any> = {
@@ -67,6 +77,32 @@ const finishtext: Record<string, any> = {
   }
 }
 
+
+const icfsFromWhodasEnvData = () => {
+  // return only those linked ICF items where whodas or env was marked as having a problem
+  let targetObj: Record<string, ICFStruct> = {}
+  let icf_keys = Object.keys(app_store.getState().patient_data.icf)
+  Object.entries(app_store.getState().patient_data.whodas || {})
+      .filter(([k, v]) => v > 0).map(([k, v]) => (_whodas[k].l.split(',')
+      .filter((code: string) => code.length > 2).forEach((icfitem: string) => {
+        targetObj[icfitem] = {value: v, selected: icf_keys.includes(icfitem) ? 1 : 0}
+      })))
+  Object.entries(app_store.getState().patient_data.env || {})
+      .filter(([k, v]) => v !== 4).map(([k, v]) => (_env[k].l.split(',')
+      .filter((code: string) => code.length > 2).forEach((icfitem: string) => {
+        targetObj[icfitem] = {value: (v === 9) ? 4 : v, selected: icf_keys.includes(icfitem) ? 1 : 0}
+      })))
+  Object.entries(app_store.getState().patient_data.icf || {}).forEach(([code, icfitem]) => {
+    targetObj[code] = icfitem
+  })
+  return targetObj
+}
+
+const finishModuleAndJumpToNext = () => {
+  app_store.setCurrentData({...app_store.getState().patient_data, icf: icfsFromWhodasEnvData()})
+  app_store.set_active_icf('')
+  router.push(nextModuleUrl.value || backUrl.value)
+}
 </script>
 
 <template>
@@ -80,13 +116,17 @@ const finishtext: Record<string, any> = {
       <p>{{ finishtext[props.module].expl }}</p>
 
       <img :src="imageServer()+'gold-medal.png'">
-      <h2>Wie möchten Sie nun weitermachen?</h2>
+      <MDBRow class="m-4" v-if="isPatient && nextModuleUrl">
+        <MDBCol>
+      <MDBBtn color="primary" @click="finishModuleAndJumpToNext" size="lg"><MDBIcon icon="award" class="me-2"/> Auf zur nächsten Herausforderung</MDBBtn>
+          </MDBCol>
+        </MDBRow>
       <MDBListGroup>
-        <!--
-        <MDBListGroupItem v-if="nextModuleUrl">
-          <router-link :to="nextModuleUrl">Gleich den nächsten Fragebogen beantworten</router-link>
+
+        <MDBListGroupItem v-if="module==='icf' && !isPatient">
+          <router-link :to="icfRepeatWPatient">Die ICF-Items nochmal aus Sicht des Patienten</router-link>
         </MDBListGroupItem>
-        -->
+
                 <MDBListGroupItem>
           <router-link :to="backUrl">Weiter zur Übersicht</router-link>
         </MDBListGroupItem>

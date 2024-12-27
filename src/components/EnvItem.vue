@@ -8,7 +8,7 @@ import {
   MDBRow,
   MDBCol,
   MDBProgressBar, MDBProgress, MDBIcon, MDBCardHeader,
-  MDBBtn
+  MDBBtn, MDBSpinner
 } from 'mdb-vue-ui-kit'
 
 import {WhodasEnvItemStructure} from "../app_store";
@@ -27,6 +27,8 @@ const props = defineProps({
   patientid: {type: String},
   item: {type: String, required: true}
 })
+
+const navigate = ref(false)
 
 function get_random(list: Array<String>) {
   return list[Math.floor((Math.random() * list.length))];
@@ -89,8 +91,11 @@ const calculated_data = computed(() => {
 })
 
 
+
 onBeforeRouteLeave((to, from) => {
-  app_store.saveDataToApi(calculated_data.value).then(() => {
+  navigate.value=true
+  app_store.saveDataToApi(calculated_data.value).finally(() => {
+    navigate.value=false
     return true
   })
 })
@@ -98,7 +103,9 @@ onBeforeRouteLeave((to, from) => {
 
 // same as beforeRouteUpdate option but with no access to `this`
 onBeforeRouteUpdate(async (to, from) => {
-  app_store.saveDataToApi(calculated_data.value).then(() => {
+  navigate.value=true
+  app_store.saveDataToApi(calculated_data.value).finally(() => {
+     navigate.value=false
     return true
   })
 })
@@ -161,6 +168,7 @@ onBeforeRouteUpdate(async (to, from) => {
         </MDBCol>
         <MDBCol class="justify-content-end">
           <router-link :to="nextUrl">Weiter</router-link>
+          <MDBSpinner v-if="navigate" class="ms-3" color="primary" size="sm" />
         </MDBCol>
       </MDBRow>
     </MDBCardFooter>

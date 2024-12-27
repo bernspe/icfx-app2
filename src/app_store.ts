@@ -1,9 +1,11 @@
 import {Store} from "./store";
-import {backendClientId, backendClientKey} from "./process_vars";
+import {backendClientId, backendClientKey, backendURL} from "./process_vars";
 import _patientinput from './assets/mock-patientinput.json'
 import moment from "moment";
 import {UserData, user_store} from "./user_store";
 import {getWhodasSum, normalizeWhodasSum} from "./calculation_helper";
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Data structure of icf_codes3.json
@@ -40,6 +42,16 @@ export interface ICFStruct {
     selected: number
 }
 
+export interface DataStoreAPI {
+        id: string,
+    created: string,
+    last_modified: string,
+    owner: string,
+    creator: string,
+    owner_institution: string,
+    data: any
+    diagnoses?: string,
+}
 
 export interface DataStore {
     id?: string,
@@ -70,6 +82,7 @@ export interface DataStoreStatistics {
 
 interface ApplicationData extends Object {
     current_patient_id: string
+    current_patient_diagnoses: string
     active_icf: string
 
     patient_data: DataStore
@@ -82,6 +95,7 @@ class AppStore extends Store<ApplicationData> {
     protected data(): ApplicationData {
         return {
             current_patient_id: '',
+            current_patient_diagnoses:'',
             active_icf: '',
             patient_data: this.emptyDataStore(), // current dataset
             users_of_this_institution: [],
@@ -103,47 +117,39 @@ class AppStore extends Store<ApplicationData> {
         this.state.active_icf = active_icf;
     }
 
-    emptyDataStore() {
-        return {id: '', date: '', owner: '', creator: '', whodas: {}, env: {}, icf: {}, coreset: '', sf36: {}};
+    emptyDataStore(): DataStore {
+        return {id: '', date: '', owner: '', creator: user_store.getState().id, whodas: {}, env: {}, icf: {}, coreset: '', sf36: {}};
     }
 
     clearData() {
         this.state.current_patient_id = '';
+        this.state.current_patient_diagnoses = '';
         this.state.active_icf = '';
         this.state.patient_data = this.emptyDataStore()
         this.state.api_patient_records = []
     }
 
 
-    setMockApiRecords() {
-        this.state.api_all_patient_records = JSON.parse(JSON.stringify(_patientinput))
-    }
-
     /**
      * getting cumulative Datasets from API for certain questions e.g. mean WHODAS of institution patients
      * @param k
      * @param d
      */
-    getWholePatientDatasets() {
-        return this.state.api_all_patient_records
-            .filter(x=>Object.keys(x.whodas).length!==0)
-            .map(x => normalizeWhodasSum(getWhodasSum(x.whodas)))
-    }
 
     getWhodasWholePatientDatasets() {
-        let target:Record<string,number[]> = {}
-        let filtered_whodas =  this.state.api_all_patient_records.filter(x=>Object.keys(x.whodas).length!==0)
-        for (let i=1; i<13; i++) {
+        let target: Record<string, number[]> = {}
+        let filtered_whodas = this.state.api_all_patient_records.filter(x => Object.keys(x.whodas).length !== 0)
+        for (let i = 1; i < 13; i++) {
             let istr = i.toString();
-            target[istr] = filtered_whodas.map(x=>Object.keys(x.whodas).includes(istr) ? x.whodas[istr] : 0)
+            target[istr] = filtered_whodas.map(x => Object.keys(x.whodas).includes(istr) ? x.whodas[istr] : 0)
         }
-       return target
+        return target
     }
 
     statisticsCalculator(k: string, d: DataStore) {
-        if (k === 'whodas') return (Object.keys(d.whodas)?.length != 0) ? Object.values(d.whodas).reduce((a, b) => b > 0 ? a + 1 : a) : 0
-        if (k === 'env') return (Object.keys(d.env)?.length != 0) ? Object.values(d.env).reduce((a, b) => b != 4 ? a + 1 : a) : 0
-        if (k === 'icf') return (Object.keys(d.icf)?.length != 0) ? Object.values(d.icf).map(icf => icf.selected > 0 ? 1 as number : 0 as number).reduce((a, b) => a + b) : 0
+        if (k === 'whodas') return (Object.keys(d.whodas || {})?.length != 0) ? Object.values(d.whodas).reduce((a, b) => b > 0 ? a + 1 : a) : 0
+        if (k === 'env') return (Object.keys(d.env|| {})?.length != 0) ? Object.values(d.env).reduce((a, b) => b != 4 ? a + 1 : a) : 0
+        if (k === 'icf') return (Object.keys(d.icf|| {})?.length != 0) ? Object.values(d.icf).map(icf => icf.selected > 0 ? 1 as number : 0 as number).reduce((a, b) => a + b) : 0
         if (k === 'coreset') return (d.coreset?.length != 0) ? 1 : 0
         if (k === 'sf36') return (Object.keys(d.sf36 || {})?.length != 0) ? Object.keys(d.sf36).length : 0
         return 0
@@ -165,19 +171,55 @@ class AppStore extends Store<ApplicationData> {
         }))
     }
 
+    transformAPIResponse(d:DataStoreAPI):DataStore {
+        return {id:d.id,creator:d.creator,owner:d.owner, date: d.last_modified,
+                whodas:d.data?.whodas || {}, env: d.data?.env || {}, icf: d.data.icf || {},coreset: d.data?.coreset || '',sf36: d.data?.sf36 || {}}
+    }
+
+    putCreatorsLastDatasetToCurrentData() {
+        let idx= this.state.api_patient_records.map(d=>d.creator).indexOf(user_store.getState().id)
+        if (idx >= 0) { this.state.patient_data = this.state.api_patient_records[idx]}
+    }
+
     loadDataFromApi(patient_id: string): Promise<Array<DataStore>> {
         return new Promise((resolve, reject) => {
-            let loaded_data: DataStore[] = this.state.api_patient_records;
+            if (user_store.getState().access_token) { // API CALL
+                if (user_store.getState().authenticated && !user_store.getState().mock_mode) {
+                    var config = {
+                        method: 'GET',
+                        url: backendURL() + "users/" + patient_id + '/usersicfdata/',
+                        headers: {
+                            authorization: `Bearer ${user_store.getState().access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                    };
+                    axios(config).then((response:{data: Array<DataStoreAPI>}) => {
+                        let loaded_data = response.data.map(r=>this.transformAPIResponse(r))
+                        const load_sorted_data = loaded_data.sort((a: DataStore, b: DataStore) => moment(b.date).diff(moment(a.date)));
+                        this.state.api_patient_records = load_sorted_data
+                        this.putCreatorsLastDatasetToCurrentData()
+                        this.state.current_patient_diagnoses = response.data[0]?.diagnoses || ''
+                        resolve(load_sorted_data)
+                    }).catch((e) => {
+                        console.log('Retrieval of ICFDATA results failed', e)
+                        reject(e);
+                    })
+                } else reject('Not authenticated')
+            } else { // LOAD FROM MOCK DATA
+                let loaded_data: DataStore[] = this.state.api_patient_records;
 
-            // TODO: API call
+                if (this.state.api_patient_records.length === 0) {
+                    loaded_data = JSON.parse(JSON.stringify(_patientinput)).filter((i: DataStore) => i.owner === patient_id)
+                }
 
-            if (this.state.api_patient_records.length === 0) {
-                loaded_data = JSON.parse(JSON.stringify(_patientinput)).filter((i: DataStore) => i.owner === patient_id)
+                const load_sorted_data = loaded_data.sort((a: DataStore, b: DataStore) => moment(b.date).diff(moment(a.date)));
+                this.state.api_patient_records = load_sorted_data
+                this.putCreatorsLastDatasetToCurrentData()
+                resolve(load_sorted_data)
             }
-
-            const load_sorted_data = loaded_data.sort((a: DataStore, b: DataStore) => moment(b.date).diff(moment(a.date)));
-            this.state.api_patient_records = load_sorted_data
-            resolve(load_sorted_data)
         })
     }
 
@@ -189,6 +231,31 @@ class AppStore extends Store<ApplicationData> {
         this.state.patient_data = data;
     }
 
+    icfDataAPIRequest(method: string, d: DataStore): Promise<DataStoreAPI> {
+        return new Promise((resolve, reject) => {
+            if (user_store.getState().authenticated) {
+                var config = {
+                    method: method,
+                    url: backendURL() + `icfdata/${method==='PATCH' ? d.id+'/' : ''}`,
+                    headers: {
+                        authorization: `Bearer ${user_store.getState().access_token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36}, owner: this.state.current_patient_id}
+                };
+                axios(config).then((response) => {
+                    resolve(response.data)
+                }).catch((e) => {
+                    reject(e);
+                })
+            } else reject('Not authenticated')
+
+        })
+    }
+
     saveDataToApi(d: DataStore) {
         return new Promise((resolve, reject) => {
             let today = moment()
@@ -198,25 +265,64 @@ class AppStore extends Store<ApplicationData> {
                 let d = moment(data.date).diff(today, 'days') < -1
                 post_type = d ? 'POST' : 'PATCH'
             }
-            if (data.creator !== user_store.getState().id) {
+            if ((!Object.keys(data).includes('id')) || (data.id?.length===0)) {
                 post_type = 'POST'
             }
-            // console.log('SAving ', post_type, data)
-            // TODO: Make the PATCH or POST request with data as parameter
+
+            if (!user_store.getState().mock_mode)
+                this.icfDataAPIRequest(post_type, d).then(response => {
+                    data = this.transformAPIResponse( response)
+                    this.state.patient_data = data;
+                    this.state.api_patient_records[this.state.api_patient_records.length - 1] = data
+                    resolve(data)
+                }).catch((e) => reject(e))
             // MOCK
-            if (post_type == 'POST') {
+            else {
+                if (post_type == 'POST') {
 
-                data.date = today.format('YYYY-MM-DD HH:mm:ss')
-                data.owner = this.state.current_patient_id
-                data.creator = user_store.getState().id
-                this.state.api_patient_records.push(data)
-                // ENDMOCK
+                    data.date = today.format('YYYY-MM-DD HH:mm:ss')
+                    data.owner = this.state.current_patient_id
+                    data.creator = user_store.getState().id
+                    data.id=uuidv4()
+                    this.state.api_patient_records.push(data)
+                    // ENDMOCK
+                }
+
+                // Response of PATCH/POST
+                this.state.patient_data = data;
+                this.state.api_patient_records[this.state.api_patient_records.length - 1] = data
+                resolve(data)
             }
+        })
+    }
 
-            // Response of PATCH/POST
-            this.state.patient_data = data;
-            this.state.api_patient_records[this.state.api_patient_records.length - 1] = data
-            resolve(data)
+    updateUserDiagnoses(targetUser: string, diagnoses: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+                       setTimeout(() => {
+                if (targetUser && user_store.getState().access_token) {
+                    const config = {
+                        url: backendURL() + "users/" + targetUser + '/setdiagnoses/',
+                        method: 'POST',
+                        headers: {
+                            authorization: `Bearer ${user_store.getState().access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        data: {diagnoses: diagnoses}
+                    }
+                    console.log(config)
+                    axios(config).then((response) => {
+                        this.state.current_patient_diagnoses=response.data.diagnoses
+                resolve(this.state.current_patient_diagnoses)
+                    }).catch((e) => {
+                        reject(e)
+                    })
+                } else {
+                    reject('UpdateAccount: No User active')
+                }
+            }, 1000)
         })
     }
 

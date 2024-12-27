@@ -3,6 +3,7 @@ import {computed, onMounted, ref, watch} from "vue";
 import { MDBSelect, MDBRow, MDBCol, MDBAutocomplete, MDBChip, MDBInput , MDBListGroup, MDBListGroupItem} from "mdb-vue-ui-kit";
 import _icd_long from "../assets/icd_codes.json"
 import {user_store} from "../user_store";
+import {app_store} from "../app_store";
 
 const props = defineProps(['diagnoses','patientid'])
 const diag_input = ref("");
@@ -31,11 +32,11 @@ const diagnoses_list = computed(()=> {
 })
 
 const saveDiagnoses = () => {
-  user_store.updateUserDiagnoses(props.patientid,diagnoses_list.value.join(','))
+  app_store.updateUserDiagnoses(props.patientid,diag_input.value).then(d=>diag_input.value=d)
 }
 
 onMounted(()=> {
-  diag_input.value=props.diagnoses
+  diag_input.value=props.diagnoses || ''
 })
 </script>
 

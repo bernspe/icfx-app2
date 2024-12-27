@@ -26,6 +26,7 @@ const props = defineProps<{ code: string , patientid:string, mode?: string , bac
           <p>{{ _icfcodes[code].h }}</p>
         </MDBListGroupItem>
 
+        <!--
         <MDBListGroupItem>
           <h5 class="text-primary">Erklärung von unseren Mitarbeitern</h5>
           <p>Bla Bla</p>
@@ -35,7 +36,7 @@ const props = defineProps<{ code: string , patientid:string, mode?: string , bac
           <h5 class="text-primary">Wie es andere Patienten verstanden haben...</h5>
           <p>Bla Bla</p>
         </MDBListGroupItem>
-
+-->
         <MDBListGroupItem>
           <h5 class="text-primary">Was verstehst Du darunter?</h5>
           <MDBRow>

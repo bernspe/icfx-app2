@@ -5,6 +5,8 @@ import {imageServer} from "../process_vars";
 import {dateformat, dateTimeFormat, modules} from "../constants";
 import {computed, onMounted, ref} from "vue";
 import moment from "moment";
+import GroupImage from "./GroupImage.vue";
+import {user_store} from "../user_store";
 
 const props = defineProps({
   patient_id: {type: String, required: true},
@@ -38,8 +40,9 @@ const mouseClickAct = (e: Event, stats_entry: DataStore) => {
   emit('entry_clicked', stats_entry)
 }
 
+const _userdata = computed(() => user_store.getState().userdata)
 const userFromUserID = (userid: string) => {
-  return app_store.getState().users_of_this_institution.filter(user => user.id === userid)[0]
+  return _userdata.value.filter(user => user.id === userid)[0]
 }
 
 </script>
@@ -54,30 +57,19 @@ const userFromUserID = (userid: string) => {
 
     </div>
 
-    <MDBRow v-else v-for="(stats_entry,idx) in app_store.getState().api_patient_records" class="mb-4"
+    <MDBRow v-else v-for="(stats_entry,idx) in app_store.getState().api_patient_records" class="mb-4 stats-record"
             @click="mouseClickAct($event, stats_entry)"
             @mouseover="mouseOverAct($event, stats_entry.id)"
             @mouseleave="mouseLeaveAct($event)"
             :class="(idx===0) ? 'clicked-record' : ''"
+            :data-creator="stats_entry.creator"
     >
       <MDBCol>
         <p class="m-0">{{ moment(stats_entry.date).format(dateformat) }}</p>
         <p class="text-secondary m-0">{{ moment(stats_entry.date).format('HH:mm') }}</p>
       </MDBCol>
       <MDBCol>
-        <div v-for="g in userFromUserID(stats_entry.creator)?.groups">
-          <img
-              :src="imageServer()+`group-pics/${g}.jpg`"
-              style="width: 55px; height: 55px"
-          />
-          <MDBBadge
-              class="translate-middle p-1"
-              badge="info"
-              pill
-              notification
-          >{{ g }}
-          </MDBBadge>
-        </div>
+        <GroupImage :group="g" v-for="g in userFromUserID(stats_entry.creator)?.groups"/>
       </MDBCol>
       <MDBCol v-for="stats_item_key in modules"
       >

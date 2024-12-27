@@ -4,19 +4,12 @@ type HEX = `#${string}`;
 const InactiveColor = '#dddfda'
 const AuspraegungColor =  ['#f0f3bd','#fb8b24','#e36414','#9a031e','#5f0f40']
 const AuspraegungTextColor='#2b2b2b'
-const UmweltFaktoren = ['Dadurch vollständig beeinträchtigt','Dadurch stark beeinträchtigt','Dadurch mässig beeinträchtigt','Dadurch leicht beeinträchtigt','Dadurch gar nicht beeinträchtigt','Unterstützt ein wenig','Unterstützt mäßig','Unterstützt substantiell','Beeinflussen mein Leben sehr stark postitiv']
+const UmweltFaktoren = ['Dadurch vollständig beeinträchtigt','Dadurch stark beeinträchtigt','Dadurch mäßig beeinträchtigt','Dadurch leicht beeinträchtigt','Dadurch gar nicht beeinträchtigt','Unterstützt ein wenig','Unterstützt mäßig','Unterstützt substantiell','Beeinflussen mein Leben sehr stark postitiv']
 const UmweltColor_old = ['#97322b','#97682b','#97682b', '#97832b'     ,'#bfdb82',  '#afd363', '#a0ca45','#8cb534','#75972b']
 
 const UmweltColor = ['#5f0f40','#9a031e','#e36414','#fb8b24','#f0f3bd','#02c39a','#00a896','#028090','#05668d']
 const UmweltTextColor = '#2b2b2b'
-const whodas_label='WHODAS'
-const env_label='ENV'
-const coresets_label = 'Coresets'
-const icf_selection_label = 'ICF_Selection'
-const icf_start_label='ICF_Base'
-const icf_goal_label='ICF_Goal'
-const icf_progress_label='Verlauf'
-const icf_selection_diagnoses_link = 'ICF_Diagnosis_Link'
+
 
 const wbauth_token_label ='WB_token'
 const wbauth_username_label = 'WB_username'
@@ -38,7 +31,6 @@ const roles =[
     {name: 'Physiotherapeut/in',icon:'physiotherapist.jpg',group:'physiotherapist'},
     {name: 'Psycholog/in',icon:'psychologist.jpg',group:'psychologist'},
     {name: 'Sozialarbeiter/in',icon:'caremanager.jpg',group:'caremanager'},
-      {name: 'Äh....',icon:'healthy.jpg',group:'misc'},
 ]
 
 const modules = ['whodas','env','coreset','icf','sf36']
@@ -49,8 +41,7 @@ export {dateTimeFormat,
   wbauth_usermode_label,wbauth_token_label,wbauth_username_label,wbauth_current_journey_location_label,
   Auspraegung,AuspraegungBeschwerden,InactiveColor, AuspraegungColor,AuspraegungTextColor,
   UmweltFaktoren,UmweltColor, UmweltTextColor,
-  icf_start_label, icf_goal_label, icf_progress_label,
-  whodas_label, env_label,icf_selection_label,dateformat,
-  db_dateformat,language,startLabel, statusLabels, coresets_label, icf_selection_diagnoses_link, roles, modules,
+  dateformat,
+  db_dateformat,language,startLabel, statusLabels, roles, modules,
 default_page_time}
 

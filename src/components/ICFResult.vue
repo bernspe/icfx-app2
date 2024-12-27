@@ -35,9 +35,13 @@ const consolidatedICFDict = computed(()=> {
 })
 const sortedList = computed<Array<[string, Record<string, ConsolidatedICFListEntry>]>>(()=>Object.entries(consolidatedICFDict.value))
 
+const isPatient = computed(() => user_store.getState().groups.includes('patient'))
+
 const upUrl = computed(() => {
-  return `/patientview/${props.patientid}`
+  if (isPatient.value) return `/patientview/${props.patientid}`
+  else return `/medview/${props.patientid}`
 })
+
 
 const activeItem = ref('')
 
@@ -117,6 +121,7 @@ const focusIcfCode = (code: string) => {
 
 onMounted(() => {
   if (props.patientid) {
+    // user_store.getAPIUsersOfThisInstitution(true)
     app_store.loadDataFromApi(props.patientid).then(r => {
       data.value =  r.reverse() // reverse the list so that the newest comes last to overwrite older entries
     })
@@ -161,7 +166,7 @@ onMounted(() => {
             <AvatarImage :pseudonym="user_store.getState().pseudonym" v-if="c===user_store.getState().id" size="55px"
                          label_position="badge"/>
             <div v-else
-                 v-for="g in app_store.getState().users_of_this_institution.filter(user => user.id === c)[0]?.groups">
+                 v-for="g in user_store.getState().userdata.filter(user => user.id === c)[0]?.groups">
               <img :src="imageServer()+'group-pics/'+g+'.jpg'"
                    style="width: 55px; height: 55px"/>
               <MDBBadge

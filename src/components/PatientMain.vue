@@ -4,7 +4,7 @@ import {
   MDBCard, MDBCardHeader, MDBCardBody, MDBCardFooter, MDBTransition, MDBSelect,
   MDBContainer, MDBIcon, MDBSwitch
 } from 'mdb-vue-ui-kit'
-import _userdata from '../assets/mock-userdata.json'
+
 import {WhodasEnvItemStructure} from "../app_store";
 import __whodas from '../assets/whodas12_de.json';
 import __env from '../assets/env_factors_de.json'
@@ -25,18 +25,18 @@ import {
 } from "../constants";
 import {imageServer, mode} from "../process_vars";
 import {user_store} from "../user_store";
-import moment from "moment";
 import PatientStatisticsComponent from "./PatientStatisticsComponent.vue";
-import ICFThumbCard from "./ICFThumbCard.vue";
 import InfoButton from "./InfoButton.vue";
 import ICFThumbPanel from "./ICFThumbPanel.vue";
 import ListHeader from "./ListHeader.vue";
 import AvatarImage from "./AvatarImage.vue";
 
 const TestBetrieb = ref(mode()==='LOCAL')
+
 const props = defineProps({patientid: {type: String, required: true}})
+const _userdata = computed(()=>user_store.getState().userdata)
 const patient = computed(() => {
-  return _userdata.filter(p => p.id === props.patientid)[0]
+  return  _userdata.value.filter(p => p.id === props.patientid)[0]
 })
 const show_preload_switch = ref(false)
 const preload_other_data = ref(false)
@@ -126,7 +126,7 @@ const nextIcfToEdit = computed(()=> {
 const icfEdited = computed(() => {
   const vals = Object.values(data.value.icf || {})
   if (vals.length > 0)
-    return Math.ceil(vals.filter(x => x.selected != 0).length / vals.length * 100)
+    return Math.ceil((vals.filter(x => x.selected != 0).length) / vals.length * 100)
   else
     return 0
 })
@@ -145,6 +145,12 @@ const numberOfBadges = computed(()=> {
   return counter
 })
 
+const clearAll = (module:string) => {
+  data.value = {...data.value, [module]: app_store.emptyDataStore()[module]}
+  app_store.setCurrentData(data.value)
+  app_store.set_active_icf('')
+}
+
 watch(icfsFromWhodasEnvData, (newVal, oldVal) => {
   app_store.setCurrentData({...data.value, icf: newVal})
   app_store.set_active_icf('')
@@ -157,10 +163,11 @@ const loadDataSetFromApi = (d: DataStore) => {
 const preloadData = (autoassign: boolean) => {
   if (props.patientid) {
     app_store.set_current_patient_id(props.patientid)
-    if (user_store.getState().id === '') {
-      let md_idx = _userdata.map(u => u.id).indexOf(props.patientid)
-      user_store.set_user(_userdata[md_idx])
+    if (user_store.getState().mock_mode) {
+       let p_idx = user_store.getState().userdata.map(u => u.id).indexOf(props.patientid)
+      user_store.set_user(user_store.getState().userdata[p_idx])
     }
+
     app_store.loadDataFromApi(props.patientid).then(r => {
       // fuse data from API and from Store if Store contains values
       if (r.length !== 0) show_preload_switch.value = true
@@ -190,7 +197,9 @@ onMounted(() => {
   <MDBContainer>
     <MDBRow class="d-flex align-items-center m-2">
       <MDBCol class="d-flex justify-content-start">
-         <AvatarImage :pseudonym="patient?.pseudonym" size="55px" color="blue" label_position="right"/>
+
+        <AvatarImage v-if="patient" :pseudonym="patient.pseudonym" size="55px" color="blue" label_position="right"/>
+
       </MDBCol>
       <MDBCol>
         <img :src="imageServer()+'gold-medal.png'" style="height: 32px; width: auto; object-fit: contain;"
@@ -202,6 +211,7 @@ onMounted(() => {
       </MDBCol>
     </MDBRow>
     <MDBListGroup>
+
       <MDBListGroupItem v-if="app_store.getState().api_patient_records.length>0 && show_preload_switch">
         <MDBRow class="d-flex align-items-center">
           <MDBCol>
@@ -220,7 +230,7 @@ onMounted(() => {
 
        <MDBListGroupItem id="whodas">
          <ListHeader
-           label="Whodas Fragebogen"
+           label="Beeinträchtigung"
            :number-icf-items="0"
            :show-details="showWhodasDetails"
            :patientid="patientid"
@@ -229,6 +239,7 @@ onMounted(() => {
            :percent-edited="whodasEdited"
            :start-button-active="true"
            @show-details-changed="showWhodasDetails=$event"
+           @clear="clearAll('whodas')"
            ></ListHeader>
 
         <MDBRow v-if="showWhodasDetails">
@@ -242,7 +253,7 @@ onMounted(() => {
 
       <MDBListGroupItem id="env">
                  <ListHeader
-           label="Umweltfaktoren Fragebogen"
+           label="Umwelt"
            :number-icf-items="0"
            :show-details="showEnvDetails"
            :patientid="patientid"
@@ -251,6 +262,7 @@ onMounted(() => {
            :percent-edited="envEdited"
            :start-button-active="whodasEdited===100 || TestBetrieb"
            @show-details-changed="showEnvDetails=$event"
+           @clear="clearAll('env')"
            ></ListHeader>
 
         <MDBRow v-if="showEnvDetails">
@@ -274,6 +286,7 @@ onMounted(() => {
            :start-button-active="whodasEdited + envEdited === 200 || TestBetrieb"
            :percent-edited="icfEdited"
            @show-details-changed="showIcfDetails=$event"
+           @clear="clearAll('icf')"
            ></ListHeader>
 
         <ICFThumbPanel :patientid="patientid" :icfs="icfsFromWhodasEnvData" v-if="showIcfDetails">
@@ -282,7 +295,7 @@ onMounted(() => {
 
       <MDBListGroupItem id="sf36">
          <ListHeader
-           label="SF36 Fragebogen"
+           label="Lebensqualität"
            :number-icf-items="0"
            :show-details="showSf36Details"
            :patientid="patientid"
@@ -291,6 +304,7 @@ onMounted(() => {
            :percent-edited="sf36Edited"
            :start-button-active="icfEdited===100 || TestBetrieb"
            @show-details-changed="showSf36Details=$event"
+           @clear="clearAll('sf36')"
            ></ListHeader>
 
         <MDBRow v-if="showSf36Details">

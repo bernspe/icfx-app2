@@ -12,6 +12,10 @@ import {app_store, DataStore, ICFStruct} from "../app_store";
 import {computed, inject, onMounted, ref, watch} from "vue";
 import {VueScrollPicker} from "vue-scroll-picker";
 import {user_store} from "../user_store";
+import {useRoute, useRouter} from "vue-router";
+
+const router = useRouter()
+const route = useRoute()
 
 const props = defineProps<{
   code: string,
@@ -27,6 +31,11 @@ const firstTimeMounted = ref(props.mode === 'large')
 const isPatient = computed(() => user_store.getState().groups.includes('patient'))
 const currentCode = computed(() => props.code)
 
+const val2SelectionStatus = (val: number) => {
+  if (props.code[0] === 'e') return (val!==4) ? 1 : 0
+  else return (val!==0) ? 1 : 0
+}
+
 const icfitem = computed(() => {
   let data = app_store.getState().patient_data.icf
   let ks = Object.keys(data || {})
@@ -37,6 +46,10 @@ const icfitem = computed(() => {
   }
 })
 const mouseOverAct = (e: Event, code: string) => {
+  if (props.mode==='thumb' && code !== app_store.getState().active_icf) {
+    if (app_store.getState().active_icf?.length>0)
+      saveData(app_store.getState().active_icf)
+  }
   (e.target as HTMLElement).classList.remove("blurred-thumb-img")
   app_store.set_active_icf(code)
 }
@@ -68,7 +81,7 @@ const result = computed({
   set: (val) => {
     const data = {
       ...app_store.getState().patient_data,
-      icf: {...app_store.getState().patient_data.icf, [props.code]: {value: val, selected: 1}}
+      icf: {...app_store.getState().patient_data.icf, [props.code]: {value: val, selected: val2SelectionStatus(val)}}
     }
     app_store.setCurrentData(data)
     firstTimeMounted.value=false
@@ -79,15 +92,16 @@ watch(currentCode, (newVal, oldVal) => {
   if (newVal !== oldVal) {
    const data = {
       ...app_store.getState().patient_data,
-      icf: {...app_store.getState().patient_data.icf, [newVal]: {value: app_store.getState().patient_data.icf[newVal].value, selected: 1}}
+      icf: {...app_store.getState().patient_data.icf, [newVal]: {value: app_store.getState().patient_data.icf[newVal].value, selected: val2SelectionStatus(app_store.getState().patient_data.icf[newVal].value)}}
     }
     app_store.setCurrentData(data)
   }
 })
 
-const saveData = (code: string, icfitem: ICFStruct) => {
+const saveData = (code: string, icfitem?: ICFStruct) => {
   let data: DataStore = app_store.getState().patient_data
-  data = {...data, icf: {...app_store.getState().patient_data.icf, [code]: icfitem}}
+  if (icfitem)
+    data = {...data, icf: {...app_store.getState().patient_data.icf, [code]: icfitem}}
   app_store.saveDataToApi(data).then(() => emit('save', data))
 }
 
@@ -97,26 +111,15 @@ const editIcf = (code: string, icfitem: ICFStruct) => {
   firstTimeMounted.value = false
 }
 
-const denyIcf = (code: string, icfitem: ICFStruct) => {
-  saveData(code, {...icfitem, selected: -1})
-  showScrollPicker.value = false
-  firstTimeMounted.value = false
-  //  emit('next')
-}
-const confirmIcf = (code: string, icfitem: ICFStruct) => {
-  saveData(code, {...icfitem, selected: 1})
-  //showScrollPicker.value = false
-  firstTimeMounted.value = false
-  // emit('next')
-}
-
 
 onMounted(() => {
   if (props.mode === 'large') {
+    if (!props.code) router.push(props.upUrl ? props.upUrl : '/')
     app_store.set_active_icf(props.code)
+    let val = app_store.getState().patient_data.icf[props.code]?.value || 0
     const data = {
       ...app_store.getState().patient_data,
-      icf: {...app_store.getState().patient_data.icf, [props.code]: {value: app_store.getState().patient_data.icf[props.code].value, selected: 1}}
+      icf: {...app_store.getState().patient_data.icf, [props.code]: {value: val, selected: val2SelectionStatus(val)}}
     }
     app_store.setCurrentData(data)
   }
@@ -133,11 +136,12 @@ onMounted(() => {
            :style="`background-color: ${code[0]!=='e' ? AuspraegungColor[icfitem.value] : UmweltColor[icfitem.value]};
          opacity: 0.6; border-radius:5px;`"
            @click="mouseOverAct($event,code)"
+
       ></div>
       <img
           :src="imageServer()+`icf-pics/${code}.jpg`"
           :alt="code"
-          style="max-height: 180px; width:auto; object-fit: contain"
+          style="max-height: 180px; width:auto; object-fit: contain; min-width:10em;"
           :class="(icfitem.selected===0) ? `blurred-thumb-img` : (icfitem.selected===-1) ? `opaque-thumb-img`: ``"
           @click="mouseOverAct($event,code)"
       />
@@ -168,51 +172,12 @@ onMounted(() => {
                   <VueScrollPicker
                       :options="scroll_optionslist"
                       v-model:model-value="result"
-                      :style="`font-size: ${mode==='large' ? '20px':'16px'}`">
+                      :style="`font-size: ${mode==='large' ? '20px':'16px'}`"
+                      @end="console.log('Changeed ',code)"
+                  >
                   </VueScrollPicker>
           </MDBRow>
 
-          <!--
-
-          <MDBRow class="d-flex align-items-center justify-content-between p-2" v-if="mode==='thumb'">
-            <MDBCol>
-              <div>
-                <MDBBtn floating :color="showScrollPicker ? 'primary' : 'secondary'" @click="editIcf(code,icfitem)">
-                  <MDBIcon icon="pen"/>
-                </MDBBtn>
-              </div>
-              <div v-if="mode==='large'">
-                <MDBBtn color="tertiary" @click="editIcf(code,icfitem)">Das ist anders</MDBBtn>
-              </div>
-            </MDBCol>
-
-            <MDBCol>
-              <div>
-                <MDBBtn floating
-                        :color="app_store.getState().patient_data.icf[code]?.selected === -1 ? 'danger' : 'secondary'"
-                        @click="denyIcf(code,icfitem)">
-                  <MDBIcon icon="xmark"/>
-                </MDBBtn>
-              </div>
-              <div v-if="mode==='large'">
-                <MDBBtn color="tertiary" @click="editIcf(code,icfitem)">Das ist nicht wichtig</MDBBtn>
-              </div>
-            </MDBCol>
-
-            <MDBCol>
-              <div>
-                <MDBBtn floating
-                        :color="app_store.getState().patient_data.icf[code]?.selected === 1 ? 'success' : 'secondary'"
-                        @click="confirmIcf(code,icfitem)">
-                  <MDBIcon icon="check"/>
-                </MDBBtn>
-              </div>
-              <div v-if="mode==='large'">
-                <MDBBtn color="tertiary" @click="confirmIcf(code,icfitem)">Das trifft so zu</MDBBtn>
-              </div>
-            </MDBCol>
-          </MDBRow>
--->
         </MDBCardBody>
         <MDBCardFooter v-if="mode==='large'">
           <MDBRow class="d-flex align-items-center">
@@ -239,10 +204,6 @@ onMounted(() => {
 
 <style scoped>
 .blurred-thumb-img {
-  /* Add the blur effect
-  filter: blur(4px);
-  -webkit-filter: blur(4px);
-   */
   filter: opacity(0.2);
 }
 

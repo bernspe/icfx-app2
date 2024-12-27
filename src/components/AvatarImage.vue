@@ -20,7 +20,8 @@ const adjective_img = computed(()=> props.pseudonym?.split(' ')[0])
 const noun_img = computed(()=> props.pseudonym?.split(' ')[1])
 
 const transcribed_pseudonym = computed(()=> {
-  return translate_pseudonym(props.pseudonym)
+  if (props.pseudonym) return translate_pseudonym(props.pseudonym)
+  else return ''
 })
 
 </script>
@@ -28,9 +29,9 @@ const transcribed_pseudonym = computed(()=> {
 <template>
   <div class="d-flex align-items-center">
 
-    <div class='imgcontainer m-2'>
+    <div class='imgcontainer m-2' v-if="props.pseudonym">
       <div class="mask" v-if="label_position==='ontop'"> <p class="small">{{ transcribed_pseudonym }}</p></div>
-    <img :src="imageServer()+'avatars/animals/'+noun_img+img_suffix" class='mainpic'/>
+    <img :src="imageServer()+'avatars/animals/'+noun_img+img_suffix" class='mainpic' />
 
     <img :src="imageServer()+'avatars/adjectives/'+adjective_img+img_suffix" class='secondarypic'/>
       <MDBBadge

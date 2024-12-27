@@ -2,59 +2,43 @@
 import {
   MDBNavbar,
   MDBSideNav, MDBSideNavItem, MDBSideNavLink, MDBSideNavMenu,
-  MDBNavbarToggler,
-  MDBNavbarBrand,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBCollapse,
-  MDBDropdown, MDBDropdownToggle, MDBDropdownItem, MDBDropdownMenu,
   MDBIcon, MDBBadge, MDBBtn
 } from 'mdb-vue-ui-kit';
-import {ref, computed} from 'vue';
+import {ref, computed, onMounted} from 'vue';
 import {version} from "../../package.json"
 import {user_store} from "../user_store.ts";
 import {app_store} from "../app_store.ts";
 import {imageServer} from "../process_vars.ts";
-import _userdata from "../assets/mock-userdata.json";
+
 import AvatarImage from "./AvatarImage.vue";
+import GroupImage from "./GroupImage.vue";
 
 
 const sidenavScroll = ref(true);
+const _userdata = computed(()=>user_store.getState().userdata)
 
-const patient_avatar = computed(() => {
-  if (app_store.getState().current_patient_id) {
-    let idx = _userdata.map(u => u.id).indexOf(app_store.getState().current_patient_id)
-    return imageServer() + `avatars/${_userdata[idx].avatar}.jpg`
-  }
-})
 
 const patient_pseudo = computed(() => {
-  if (app_store.getState().current_patient_id) {
-    let idx = _userdata.map(u => u.id).indexOf(app_store.getState().current_patient_id)
-    return _userdata[idx].pseudonym
-  }
-})
-
-const medprof_avatar = computed(() => {
-  if (user_store.getState().id && (!user_store.getState().groups.includes('patient'))) {
-    let idx = _userdata.map(u => u.id).indexOf(user_store.getState().id)
-    return imageServer() + `avatars/${_userdata[idx].avatar}.jpg`
+  if (app_store.getState().current_patient_id && _userdata.value.length>0) {
+    let idx = _userdata.value.map(u => u.id).indexOf(app_store.getState().current_patient_id)
+    return _userdata.value[idx].pseudonym
   }
 })
 
 const medprof_pseudo = computed(() => {
-  if (user_store.getState().id && (!user_store.getState().groups.includes('patient'))) {
-    let idx = _userdata.map(u => u.id).indexOf(user_store.getState().id)
-    return _userdata[idx].pseudonym
+  if (user_store.getState().id && (!user_store.getState().groups.includes('patient')) && _userdata.value.length>0) {
+    let idx = _userdata.value.map(u => u.id).indexOf(user_store.getState().id)
+    return _userdata.value[idx].pseudonym
   }
 })
 
 const medprof_groups = computed(() => {
-  if (user_store.getState().id && (!user_store.getState().groups.includes('patient'))) {
-    let idx = _userdata.map(u => u.id).indexOf(user_store.getState().id)
-    return _userdata[idx].groups
+  if (user_store.getState().id && (!user_store.getState().groups.includes('patient')) && _userdata.value.length>0) {
+    let idx = _userdata.value.map(u => u.id).indexOf(user_store.getState().id)
+    return _userdata.value[idx].groups
   }
 })
+
 </script>
 
 <template>
@@ -95,62 +79,37 @@ const medprof_groups = computed(() => {
         <hr class="m-0"/>
       </div>
 
-      <div v-else class="d-flex align-items-center py-4">
+      <div v-else-if="patient_pseudo" class="d-flex align-items-center py-4">
         <AvatarImage :pseudonym="patient_pseudo" size="55px"/>
-
-        <div>
-          <img
-              :src="imageServer()+`group-pics/patient.jpg`"
-              alt="patient image"
-              style="width: 45px; height: 45px"
-              class="rounded-circle"
-          />
-          <MDBBadge
-              class="translate-middle p-1"
-              badge="info"
-              pill
-              notification
-          >Patient
-          </MDBBadge>
-        </div>
+        <GroupImage group="patient"/>
       </div>
 
-      <div class="d-flex align-items-center justify-content-center" v-if="medprof_avatar && patient_avatar">
+      <div class="d-flex align-items-center justify-content-center" v-if="medprof_pseudo && patient_pseudo">
         <i class="fas fa-arrow-up-long text-primary m-3"></i>
         <span class="text-primary m-3">... beurteilt</span>
       </div>
 
-      <div class="d-flex align-items-center mb-4" v-if="medprof_avatar">
+      <div class="d-flex align-items-center mb-4" v-if="medprof_pseudo">
         <AvatarImage :pseudonym="medprof_pseudo" size="55px"/>
 
         <div v-for="g in medprof_groups">
-          <img
-              :src="imageServer()+`group-pics/${g}.jpg`"
-              alt=""
-              style="width: 45px; height: 45px"
-              class="rounded-circle"
-          />
-          <MDBBadge
-              class="translate-middle p-1"
-              badge="info"
-              pill
-              notification
-          >{{ g }}
-          </MDBBadge>
+          <GroupImage :group="g"/>
         </div>
       </div>
-      <div class="text-center" style="min-height: 3rem">
-        <small>{{ user_store.getState().institution.name }}</small>
+      <div class="text-center mt-2 mb-2" style="min-height: 3rem">
+         <img v-if="user_store.getState().institution.logo_url" :src="user_store.getState().institution.logo_url" style="max-height: 50px;width: auto;object-fit: contain;"/>
+        <small v-else>{{ user_store.getState().institution.name }}</small>
         <hr class="mt-0 mb-2"/>
       </div>
       <MDBSideNavMenu scrollContainer>
         <MDBSideNavItem>
+          <MDBSideNavLink to="/logout" v-if="user_store.getState().authenticated && !user_store.getState().mock_mode">Abmelden</MDBSideNavLink>
           <MDBSideNavLink to="/">
-            <span>Home (Reset)</span>
+            <span>Home</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
         <MDBSideNavItem>
-          <MDBSideNavLink to="/patientlist">
+          <MDBSideNavLink to="/patientlist" v-if="medprof_pseudo">
             <span>Patientenliste</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
@@ -166,21 +125,16 @@ const medprof_groups = computed(() => {
           </MDBSideNavLink>
         </MDBSideNavItem>
 
-        <MDBSideNavItem>
+        <!-- Admin-Bereich -->
+
+        <MDBSideNavItem v-if="user_store.getState().mock_mode && medprof_pseudo">
           <MDBSideNavLink to="/medproflist">
             <span>Behandler-Liste</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
-
-
-        <MDBSideNavItem>
+        <MDBSideNavItem v-if="user_store.getState().is_staff">
           <MDBSideNavLink to="/adminview">
             <span>Admin-Dashboard</span>
-          </MDBSideNavLink>
-        </MDBSideNavItem>
-        <MDBSideNavItem>
-          <MDBSideNavLink>
-            <span>Benutzerdaten</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
@@ -198,7 +152,5 @@ const medprof_groups = computed(() => {
 </template>
 
 <style scoped>
-.active-pic {
-  border: #0d6832 solid 2px;
-}
+
 </style>
