@@ -64,8 +64,10 @@ const register = (e: Event) => {
   <MDBContainer class="text-center">
     <MDBCard tag="form" @submit.prevent="register" autocomplete="on" novalidate>
       <MDBCardHeader>
+        <img v-if="user_store.getState().institution.logo_url" :src="user_store.getState().institution.logo_url"
+             style="max-height: 100px; width: auto; object-fit: contain;" />
         <MDBCardTitle class="text-secondary mt-2">
-          <h1 class="text-secondary">Willkommen bei ICFx</h1>
+          <h1 class="text-secondary">Willkommen bei der ICFx-Plattform von {{ user_store.getState().institution.name }}</h1>
         </MDBCardTitle>
       </MDBCardHeader>
       <MDBCardBody class="m-2 p-2">
