@@ -133,9 +133,9 @@ const routes = [
         meta: {requiresAuth: true},
     },
     {
-        path: "/adminview",
-        name: "AdminView",
-        component: () => import("../components/AdminDashboard.vue"),
+        path: "/scientistview",
+        name: "ScientistView",
+        component: () => import("../components/ScientistsDashboard.vue"),
         meta: {requiresAuth: true},
     },
     {

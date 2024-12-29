@@ -133,8 +133,8 @@ const medprof_groups = computed(() => {
           </MDBSideNavLink>
         </MDBSideNavItem>
         <MDBSideNavItem v-if="user_store.getState().is_staff">
-          <MDBSideNavLink to="/adminview">
-            <span>Admin-Dashboard</span>
+          <MDBSideNavLink to="/scientistview">
+            <span>Scientists Dashboard</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
