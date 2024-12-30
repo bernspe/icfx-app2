@@ -26,7 +26,7 @@ import {imageServer} from "../process_vars";
 
 const router = useRouter()
 const route = useRoute()
-const props = defineProps(['institution_id', 'group'])
+const props = defineProps(['institution_id', 'group','casenumber'])
 const pin = ref('')
 const codename = ref('')
 
@@ -42,7 +42,7 @@ const findGroup = (group: string) => {
 const register = (e: Event) => {
   (e.target as Element).classList.add("was-validated");
   status.value = 'loading'
-  user_store.register(props.institution_id, pin.value, codename.value, props.group).then(r => {
+  user_store.register(props.institution_id, pin.value, codename.value, props.group, props.casenumber).then(r => {
     user_store.checkToken(r).then(response => {
       status.value = 'success'
       user_store.clear_userdata()

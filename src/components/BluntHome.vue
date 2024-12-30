@@ -93,7 +93,18 @@ onMounted(() => {
     const ks = Object.keys(route.query)
     if (ks.length !== 0) {
       if (ks.includes('institution') && ks.includes('group')) {
-        router.push('/register/' + route.query.institution + '/' + route.query.group)
+        user_store.getAPIInstitutions().then((res) => {
+          let i = res.filter(x => x.id === route.query.institution)[0]
+          user_store.set_institution(i.id, i.name, i.logo_url)
+          let casenumber = route.query.casenumber
+          if (casenumber && (route.query.group === 'patient'))
+            router.push('/register/' + route.query.institution + '/' + route.query.group + '/' + casenumber)
+          else
+            router.push('/register/' + route.query.institution + '/' + route.query.group)
+        }).catch(() => {
+          loadData()
+          user_store.getAPIInstitutions().then((res) => apiInstitutions.value = res)
+        })
       }
     } else {
       // if everything fails, just display the start page and load possible institutions

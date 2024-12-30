@@ -139,7 +139,7 @@ const routes = [
         meta: {requiresAuth: true},
     },
     {
-        path: "/register/:institution_id/:group?",
+        path: "/register/:institution_id/:group?/:casenumber?",
         name: "register",
         component: () => import("../components/Register.vue"),
         props: true

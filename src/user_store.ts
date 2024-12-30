@@ -24,6 +24,7 @@ export interface UserData {
     is_staff: boolean,
     institution: RemoteInstitutionDataset
     diagnoses: string,
+    patient_case?: number
 }
 
 
@@ -41,6 +42,7 @@ export interface RemoteUserAPI {
     is_staff?: boolean
     institution: RemoteInstitutionDataset
     diagnoses: string,
+    patient_case?: number
 }
 
 export interface User extends Object {
@@ -56,7 +58,7 @@ export interface User extends Object {
     groups: Array<string>,
     is_staff: boolean,
     diagnoses: string
-
+    patient_case?: number
 }
 
 class UserStore extends Store<User> {
@@ -100,6 +102,7 @@ class UserStore extends Store<User> {
         this.state.groups = []
         this.state.is_staff = false
         this.state.diagnoses = ''
+        this.state.patient_case = undefined
     }
 
     setMockMode(mode: boolean): void {
@@ -122,6 +125,7 @@ class UserStore extends Store<User> {
         this.state.is_staff = r.is_staff || false
         this.state.diagnoses = r.diagnoses
         this.state.institution = Object.assign({}, r['institution'])
+        this.state.patient_case = r.patient_case
     }
 
     connect_user_to_api():Promise<RemoteUserAPI> {
@@ -298,7 +302,7 @@ class UserStore extends Store<User> {
     }
 
     // Register through institution id
-    register(institution_id: string, password: string, codename?: string, group?: string): Promise<string> {
+    register(institution_id: string, password: string, codename?: string, group?: string, casenumber?: number): Promise<string> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 var data = new FormData();
@@ -310,6 +314,7 @@ class UserStore extends Store<User> {
                 data.append('institution', institution_id);
                 if (codename) data.append('codename', codename);
                 if (group) data.append('group', group);
+                if (casenumber) data.append('patient_case',casenumber.toString())
                 var config = {
                     method: 'POST',
                     url: backendURL() + "register/",
