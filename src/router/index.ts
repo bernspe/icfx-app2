@@ -162,6 +162,13 @@ const routes = [
         component: () => import("../components/WelcomePage.vue"),
         meta: {requiresAuth: true},
     },
+        {
+        path: "/patientcase/:casenumber",
+        name: "PatientCase",
+        component: () => import("../components/PatientCaseCard.vue"),
+        meta: {requiresAuth: true},
+            props:true
+    },
     {
         path: '/:pathMatch(.*)*',
         redirect: "/",

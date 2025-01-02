@@ -101,7 +101,9 @@ const betterOrWorse = (category: string, value: number) => {
 onMounted(() => {
   if (props.patientid) {
     app_store.loadDataFromApi(props.patientid).then(r => {
-      data.value = Object.assign({}, r[0])
+      // find the first dataset which contains SF36 vals
+      let t = r.filter(x=>Object.keys(x.sf36).length > 0)
+      if (t.length!==0) data.value = Object.assign({}, t[0])
     })
   }
 })
@@ -132,7 +134,7 @@ onMounted(() => {
               style="font-size: 20px">
           </VueScrollPicker>
         </MDBCol>
-        <MDBRow>
+        <MDBRow v-if="Object.keys(data.sf36)?.length!==0">
           <MDBCol v-for="(s,idx) in scale_columns" :key="idx">
             <MDBCard class="m-1 p-1">
               <MDBCardHeader>

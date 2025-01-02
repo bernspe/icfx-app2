@@ -71,7 +71,9 @@ const amountOfOthersWithProblems = computed(() => {
 onMounted(() => {
   if (props.patientid) {
     app_store.loadDataFromApi(props.patientid).then(r => {
-      data.value = Object.assign({}, r[0])
+      // find the first dataset which contains WHODAS vals
+      let t = r.filter(x=>Object.keys(x.whodas).length > 0)
+      if (t.length!==0) data.value = Object.assign({}, t[0])
       historical_data.value = r
     })
   }

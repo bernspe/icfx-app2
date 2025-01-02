@@ -1,0 +1,38 @@
+{
+  "1": {
+    "title": "Das Hüftleiden",
+    "history": "Du kannst wegen einer Arthrose in der Hüfte schlecht laufen - kommst maximal 400 Meter weit. Zum Glück hast du Nachbarn, die für dich einkaufen gehen.",
+    "diagnoses": "M16",
+    "pic": "old-woman-traveling-alone-summer.jpg"
+  },
+    "2": {
+    "title": "Schlechte Sicht",
+    "history": "Wegen eines Augenleidens kannst du schlecht sehen und deswegen nicht selbst Auto fahren. Du benötigst Hilfe von deinen Kindern, die die Einkäufe machen. Deinen Haushalt schaffst du mit etwas Mühe selbst.",
+    "diagnoses": "H26.0",
+    "pic": "portrait-smart-attractive-business-woman-with-glasses-happy-expression.jpg"
+  },
+    "3": {
+    "title": "Arm dran",
+    "history": "Irgendwie ist der rechte Arm nach dem Sturz im letzten Jahr nicht so recht wieder geworden. Du hast dadurch Schwierigkeiten, deinen Haushalt zu bewältigen. Hilfe bekommst du keine, weil die Kinder weit weg wohnen.",
+    "diagnoses": "S42.2",
+    "pic": "right-arm.jpg"
+  },
+    "4": {
+    "title": "Die Zucker-Komplikation",
+    "history": "Aufgrund deiner schlecht laufenden Diabetes-Erkrankung hast du einige Komplikationen der Erkrankung kassiert: dein Fuß musste abgenommen werden, du kannst schlecht sehen und die Nieren machen wahrscheinlich bald schlapp. Auch bist du kaum belastbar, da das Herz schlecht funktioniert.",
+    "diagnoses": "E11,Z89,I50.1",
+    "pic": "diabetes.jpg"
+  },
+    "5": {
+    "title": "Darm ohne Charme",
+    "history": "Nach einer missglückten Darmoperation kannst du nicht mehr alles essen. Ausserdem brauchst du immer eine Toilette in der Nähe. Häufiger mal weggehen ist schwierig.",
+    "diagnoses": "Z85.0,Z93.4",
+    "pic": "toilet-problem.jpg"
+  },
+    "6": {
+    "title": "Herzeleid",
+    "history": "Seitdem du einmal einen Herzinfarkt hattest, hast du glücklicherweise mit dem Rauchen aufgehört. Dennoch sind Folgeschäden zurückgeblieben. Du kannst nicht mehr so schnell Fahrrad fahren wie früher, auch das Rumtollen mit den Enkeln ist eher eine Belastung als eine Freude. Du hast Angst, dass es zu einem nochmaligen Infarkt kommt, obwohl du dich durch deinen Kardiologen gut betreut fühlst.",
+    "diagnoses": "I50.1,I25.13",
+    "pic": "cardial-problems.jpg"
+  }
+}

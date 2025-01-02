@@ -15,14 +15,19 @@ const isMedProf = computed(()=> user_store.getState().groups.some(g=> roles.map(
       <h1 class="text-secondary">Herzlich Willkommen</h1>
     </MDBCardHeader>
     <MDBCardBody class="m-2 mb-6 p-2">
-      <h2 class="text-primary">Dein Name (Pseudonym) bei uns ist ...</h2>
+      <h2 class="text-primary">Ihr Name (Pseudonym) bei uns ist ...</h2>
       <MDBRow>
         <MDBCol class="d-flex justify-content-center">
       <AvatarImage :pseudonym="user_store.getState().pseudonym" label_position="right"/>
           </MDBCol>
         </MDBRow>
-      <p>Du benötigst dieses <span class="text-decoration-underline">Pseudonym</span> und deine <span class="text-decoration-underline">PIN</span>, um dich hier anzumelden, solltest du das Programm einmal für längere Zeit verlassen haben.</p>
-      <p>Am besten Du notierst Dir erst einmal das Pseudonym und machst dann weiter.</p>
+      <p>Sie benötigen dieses <span class="text-decoration-underline">Pseudonym</span> und Ihre <span class="text-decoration-underline">PIN</span>, um sich hier anzumelden, sollten Sie das Programm einmal für längere Zeit verlassen haben.</p>
+      <p>Am besten Sie notieren sich jetzt das Pseudonym und machen dann weiter.</p>
+      <MDBRow v-if="user_store.getState().patient_case" class="m-3 p-2">
+        <h3 class="text-primary">Fallbeispiel</h3>
+        <p>Wir haben für Sie einen medizinischen Fall zum Trainieren vorbereitet.</p>
+        <router-link :to="`/patientcase/${user_store.getState().patient_case}?redirect=/patientview/${user_store.getState().id}`">Hier geht's zum Fallbeispiel</router-link>
+      </MDBRow>
     </MDBCardBody>
     <MDBCardFooter>
       <router-link v-if="isMedProf" :to="`/patientlist`">Weiter zur Patientenliste</router-link>

@@ -54,6 +54,12 @@ const introtext: Record<string, any> = {
     numberquestions: Object.keys(app_store.getState().patient_data.icf || {}).length,
     startItem: Object.keys(app_store.getState().patient_data.icf)[0],
   },
+  icf_medprof: {
+    heading: 'Die ICF Auswahl',
+    expl: `Aus den Coresets haben wir nun die ICF Items generiert. Bitte versuchen Sie, die Probleme Ihres Patienten zu quantifizeren (Begriffe von ${AuspraegungBeschwerden[0]} bis ${AuspraegungBeschwerden[4]}) und eine Wichtung der Kontextfaktoren vorzunehmen (${UmweltFaktoren[0]} bis ${UmweltFaktoren[8]}).`,
+    numberquestions: Object.keys(app_store.getState().patient_data.icf || {}).length,
+    startItem: Object.keys(app_store.getState().patient_data.icf)[0],
+  },
   sf36: {
     heading: 'Der SF36 Fragebogen',
     expl: 'In diesem Fragebogen werden verschiedene Aspekte Ihrer Gesundheit und Lebensqualität erfasst. Bitte nehmen Sie sich noch einmal die Zeit, um diese wichtigen Fragen zu beantworten.',
@@ -71,7 +77,8 @@ const introtext: Record<string, any> = {
       <h1>{{ introtext[props.module].heading }}</h1>
     </MDBCardHeader>
     <MDBCardBody>
-      <p>{{ introtext[props.module].expl }}</p>
+      <p v-if="((module==='icf') && !isPatient)">{{ introtext.icf_medprof.expl }}</p>
+      <p v-else>{{ introtext[props.module].expl }}</p>
       <p class="text-secondary">Geschätzte Bearbeitungsdauer: {{ expectedModuleTime(introtext[props.module].numberquestions) }}</p>
     </MDBCardBody>
     <MDBCardFooter>

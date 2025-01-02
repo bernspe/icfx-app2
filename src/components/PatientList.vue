@@ -10,10 +10,19 @@ import AvatarImage from "./AvatarImage.vue";
 import {backtranslate_pseudonym, translate_pseudonym} from "../language_helper";
 import {imageServer} from "../process_vars";
 
-const _userdata = computed(()=>user_store.getState().userdata)
+import _patientcases from "../assets/patientcases_de.json";
+
+const patientFromCasenumber = (casenumber?: number) => {
+  if (!casenumber) return ''
+  if (Object.keys(_patientcases).includes(casenumber.toString())) {
+    return _patientcases[casenumber.toString()];
+  } else return _patientcases["1"];
+}
+
+const _userdata = computed(() => user_store.getState().userdata)
 
 const medprof_groups = computed(() => {
-  if (user_store.getState().id && (!user_store.getState().groups.includes('patient')) && _userdata.value.length>0) {
+  if (user_store.getState().id && (!user_store.getState().groups.includes('patient')) && _userdata.value.length > 0) {
     let idx = _userdata.value.map(u => u.id).indexOf(user_store.getState().id)
     return _userdata.value[idx].groups
   }
@@ -22,11 +31,11 @@ const medprof_groups = computed(() => {
 
 const sortNAddTranslatedPseudonym = (r: Array<UserData> | Array<RemoteUserAPI>) => {
   return r.filter(p => p.groups.includes('patient'))
-        .map(p => ({...p, translated_pseudonym: translate_pseudonym(p.pseudonym)}))
-        .sort((a,b)=>a.translated_pseudonym.localeCompare(b.translated_pseudonym))
+      .map(p => ({...p, translated_pseudonym: translate_pseudonym(p.pseudonym)}))
+      .sort((a, b) => a.translated_pseudonym.localeCompare(b.translated_pseudonym))
 }
 
-const patient_list = ref<Array<UserData>>(sortNAddTranslatedPseudonym( user_store.getState().userdata))
+const patient_list = ref<Array<UserData>>(sortNAddTranslatedPseudonym(user_store.getState().userdata))
 const props = defineProps(['medprofid'])
 const searchInput = ref('')
 
@@ -65,28 +74,28 @@ onMounted(() => {
   <MDBRow class="d-flex align-items-center m-2 p-2">
     <h1 class="text-secondary">Behandler</h1>
     <MDBCol class="d-flex justify-content-start">
-    <AvatarImage
-        v-if="user_store.getState().pseudonym"
-        :pseudonym="user_store.getState().pseudonym" size="55px" color="green" label_position="right"/>
+      <AvatarImage
+          v-if="user_store.getState().pseudonym"
+          :pseudonym="user_store.getState().pseudonym" size="55px" color="green" label_position="right"/>
     </MDBCol>
     <MDBCol class="d-flex justify-content-start">
-              <div v-for="g in medprof_groups">
-          <img
-              :src="imageServer()+`group-pics/${g}.jpg`"
-              alt=""
-              style="width: 45px; height: 45px"
-              class="rounded-circle"
-          />
-          <MDBBadge
-              class="translate-middle p-1"
-              badge="info"
-              pill
-              notification
-          >{{ g }}
-          </MDBBadge>
-        </div>
+      <div v-for="g in medprof_groups">
+        <img
+            :src="imageServer()+`group-pics/${g}.jpg`"
+            alt=""
+            style="width: 45px; height: 45px"
+            class="rounded-circle"
+        />
+        <MDBBadge
+            class="translate-middle p-1"
+            badge="info"
+            pill
+            notification
+        >{{ g }}
+        </MDBBadge>
+      </div>
     </MDBCol>
-     <MDBCol class="d-flex justify-content-end">
+    <MDBCol class="d-flex justify-content-end">
       <InfoButton component_name="PatientList"/>
     </MDBCol>
   </MDBRow>
@@ -115,10 +124,12 @@ onMounted(() => {
     <MDBListGroupItem class="d-flex justify-content-between align-items-center"
                       v-for="patient in searched_list"
     >
+      <div>
+        <AvatarImage :pseudonym="patient.pseudonym" size="55px" color="blue" label_position="right"/>
 
-      <AvatarImage :pseudonym="patient.pseudonym" size="55px" color="blue" label_position="right"/>
-
-
+        <span class="text-info fst-italic"
+              v-if="patient.patient_case"> {{ patientFromCasenumber(patient.patient_case).title }}</span>
+      </div>
       <router-link
           v-if="((user_store.getState().groups.includes('patient')) || (user_store.getState().groups.length===0))"
           :to="`/patientview/${patient.id}`">Weiter

@@ -6,12 +6,14 @@ import {version} from "../../package.json"
 import {computed, onMounted, ref, watch} from "vue";
 import {app_store, DataStore} from "../app_store";
 import _userdata from "../assets/mock-userdata.json";
+import _patientcases from "../assets/patientcases_de.json";
 import {RemoteInstitutionDataset, user_store} from "../user_store";
 import {imageServer} from "../process_vars";
 import InfoButton from "./InfoButton.vue";
 import {VueScrollPicker} from "vue-scroll-picker";
 import {roles} from "../constants";
 import {useRoute, useRouter} from "vue-router";
+import _ from "lodash";
 
 const router = useRouter()
 const route = useRoute()
@@ -97,10 +99,15 @@ onMounted(() => {
           let i = res.filter(x => x.id === route.query.institution)[0]
           user_store.set_institution(i.id, i.name, i.logo_url)
           let casenumber = route.query.casenumber
-          if (casenumber && (route.query.group === 'patient'))
-            router.push('/register/' + route.query.institution + '/' + route.query.group + '/' + casenumber)
+          if (casenumber === 'random')
+            casenumber =  _.sample(Object.keys(_patientcases)) || "1"
+          let group:string = route.query.group?.toString() || 'physician'
+          if (group === 'random')
+            group = _.sample(roles.map(x=>x.group).filter(x=>x!=='patient')) || 'physician'
+          if (casenumber && (group === 'patient'))
+            router.push('/register/' + route.query.institution + '/' + group + '/' + casenumber)
           else
-            router.push('/register/' + route.query.institution + '/' + route.query.group)
+            router.push('/register/' + route.query.institution + '/' + group)
         }).catch(() => {
           loadData()
           user_store.getAPIInstitutions().then((res) => apiInstitutions.value = res)
@@ -146,7 +153,7 @@ onMounted(() => {
 
         <MDBRow class="d-flex align-items-top m-4" v-if="useApiData">
           <MDBRow>
-            <h3 class="text-secondary">Deine Möglichkeiten</h3>
+            <h3 class="text-secondary">Ihre Möglichkeiten</h3>
           </MDBRow>
 
           <MDBCol class="m-2 p-2">
@@ -186,7 +193,7 @@ onMounted(() => {
         </MDBRow>
 
         <MDBRow class="d-flex align-items-center m-4 p-3" v-else>
-          <h3 class="text-secondary">Deine Möglichkeiten im Testbetrieb</h3>
+          <h3 class="text-secondary">Ihre Möglichkeiten im Testbetrieb</h3>
           <MDBRow>
             <MDBCol>
               <router-link to="/patientlist">

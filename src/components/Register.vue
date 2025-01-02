@@ -23,6 +23,10 @@ import {user_store} from "../user_store";
 import {useRoute, useRouter} from "vue-router";
 import {roles} from "../constants";
 import {imageServer} from "../process_vars";
+import _patientcases from "../assets/patientcases_de.json";
+import {app_store, PatientCase} from "../app_store";
+
+const patientcases: Record<string, PatientCase> = _patientcases
 
 const router = useRouter()
 const route = useRoute()
@@ -48,6 +52,7 @@ const register = (e: Event) => {
       user_store.clear_userdata()
       user_store.set_access_token(r)
       user_store.set_user(response)
+      if (props.casenumber) app_store.updateUserDiagnoses(response.id,patientcases[props.casenumber.toString()].diagnoses)
       user_store.getAPIUsersOfThisInstitution(true)
       router.push({name: 'Welcome'})
     })

@@ -25,6 +25,20 @@ const patient_pseudo = computed(() => {
   }
 })
 
+const patient_case = computed(()=> {
+  if (app_store.getState().current_patient_id && _userdata.value.length>0) {
+    let idx = _userdata.value.map(u => u.id).indexOf(app_store.getState().current_patient_id)
+    return _userdata.value[idx].patient_case
+  }
+  if (user_store.getState().patient_case) return user_store.getState().patient_case
+})
+
+const patient_case_redirect = computed(()=> {
+  if (user_store.getState().patient_case) return `/patientview/${user_store.getState().id}`
+  if (medprof_pseudo.value) return `/medview/${app_store.getState().current_patient_id}`
+  return '/'
+})
+
 const medprof_pseudo = computed(() => {
   if (user_store.getState().id && (!user_store.getState().groups.includes('patient')) && _userdata.value.length>0) {
     let idx = _userdata.value.map(u => u.id).indexOf(user_store.getState().id)
@@ -38,6 +52,7 @@ const medprof_groups = computed(() => {
     return _userdata.value[idx].groups
   }
 })
+
 
 </script>
 
@@ -108,6 +123,13 @@ const medprof_groups = computed(() => {
             <span>Home</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
+
+                <MDBSideNavItem>
+          <MDBSideNavLink :to="`/patientcase/${patient_case}?redirect=${patient_case_redirect}`" v-if="patient_case">
+            <span>Fallbeispiel</span>
+          </MDBSideNavLink>
+        </MDBSideNavItem>
+
         <MDBSideNavItem>
           <MDBSideNavLink to="/patientlist" v-if="medprof_pseudo">
             <span>Patientenliste</span>
@@ -121,11 +143,15 @@ const medprof_groups = computed(() => {
           </MDBSideNavLink>
           <MDBSideNavLink v-else
                           :to="`/medview/${app_store.getState().current_patient_id}`">
-            <span>Behandleransicht</span>
+            <span>Behandlerseite</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
-        <!-- Admin-Bereich -->
+        <MDBSideNavItem v-if="medprof_pseudo">
+          <MDBSideNavLink>
+            <span>Leaderboard</span>
+          </MDBSideNavLink>
+        </MDBSideNavItem>
 
         <MDBSideNavItem v-if="user_store.getState().mock_mode && medprof_pseudo">
           <MDBSideNavLink to="/medproflist">

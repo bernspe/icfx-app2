@@ -7,6 +7,13 @@ import {getWhodasSum, normalizeWhodasSum} from "./calculation_helper";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
 
+export interface PatientCase extends Object {
+    title: string,
+    history: string,
+    diagnoses: string,
+    pic: string
+}
+
 /**
  * Data structure of icf_codes3.json
  * a: ancestors (level above)
