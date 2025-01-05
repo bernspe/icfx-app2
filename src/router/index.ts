@@ -169,6 +169,12 @@ const routes = [
         meta: {requiresAuth: true},
             props:true
     },
+        {
+        path: "/leaderboard",
+        name: "Leaderboard",
+        component: () => import("../components/LeaderBoardView.vue"),
+        meta: {requiresAuth: true},
+    },
     {
         path: '/:pathMatch(.*)*',
         redirect: "/",

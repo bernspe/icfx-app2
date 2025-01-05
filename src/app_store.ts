@@ -49,6 +49,12 @@ export interface ICFStruct {
     selected: number
 }
 
+export interface MergeProperties {
+    operation: string,
+    source1: string,
+    source2: string,
+}
+
 export interface DataStoreAPI {
         id: string,
     created: string,
@@ -58,6 +64,7 @@ export interface DataStoreAPI {
     owner_institution: string,
     data: any
     diagnoses?: string,
+    merge?: MergeProperties
 }
 
 export interface DataStore {
@@ -70,6 +77,7 @@ export interface DataStore {
     icf: Record<string, ICFStruct>
     coreset: string
     sf36: Record<string, number>
+    merge?: MergeProperties
 }
 
 
@@ -125,7 +133,7 @@ class AppStore extends Store<ApplicationData> {
     }
 
     emptyDataStore(): DataStore {
-        return {id: '', date: '', owner: '', creator: user_store.getState().id, whodas: {}, env: {}, icf: {}, coreset: '', sf36: {}};
+        return {id: '', date: '', owner: '', creator: user_store.getState().id, whodas: {}, env: {}, icf: {}, coreset: '', sf36: {}, merge: undefined};
     }
 
     clearData() {
@@ -179,7 +187,7 @@ class AppStore extends Store<ApplicationData> {
     }
 
     transformAPIResponse(d:DataStoreAPI):DataStore {
-        return {id:d.id,creator:d.creator,owner:d.owner, date: d.last_modified,
+        return {id:d.id,creator:d.creator,owner:d.owner, date: d.last_modified, merge: d.merge,
                 whodas:d.data?.whodas || {}, env: d.data?.env || {}, icf: d.data.icf || {},coreset: d.data?.coreset || '',sf36: d.data?.sf36 || {}}
     }
 
@@ -251,7 +259,9 @@ class AppStore extends Store<ApplicationData> {
                     xhrFields: {
                         withCredentials: true
                     },
-                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36}, owner: this.state.current_patient_id}
+                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36},
+                        merge: d.merge,
+                        owner: this.state.current_patient_id}
                 };
                 axios(config).then((response) => {
                     resolve(response.data)
@@ -275,7 +285,6 @@ class AppStore extends Store<ApplicationData> {
             if ((!Object.keys(data).includes('id')) || (data.id?.length===0)) {
                 post_type = 'POST'
             }
-
             if (!user_store.getState().mock_mode)
                 this.icfDataAPIRequest(post_type, d).then(response => {
                     data = this.transformAPIResponse( response)

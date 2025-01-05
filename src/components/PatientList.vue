@@ -28,6 +28,10 @@ const medprof_groups = computed(() => {
   }
 })
 
+const targetUrl = (patientid: string) => {
+  if ((user_store.getState().groups.includes('patient')) || (user_store.getState().groups.length===0)) return `/patientview/${patientid}`
+  else return `/medview/${patientid}`
+}
 
 const sortNAddTranslatedPseudonym = (r: Array<UserData> | Array<RemoteUserAPI>) => {
   return r.filter(p => p.groups.includes('patient'))
@@ -121,20 +125,24 @@ onMounted(() => {
     </template>
   </MDBInput>
   <MDBListGroup light class="me-4">
-    <MDBListGroupItem class="d-flex justify-content-between align-items-center"
+    <MDBListGroupItem
                       v-for="patient in searched_list"
     >
+      <router-link :to="targetUrl(patient.id)">
+        <MDBRow class="d-flex justify-content-between align-items-center">
+          <MDBCol>
       <div>
         <AvatarImage :pseudonym="patient.pseudonym" size="55px" color="blue" label_position="right"/>
 
         <span class="text-info fst-italic"
               v-if="patient.patient_case"> {{ patientFromCasenumber(patient.patient_case).title }}</span>
       </div>
-      <router-link
-          v-if="((user_store.getState().groups.includes('patient')) || (user_store.getState().groups.length===0))"
-          :to="`/patientview/${patient.id}`">Weiter
+            </MDBCol>
+          <MDBCol class="d-flex justify-content-end">
+            Weiter
+          </MDBCol>
+        </MDBRow>
       </router-link>
-      <router-link v-else :to="`/medview/${patient.id}`">Weiter</router-link>
     </MDBListGroupItem>
   </MDBListGroup>
 </template>

@@ -369,33 +369,24 @@ class UserStore extends Store<User> {
         })
     }
 
-
-    email_to_user(to_email: string, add_info: string, email_type: 'startitem', folder: 'user') {
+        getInstitutionsLeaderboard(): Promise<Array<[string,number,number]>> {
         return new Promise((resolve, reject) => {
-            if (this.state.authenticated) {
-                var config = {
-                    method: 'GET',
-                    url: backendURL() + `users/${this.state.id}/email_user/`,
-                    headers: {
-                        authorization: `Bearer ${this.state.access_token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    params: {
-                        email: to_email,
-                        type: email_type,
-                        folder: folder,
-                        add_info: add_info
-                    }
-                };
-                axios(config).then((response) => {
-                    resolve(response.data)
-                }).catch((e) => {
-                    reject(e);
-                })
-            } else reject('Not authenticated')
+            const config = {
+                url: backendURL() + "institution/"+this.state.institution.id+'/getmedprofsperformance/',
+                                        headers: {
+                            authorization: `Bearer ${this.state.access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                method: 'GET',
+            }
+            axios(config).then((response) => {
+                resolve(response.data)
+            }).catch((e) => {
+                reject(e)
+            })
         })
     }
 

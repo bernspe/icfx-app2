@@ -102,15 +102,18 @@ const saveData = (code: string, icfitem?: ICFStruct) => {
   let data: DataStore = app_store.getState().patient_data
   if (icfitem)
     data = {...data, icf: {...app_store.getState().patient_data.icf, [code]: icfitem}}
+  console.log('Thumb mode save')
   app_store.saveDataToApi(data).then(() => emit('save', data))
 }
 
+/*
 const editIcf = (code: string, icfitem: ICFStruct) => {
   saveData(code, {...icfitem, selected: showScrollPicker.value ? 1 : 0})
   showScrollPicker.value = !showScrollPicker.value
   firstTimeMounted.value = false
 }
 
+*/
 
 onMounted(() => {
   if (props.mode === 'large') {

@@ -34,7 +34,7 @@ const nextModuleUrl = computed(()=> {
   let ks =  Object.keys(finishtext)
   let i =ks.indexOf(props.module)
   if (i<ks.length-1) {
-    return `/moduleintro/${ks[i+1]}/${props.patientid}}`
+    return `/moduleintro/${ks[i+1]}/${props.patientid}`
   }
 })
 
@@ -101,7 +101,8 @@ const icfsFromWhodasEnvData = () => {
 const finishModuleAndJumpToNext = () => {
   app_store.setCurrentData({...app_store.getState().patient_data, icf: icfsFromWhodasEnvData()})
   app_store.set_active_icf('')
-  router.push(nextModuleUrl.value || backUrl.value)
+  if (nextModuleUrl.value) router.push(nextModuleUrl.value)
+  else router.push(backUrl.value)
 }
 </script>
 

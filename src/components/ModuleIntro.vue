@@ -29,7 +29,7 @@ const nextUrl = computed(() => {
 })
 
 const expectedModuleTime = (numberOfItems:number)=> {
-  let m = moment.duration(_.mean(user_store.getState().times_per_page)*numberOfItems,'seconds')
+  let m = moment.duration(_.mean(user_store.getState().times_per_page)*numberOfItems*introtext[props.module].timeFactor,'seconds')
   let result = Math.ceil(m.asMinutes())
   return result.toString() + ' ' + (result===1 ? 'Minute' : 'Minuten')
 }
@@ -41,30 +41,35 @@ const introtext: Record<string, any> = {
  Für jede Frage stehen Ihnen die Antwortoptionen von ${AuspraegungBeschwerden[0]} bis ${AuspraegungBeschwerden[4]} zur Verfügung. Wählen Sie bitte die Antwort, die am besten auf Ihre aktuelle Situation zutrifft. Es gibt keine richtigen oder falschen Antworten – wichtig ist Ihre persönliche Einschätzung.`,
     numberquestions: 12,
     startItem: '1',
+    timeFactor: 0.7,
   },
   env: {
     heading: 'Umweltfaktoren',
     expl: `Wir alle sind in unterschiedlichem Maß von unserer Umgebung abhängig. Einige Umwelteinflüsse können uns unterstützen, während andere hinderlich sein können. Auf den nächsten 5 Seiten bitten wir Sie, anzugeben, ob die genannten Faktoren für Sie störend (NEGATIV), hilfreich (POSITIV), beides oder neutral (Weder noch) sind.`,
     numberquestions: 5,
     startItem: '1',
+        timeFactor: 1,
   },
   icf: {
     heading: 'Die ICF Auswahl',
     expl: `Aus Ihren vorangegangenen Antworten haben wir bestimmte Dinge zusammengestellt, die aus unserer Sicht wichtig für Ihr Leben sind. Bitte geben Sie an, wie stark Ihre Probleme sind (Begriffe von ${AuspraegungBeschwerden[0]} bis ${AuspraegungBeschwerden[4]}) oder Dinge Sie beeinträchtigen (${UmweltFaktoren[0]} bis ${UmweltFaktoren[3]}) oder Ihnen helfen (${UmweltFaktoren[5]} bis ${UmweltFaktoren[8]}).`,
     numberquestions: Object.keys(app_store.getState().patient_data.icf || {}).length,
     startItem: Object.keys(app_store.getState().patient_data.icf)[0],
+        timeFactor: 0.6,
   },
   icf_medprof: {
     heading: 'Die ICF Auswahl',
     expl: `Aus den Coresets haben wir nun die ICF Items generiert. Bitte versuchen Sie, die Probleme Ihres Patienten zu quantifizeren (Begriffe von ${AuspraegungBeschwerden[0]} bis ${AuspraegungBeschwerden[4]}) und eine Wichtung der Kontextfaktoren vorzunehmen (${UmweltFaktoren[0]} bis ${UmweltFaktoren[8]}).`,
     numberquestions: Object.keys(app_store.getState().patient_data.icf || {}).length,
     startItem: Object.keys(app_store.getState().patient_data.icf)[0],
+        timeFactor: 1.2,
   },
   sf36: {
     heading: 'Der SF36 Fragebogen',
     expl: 'In diesem Fragebogen werden verschiedene Aspekte Ihrer Gesundheit und Lebensqualität erfasst. Bitte nehmen Sie sich noch einmal die Zeit, um diese wichtigen Fragen zu beantworten.',
     numberquestions: 36,
     startItem: sf36_keys.value[0],
+        timeFactor: 0.6,
   }
 }
 

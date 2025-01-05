@@ -84,6 +84,7 @@ const register = (e: Event) => {
               <img :src="imageServer()+'icfx-notebook-logo.jpg'"
                    style="max-height: 250px; width: auto; object-fit: contain;"/>
                 </MDBCol>
+
             </MDBRow>
 
           </MDBCol>
@@ -145,6 +146,15 @@ const register = (e: Event) => {
               <MDBSpinner class="me-2" v-if="status==='loading'"/>
               Weiter
             </MDBBtn>
+          </MDBCol>
+        </MDBRow>
+
+        <MDBRow class="d-flex justify-content-around">
+          <MDBCol>
+            <a href="https://renecol.org/impressum/" target="_blank">Impressum</a>
+          </MDBCol>
+          <MDBCol>
+            <a href="https://renecol.org/datenschutzerklaerung/#icfx" target="_blank">Datenschutz</a>
           </MDBCol>
         </MDBRow>
       </MDBCardFooter>

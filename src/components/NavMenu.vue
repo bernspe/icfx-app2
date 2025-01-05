@@ -118,20 +118,26 @@ const medprof_groups = computed(() => {
       </div>
       <MDBSideNavMenu scrollContainer>
         <MDBSideNavItem>
-          <MDBSideNavLink to="/logout" v-if="user_store.getState().authenticated && !user_store.getState().mock_mode">Abmelden</MDBSideNavLink>
+          <MDBSideNavLink to="/logout" v-if="user_store.getState().authenticated && !user_store.getState().mock_mode">
+             <MDBIcon icon="right-from-bracket" class="fa-fw me-3" />
+            <span>Abmelden</span>
+          </MDBSideNavLink>
           <MDBSideNavLink to="/">
+            <MDBIcon icon="home" class="fa-fw me-3" />
             <span>Home</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
                 <MDBSideNavItem>
           <MDBSideNavLink :to="`/patientcase/${patient_case}?redirect=${patient_case_redirect}`" v-if="patient_case">
+            <MDBIcon icon="hospital-user" class="fa-fw me-3" />
             <span>Fallbeispiel</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
         <MDBSideNavItem>
           <MDBSideNavLink to="/patientlist" v-if="medprof_pseudo">
+            <MDBIcon  icon="list" class="fa-fw me-3" />
             <span>Patientenliste</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
@@ -139,32 +145,49 @@ const medprof_groups = computed(() => {
           <MDBSideNavLink
               v-if="((user_store.getState().groups.includes('patient')) || (user_store.getState().groups.length===0))"
               :to="`/patientview/${app_store.getState().current_patient_id}`">
+            <MDBIcon  icon="bed-pulse" class="fa-fw me-3" />
             <span>Patientenansicht</span>
           </MDBSideNavLink>
           <MDBSideNavLink v-else
                           :to="`/medview/${app_store.getState().current_patient_id}`">
+            <MDBIcon icon="stethoscope" class="fa-fw me-3" />
             <span>Behandlerseite</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
-        <MDBSideNavItem v-if="medprof_pseudo">
-          <MDBSideNavLink>
+        <MDBSideNavItem v-if="!user_store.getState().mock_mode && medprof_pseudo">
+          <MDBSideNavLink to="/leaderboard">
+            <MDBIcon  icon="trophy" class="fa-fw me-3" />
             <span>Leaderboard</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
         <MDBSideNavItem v-if="user_store.getState().mock_mode && medprof_pseudo">
           <MDBSideNavLink to="/medproflist">
+            <MDBIcon  icon="rectangle-list" class="fa-fw me-3" />
             <span>Behandler-Liste</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
         <MDBSideNavItem v-if="user_store.getState().is_staff">
           <MDBSideNavLink to="/scientistview">
+            <MDBIcon  icon="microscope" class="fa-fw me-3" />
             <span>Scientists Dashboard</span>
           </MDBSideNavLink>
         </MDBSideNavItem>
 
+        <div class="text-center" style="min-height: 3rem">
+      <hr class="mt-0 mb-2" />
+        <MDBSideNavItem>
+           <a href="https://renecol.org/impressum/" target="_blank">Impressum</a>
+        </MDBSideNavItem>
+
+        <MDBSideNavItem>
+           <a href="https://renecol.org/datenschutzerklaerung#icfx" target="_blank">Datenschutz</a>
+        </MDBSideNavItem>
+        </div>
       </MDBSideNavMenu>
+
+
 
 
     </MDBSideNav>

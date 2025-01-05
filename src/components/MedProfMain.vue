@@ -90,6 +90,8 @@ const mergedIcfData = computed(() => {
       if (mergeOperations[currentMergeOperationIdx.value].operation === 'left') {
         result.icf = sd1
       }
+      // save Merge OperationCharacteristics to current dataset
+      result.merge = {source1: secondaryData1.value.id, source2: secondaryData2.value.id || '', operation: mergeOperations[currentMergeOperationIdx.value].operation}
     }
     return result
   }
@@ -287,7 +289,11 @@ watch(preload_other_data, (newVal, oldVal) => {
 })
 
 watch(mergedIcfData, (newVal, oldVal) => {
-  if (newVal) data.value = newVal
+  if (newVal) {
+    data.value = newVal
+    app_store.setCurrentData(data.value)
+    console.log('MErge changed: ',newVal)
+  }
 })
 
 onMounted(() => {
