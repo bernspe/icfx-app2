@@ -44,13 +44,15 @@ const backwards = computed(()=> route.query?.redirect)
       </MDBListGroup>
     </MDBCardBody>
 
-    <MDBCardFooter>
-      <MDBRow class="d-flex align-items-center">
+
+      <MDBCardFooter>
+      <MDBRow>
         <MDBCol class="justify-content-start">
-          <router-link :to="backwards ? backwards : `/patientdata/icf/${patientid}/${code}`">Zurück</router-link>
+          <MDBBtn role="link" @click="router.back()">Zurück</MDBBtn>
         </MDBCol>
       </MDBRow>
     </MDBCardFooter>
+
   </MDBCard>
 </template>
 

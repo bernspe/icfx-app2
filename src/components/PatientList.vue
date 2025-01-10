@@ -4,8 +4,6 @@ import {MDBListGroup, MDBListGroupItem, MDBBadge, MDBInput, MDBRow, MDBCol} from
 import {computed, onMounted, ref} from "vue";
 import {RemoteUserAPI, user_store, UserData} from "../user_store";
 import {app_store} from "../app_store";
-import PatientStatisticsComponent from "./PatientStatisticsComponent.vue";
-import InfoButton from "./InfoButton.vue";
 import AvatarImage from "./AvatarImage.vue";
 import {backtranslate_pseudonym, translate_pseudonym} from "../language_helper";
 import {imageServer} from "../process_vars";
@@ -99,9 +97,7 @@ onMounted(() => {
         </MDBBadge>
       </div>
     </MDBCol>
-    <MDBCol class="d-flex justify-content-end">
-      <InfoButton component_name="PatientList"/>
-    </MDBCol>
+
   </MDBRow>
   <MDBRow class="d-flex align-items-center m-2">
     <h1 class="text-secondary">Patienten</h1>

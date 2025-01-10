@@ -100,6 +100,7 @@ const register = (e: Event) => {
                   Bitte wählen Sie eine vierstellige PIN, die sie sich gut merken können.
                 </p>
                 <MDBInput
+                    id="PIN_input"
                     label="PIN"
                     type="number"
                     v-model="pin"
@@ -114,6 +115,7 @@ const register = (e: Event) => {
                   {{ findGroup(group).name }} registrieren zu können. Fragen Sie
                   dazu am besten den Verantwortlichen bei {{ user_store.getState().institution.name }}.</p>
                 <MDBInput
+                    id="Codename_input"
                     :class="codenameCorrect ? (status==='success' ? 'is-valid' : '') : 'is-invalid'"
                     label="Codename"
                     type="text"

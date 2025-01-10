@@ -7,6 +7,11 @@ const routes = [
         name: "Home",
         component: () => import("../components/BluntHome.vue"),
     },
+        {
+        path: "/help",
+        name: "Help",
+        component: () => import("../components/HelpView.vue"),
+    },
     {
         path: "/patientview/:patientid?",
         name: "PatientView",

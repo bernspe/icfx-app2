@@ -128,6 +128,13 @@ const medprof_groups = computed(() => {
           </MDBSideNavLink>
         </MDBSideNavItem>
 
+        <MDBSideNavItem>
+          <MDBSideNavLink to="/help">
+            <MDBIcon icon="circle-question" class="fa-fw me-3" />
+            <span>Hilfe</span>
+          </MDBSideNavLink>
+        </MDBSideNavItem>
+
                 <MDBSideNavItem>
           <MDBSideNavLink :to="`/patientcase/${patient_case}?redirect=${patient_case_redirect}`" v-if="patient_case">
             <MDBIcon icon="hospital-user" class="fa-fw me-3" />
