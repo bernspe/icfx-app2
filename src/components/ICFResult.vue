@@ -16,24 +16,74 @@ import ICFGraph from "./ICFGraph.vue";
 import AvatarImage from "./AvatarImage.vue";
 import {user_store} from "../user_store";
 import {AuspraegungColor, UmweltColor} from "../constants";
+import ICFResultBarGraph from "./ICFResultBarGraph.vue";
+import {RowStructure} from "./ScientistsDashboard.vue";
 
 
 const _icfcodes: Record<string, ICFItemStructure> = __icfcodes;
 
 
 const props = defineProps({
-  patientid: {type: String},
+  patientid: {type: String, required: true},
 })
 
+
 const data = ref<Array<DataStore>>([app_store.emptyDataStore()])
-const consolidatedICFDict = computed(()=> {
+
+/**
+ * ICF Chart Section
+ */
+
+
+const loadIcfs = () => {
+  let data_filtered = data.value.filter(d => d.id)
+  if (data_filtered) {
+    datasetIcfs.value.rows = []
+    data_filtered.forEach(d => {
+      let ud = user_store.getState().userdata
+      let idx = ud.map(u => u.id).indexOf(d.creator)
+      let creatorgroup = idx > -1 ? ud[idx].groups[0] : ''
+      let creatorpseudonym = idx > -1 ? ud[idx].pseudonym : ''
+      let content = `ICF (${d.icf ? Object.keys(d.icf).length : 0})`
+      let pidx = ud.map(u => u.id).indexOf(props.patientid)
+      let patientpseudonym = ud[pidx].pseudonym
+      let t = {
+        patient: patientpseudonym,
+        date: d.date,
+        creator: creatorpseudonym,
+        creatorgroup: creatorgroup,
+        content: content,
+        merge: d.merge ? d.merge.operation : 'N',
+        id: d.id,
+        icfdata: d.icf
+      }
+      if (datasetIcfs.value.rows) datasetIcfs.value.rows.push(t)
+      else datasetIcfs.value.rows = [t]
+    })
+  }
+}
+
+const datasetIcfs = ref({
+  columns: ['Patient', 'Date', 'Creator', 'CreatorGroup', 'Content', 'Merge', 'ID'],
+  rows: []
+})
+
+const loadIcfRows = (rows: Array<RowStructure>) => {
+  icfRows.value = rows
+}
+const icfRows = ref<Array<RowStructure>>()
+
+/**
+ * ICF Graph section
+ */
+const consolidatedICFDict = computed(() => {
   let t = transformAPIResponseToConsolidatedICFDict(data.value)
   if (filterOmitSoloICFs.value) {
-      t = Object.fromEntries(Object.entries(t).filter(([code, icf]) => Object.keys(icf).length > 1))
+    t = Object.fromEntries(Object.entries(t).filter(([code, icf]) => Object.keys(icf).length > 1))
   }
   return t
 })
-const sortedList = computed<Array<[string, Record<string, ConsolidatedICFListEntry>]>>(()=>Object.entries(consolidatedICFDict.value))
+const sortedList = computed<Array<[string, Record<string, ConsolidatedICFListEntry>]>>(() => Object.entries(consolidatedICFDict.value))
 
 const isPatient = computed(() => user_store.getState().groups.includes('patient'))
 
@@ -68,12 +118,11 @@ const makeNodesFromConsolidatedICFDict = (cdict: Record<string, Record<string, C
 }
 
 
-
 const filterFuseICFs = ref(true)
 const filterOmitSoloICFs = ref(true)
 
 const currentNodes = computed(() => {
-  return makeNodesFromConsolidatedICFDict(consolidatedICFDict.value,!filterFuseICFs.value)
+  return makeNodesFromConsolidatedICFDict(consolidatedICFDict.value, !filterFuseICFs.value)
 })
 
 interface ConsolidatedICFListEntry {
@@ -123,7 +172,8 @@ onMounted(() => {
   if (props.patientid) {
     // user_store.getAPIUsersOfThisInstitution(true)
     app_store.loadDataFromApi(props.patientid).then(r => {
-      data.value =  r.reverse() // reverse the list so that the newest comes last to overwrite older entries
+      data.value = r.reverse() // reverse the list so that the newest comes last to overwrite older entries
+      loadIcfs()
     })
   }
 })
@@ -141,6 +191,14 @@ onMounted(() => {
             headerTitle="Filter"
             collapseId="collapseFilter"
         >
+          <h3 class="text-secondary">Datensätze für Charts</h3>
+          <p>Wählen Sie hier die im Chart-Bereich anzuzeigenden Datensätze.</p>
+          <MDBDatatable :dataset="datasetIcfs" selectable multi
+                        @selected-rows="loadIcfRows"/>
+
+          <h3 class="text-secondary">Einstellungen für Network Graph</h3>
+          <p>Der Network Graph zeigt die Verbundenheit von verschiedenen Benutzern anhand ihrer konvergierenden
+            ICFs.</p>
           <MDBRow class="align-items-center m-2 p-3 d-flex justify-content-end">
             <MDBCol>
               <MDBCheckbox label="Gemeinsame ICFs fusionieren" v-model="filterFuseICFs"/>
@@ -148,70 +206,82 @@ onMounted(() => {
             </MDBCol>
           </MDBRow>
 
+
+        </MDBAccordionItem>
+
+        <MDBAccordionItem
+            icon="fas fa-chart-line fa-sm me-2 opacity-70"
+            headerTitle="ICF Chart"
+            collapseId="collapseChart">
+          <ICFResultBarGraph :datarows="icfRows" v-if="icfRows"/>
+        </MDBAccordionItem>
+
+
+        <MDBAccordionItem
+            icon="fas fa-diagram-project fa-sm me-2 opacity-70"
+            headerTitle="ICF Network Graph"
+            collapseId="collapseGraph">
+          <ICFGraph v-if="currentNodes.length!=0"
+                    :nodes="currentNodes"
+                    :key="currentNodes.length"
+                    @node-clicked="focusIcfCode"/>
+
+          <MDBTable class="align-middle mb-0 bg-white">
+            <thead class="bg-light">
+            <tr>
+              <th></th>
+              <th>ICF Item</th>
+              <th v-for="c in creators">
+                <AvatarImage :pseudonym="user_store.getState().pseudonym" v-if="c===user_store.getState().id"
+                             size="55px"
+                             label_position="badge"/>
+                <div v-else
+                     v-for="g in user_store.getState().userdata.filter(user => user.id === c)[0]?.groups">
+                  <img :src="imageServer()+'group-pics/'+g+'.jpg'"
+                       style="width: 55px; height: 55px"/>
+                  <MDBBadge
+                      class="translate-middle p-1"
+                      badge="info"
+                      pill
+                      notification
+                  >{{ g }}
+                  </MDBBadge>
+                </div>
+
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="([code,icf],idx) in sortedList"
+                :class="activeRows.includes(code) ? 'table-active' :'' "
+                :ref="(el) => (rowRefs['row_'+code] = el)"
+            >
+              <td>
+                <div class="table_icf_code">
+                  <p> {{ code }}</p>
+                </div>
+              </td>
+              <td>
+
+
+                <div class="thumbimg">
+                  <img
+                      :src="imageServer()+`icf-pics/${code}.jpg`"
+                      :alt="code"
+                      style="max-height: 80px; width:auto; object-fit: contain"
+                  />
+                  <p> {{ _icfcodes[code]?.t }} </p>
+                </div>
+              </td>
+              <td v-for="c in creators">
+                <div v-if="Object.keys(icf).includes(c)"> {{ icf[c].value }}</div>
+
+              </td>
+            </tr>
+            </tbody>
+          </MDBTable>
         </MDBAccordionItem>
       </MDBAccordion>
-
-
-      <ICFGraph v-if="currentNodes.length!=0"
-                :nodes="currentNodes"
-                :key="currentNodes.length"
-                @node-clicked="focusIcfCode"/>
-
-      <MDBTable class="align-middle mb-0 bg-white">
-        <thead class="bg-light">
-        <tr>
-          <th></th>
-          <th>ICF Item</th>
-          <th v-for="c in creators">
-            <AvatarImage :pseudonym="user_store.getState().pseudonym" v-if="c===user_store.getState().id" size="55px"
-                         label_position="badge"/>
-            <div v-else
-                 v-for="g in user_store.getState().userdata.filter(user => user.id === c)[0]?.groups">
-              <img :src="imageServer()+'group-pics/'+g+'.jpg'"
-                   style="width: 55px; height: 55px"/>
-              <MDBBadge
-                  class="translate-middle p-1"
-                  badge="info"
-                  pill
-                  notification
-              >{{ g }}
-              </MDBBadge>
-            </div>
-
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="([code,icf],idx) in sortedList"
-            :class="activeRows.includes(code) ? 'table-active' :'' "
-            :ref="(el) => (rowRefs['row_'+code] = el)"
-        >
-          <td>
-             <div class="table_icf_code">
-              <p> {{ code }}</p>
-            </div>
-          </td>
-          <td>
-
-
-            <div class="thumbimg">
-              <img
-                  :src="imageServer()+`icf-pics/${code}.jpg`"
-                  :alt="code"
-                  style="max-height: 80px; width:auto; object-fit: contain"
-              />
-              <p> {{ _icfcodes[code]?.t }} </p>
-            </div>
-          </td>
-          <td v-for="c in creators">
-            <div v-if="Object.keys(icf).includes(c)"> {{ icf[c].value }}</div>
-
-          </td>
-        </tr>
-        </tbody>
-      </MDBTable>
-
-
     </MDBCardBody>
     <MDBCardFooter>
       <MDBRow class="d-flex align-items-center">
@@ -246,8 +316,8 @@ onMounted(() => {
 }
 
 .table_icf_code {
-   writing-mode: vertical-rl;
-   white-space:nowrap;
-   transform:scale(-1);
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  transform: scale(-1);
 }
 </style>

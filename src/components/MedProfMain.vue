@@ -310,9 +310,6 @@ onMounted(() => {
         <MDBCol class="d-flex justify-content-start">
           <h1 class="text-secondary">Behandlerseite</h1>
         </MDBCol>
-        <MDBCol class="d-flex justify-content-end">
-          <InfoButton component_name="MedProfMain"/>
-        </MDBCol>
       </MDBRow>
 
   <MDBAccordion v-model="accordion_activeItem" flush :stay-open="true">
@@ -320,9 +317,6 @@ onMounted(() => {
       <MDBRow class="d-flex align-items-center m-2">
         <MDBCol class="d-flex justify-content-start">
           <h2 class="text-secondary">Beurteilungsperspektive</h2>
-        </MDBCol>
-        <MDBCol class="d-flex justify-content-end">
-          <InfoButton component_name="MedProfMain"/>
         </MDBCol>
       </MDBRow>
 
@@ -464,7 +458,8 @@ onMounted(() => {
           @show-details-changed="showIcfDetails=$event"
           @clear="clearAll"
       ></ListHeader>
-      <ICFThumbPanel :icfs="icfsFromCoresetData" :patientid="patientid"/>
+      <ICFThumbPanel
+          :icfs="icfsFromCoresetData" :patientid="patientid"/>
       <router-link :to="`/icfbrowser/${patientid}`">
         <MDBCard style="max-width: 16rem;" class="p-2 text-center">
           <MDBCardHeader>

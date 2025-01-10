@@ -33,6 +33,7 @@ const route = useRoute()
 const props = defineProps(['institution_id', 'group','casenumber'])
 const pin = ref('')
 const codename = ref('')
+const codenameCorrect = ref(true)
 
 const status = ref('primary')
 const alert = ref(false)
@@ -44,11 +45,12 @@ const findGroup = (group: string) => {
 }
 
 const register = (e: Event) => {
-  (e.target as Element).classList.add("was-validated");
+  //(e.target as Element).classList.add("was-validated");
   status.value = 'loading'
   user_store.register(props.institution_id, pin.value, codename.value, props.group, props.casenumber).then(r => {
     user_store.checkToken(r).then(response => {
       status.value = 'success'
+      codenameCorrect.value=true
       user_store.clear_userdata()
       user_store.set_access_token(r)
       user_store.set_user(response)
@@ -56,9 +58,9 @@ const register = (e: Event) => {
       user_store.getAPIUsersOfThisInstitution(true)
       router.push({name: 'Welcome'})
     })
-  }).catch(e => {
-    console.log('error ', e)
-    alertmessage.value = e
+  }).catch(error => {
+    codenameCorrect.value=false
+    alertmessage.value = error
     alert.value = true
     status.value = 'danger'
   })
@@ -69,10 +71,9 @@ const register = (e: Event) => {
   <MDBContainer class="text-center">
     <MDBCard tag="form" @submit.prevent="register" autocomplete="on" novalidate>
       <MDBCardHeader>
-        <img v-if="user_store.getState().institution.logo_url" :src="user_store.getState().institution.logo_url"
-             style="max-height: 100px; width: auto; object-fit: contain;" />
+        <MDBCardImg v-if="user_store.getState().institution.logo_url" :src="user_store.getState().institution.logo_url"/>
         <MDBCardTitle class="text-secondary mt-2">
-          <h1 class="text-secondary">Willkommen bei der ICFx-Plattform von {{ user_store.getState().institution.name }}</h1>
+          <h1 class="text-secondary">Willkommen auf der ICFx-Plattform <span v-if=" user_store.getState().institution">von</span> {{ user_store.getState().institution.name }}</h1>
         </MDBCardTitle>
       </MDBCardHeader>
       <MDBCardBody class="m-2 p-2">
@@ -106,22 +107,22 @@ const register = (e: Event) => {
                     :maxlength="4"
                     required
                     invalidFeedback="Bitte eine vierstellige Zahl"
-                    validFeedback="Sehr gut."></MDBInput>
+                    ></MDBInput>
               </MDBCol>
               <MDBCol v-if="group !== 'patient'">
                 <p>Sie benötigen noch den <span class="text-decoration-underline"> Codenamen</span>, um sich als
                   {{ findGroup(group).name }} registrieren zu können. Fragen Sie
                   dazu am besten den Verantwortlichen bei {{ user_store.getState().institution.name }}.</p>
                 <MDBInput
+                    :class="codenameCorrect ? (status==='success' ? 'is-valid' : '') : 'is-invalid'"
                     label="Codename"
                     type="text"
                     v-model="codename"
+                    required
                     invalidFeedback="Das stimmt anscheinend nicht."
-                    validFeedback="Sehr gut."></MDBInput>
+                    ></MDBInput>
               </MDBCol>
             </MDBRow>
-
-
           </MDBCol>
         </MDBRow>
 
@@ -130,8 +131,7 @@ const register = (e: Event) => {
       <MDBCardFooter>
         <MDBRow class="d-flex align-items-center" v-if="user_store.getState().institution.logo_url">
           <MDBCol class="d-flex justify-content-center">
-            <img :src="user_store.getState().institution.logo_url"
-                 style="max-height: 100px;width: auto;object-fit: contain;"/>
+            <MDBCardImg :src="user_store.getState().institution.logo_url"/>
           </MDBCol>
         </MDBRow>
         <MDBRow class="mt-2 align-items-center d-flex justify-content-between">
@@ -142,7 +142,7 @@ const register = (e: Event) => {
             <router-link :to="`/login/${institution_id}`">Ich bin schon registriert -> Anmeldung</router-link>
           </MDBCol>
           <MDBCol>
-            <MDBBtn :color="status==='loading' ? 'primary' : status" type="submit" :disabled="pin.length!==4">
+            <MDBBtn :color="status==='loading' ? 'primary' : status" type="submit" :disabled="(pin.length!==4)">
               <MDBSpinner class="me-2" v-if="status==='loading'"/>
               Weiter
             </MDBBtn>

@@ -2,9 +2,10 @@
 
 import ICFThumbCard from "./ICFThumbCard.vue";
 import {MDBCol, MDBRow} from "mdb-vue-ui-kit";
-import {ICFStruct} from "../app_store";
+import {ICFItemStructure, ICFStruct} from "../app_store";
 import {computed, PropType} from "vue";
-import _icfcodes from '../assets/icf_codes3.json'
+import __icfcodes from "../assets/icf_codes3.json";
+const _icfcodes: Record<string, ICFItemStructure> = __icfcodes;
 
 const props = defineProps({icfs:{type: Object as PropType<Record<string,ICFStruct>>,required:true}, patientid:{type:String, required:true}})
 
@@ -24,8 +25,11 @@ const paginatedIcfRecord = computed(()=> {
 </script>
 
 <template>
-  <div>
-        <MDBRow v-for="([parentCode, icfcollection]) in Object.entries(paginatedIcfRecord)">
+  <div class="mb-3">
+    <MDBRow v-if="Object.keys(paginatedIcfRecord).length==0">
+      <p class="text-secondary">Bitte ICFs über Coresets und/oder direkt über den ICF Browser auswählen.</p>
+    </MDBRow>
+        <MDBRow v-else v-for="([parentCode, icfcollection]) in Object.entries(paginatedIcfRecord)">
           <h5 class="text-secondary">{{ _icfcodes[parentCode]?.t }}</h5>
           <MDBCol v-for="([code,icfitem]) in Object.entries(icfcollection)">
             <ICFThumbCard mode='thumb' :code="code" :icfitem="icfitem" :patientid="patientid"/>

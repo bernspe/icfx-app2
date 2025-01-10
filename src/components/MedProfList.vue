@@ -40,9 +40,6 @@ onMounted(() => {
     <MDBCol class="d-flex justify-content-start">
       <h3 class="text-secondary m-4">Behandler auswählen</h3>
     </MDBCol>
-    <MDBCol class="d-flex justify-content-end">
-      <InfoButton component_name="MedProfList"/>
-    </MDBCol>
   </MDBRow>
 
   <MDBInput

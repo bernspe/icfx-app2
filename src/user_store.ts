@@ -327,7 +327,7 @@ class UserStore extends Store<User> {
                         resolve(response.data.access_token)
                     }).catch((error) => {
                     console.log("...failed:", error);
-                    reject()
+                    reject(error)
                 })
             }, 1000)
         })

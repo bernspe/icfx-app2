@@ -45,9 +45,11 @@ watch(_showDetails, (newVal, oldVal) => {
     <MDBCol v-if="numberIcfItems!==0">
       <span class="text-secondary">{{ numberIcfItems }} Einträge</span>
     </MDBCol>
+    <!--
     <MDBCol class="text-secondary" v-if="!isPatient || TestBetrieb">
       <MDBSwitch label="Alle ansehen" v-model="_showDetails"/>
     </MDBCol>
+    -->
     <MDBCol v-if="percentEdited>=100">
       <MDBPopconfirm
           class="me-1 btn-outline-danger"

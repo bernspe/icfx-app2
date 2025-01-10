@@ -80,18 +80,18 @@
                     <MDBCol class="m-2 d-flex justify-content-start">
                       <MDBBtn
                           v-if="icf_json[chapterCode]?.b !== 'S' && chapterCode.length>1"
-                          class="m-2 mx-4"
+                          class="m-2"
                           color="tertiary"
-                          size="lg"
+                          size="md"
                           @click="zoom_out">
-                        Allgemeiner
+                        <span>Globaler</span>
                         <i class="fas fa-search-minus mx-4"></i>
                       </MDBBtn>
                       <MDBBtn
                           v-if="icf_json[chapterCode]?.c?.length>0 && icf_json[chapterCode]?.b !== 'S'"
-                          class="m-2 mx-4"
+                          class="m-2"
                           color="tertiary"
-                          size="lg"
+                          size="md"
                           @click="zoom_in(chapterCode)">
                         Genauer
                         <i class="fas fa-search-plus mx-4"></i>

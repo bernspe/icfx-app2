@@ -5,7 +5,6 @@ import {user_store} from "../user_store";
 import {app_store, DataStore, ICFStruct} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate, useRoute, useRouter} from "vue-router";
 import {MDBCol, MDBRow, MDBProgress, MDBProgressBar, MDBSpinner, MDBAlert} from "mdb-vue-ui-kit";
-import InfoButton from "./InfoButton.vue";
 
 const props = defineProps<{ code: string, patientid: string }>()
 
@@ -84,9 +83,7 @@ onBeforeRouteUpdate(async (to, from) => {
           Geschafft: {{ percentDone }}%
         </MDBProgressBar>
       </MDBProgress>
-    <!--
-      <InfoButton component_name="ICFItem"/>
--->
+
     <div class="w-100"></div>
   </MDBRow>
   <ICFThumbCard :code="code"

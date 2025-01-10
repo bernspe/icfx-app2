@@ -9,7 +9,6 @@ import _userdata from "../assets/mock-userdata.json";
 import _patientcases from "../assets/patientcases_de.json";
 import {RemoteInstitutionDataset, user_store} from "../user_store";
 import {imageServer} from "../process_vars";
-import InfoButton from "./InfoButton.vue";
 import {VueScrollPicker} from "vue-scroll-picker";
 import {roles} from "../constants";
 import {useRoute, useRouter} from "vue-router";

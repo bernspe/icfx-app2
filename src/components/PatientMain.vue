@@ -217,9 +217,6 @@ onMounted(() => {
         v-for="i in numberOfBadges" :key="i"
         />
       </MDBCol>
-      <MDBCol class="d-flex justify-content-end">
-        <InfoButton component_name="PatientMain"/>
-      </MDBCol>
     </MDBRow>
     <MDBListGroup>
 
