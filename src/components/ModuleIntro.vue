@@ -70,6 +70,13 @@ const introtext: Record<string, any> = {
     numberquestions: 36,
     startItem: sf36_keys.value[0],
         timeFactor: 0.6,
+  },
+    uxquestionnaire: {
+    heading: 'Fragebogen zur Benutzerfreundlichkeit',
+    expl: 'Danke, dass Du es bis hierhin geschafft hast. Wir würden Dir gern noch ein paar Fragen zur Benutzerfreundlichkeit der ICFx WebApp stellen.',
+    numberquestions: 36,
+    startItem: '1',
+        timeFactor: 0.6,
   }
 }
 

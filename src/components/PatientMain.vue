@@ -11,6 +11,9 @@ import __env from '../assets/env_factors_de.json'
 const _whodas: Record<string, WhodasEnvItemStructure> = __whodas;
 const _env: Record<string, WhodasEnvItemStructure> = __env;
 import _sf36 from '../assets/sf36_de.json'
+import __uxq from "../assets/uxquestionnaire_de.json";
+
+const _uxq:Record<string,Record<string,any>> = __uxq
 
 import {computed, onMounted, ref, watch} from "vue";
 import type {DataStore, ICFStruct} from "../app_store";
@@ -47,6 +50,9 @@ const icf_keys = computed(() => Object.keys(data.value.icf || {}))
 
 const sf36_keys = computed(() => Object.keys(_sf36))
 const sf36_keys_with_answers = Object.values(_sf36).filter(x=>x.answers).length
+
+const uxq_keys = computed(() => Object.keys(_uxq))
+const uxq_keys_with_answers = Object.values(_uxq).filter(x=>x.answers).length
 
 const data = ref<DataStore>(app_store.emptyDataStore())
 
@@ -136,12 +142,17 @@ const lastSf36ItemEdited = computed(()=> Object.keys(data.value.sf36 || {}).leng
 const sf36Edited = computed(() => Math.ceil(Object.keys(data.value.sf36 || {}).length / sf36_keys_with_answers*100))
 const showSf36Details = ref(false)
 
+const lastUxqItemEdited = computed(()=> Object.keys(data.value.uxquestionnaire || {}).length)
+const uxqEdited = computed(() => Math.ceil(Object.keys(data.value.uxquestionnaire || {}).length / uxq_keys_with_answers*100))
+const showUxqDetails = ref(false)
+
 const numberOfBadges = computed(()=> {
   let counter = 0
   if (whodasEdited.value===100) counter+=1
   if (envEdited.value===100) counter+=1
   if (icfEdited.value===100) counter+=1
   if (sf36Edited.value===100) counter+=1
+  if (uxqEdited.value >= 100) counter+=1
   return counter
 })
 
@@ -316,6 +327,18 @@ onMounted(() => {
         </MDBRow>
       </MDBListGroupItem>
 
+      <MDBListGroupItem id="uxquestionnaire">
+                 <ListHeader
+           label="Benutzerfreundlichkeit"
+           :number-icf-items="0"
+           :patientid="patientid"
+           :last-item-edited="uxq_keys[lastUxqItemEdited]"
+           :percent-edited="uxqEdited"
+           module="uxquestionnaire"
+           :start-button-active="icfEdited===100 || TestBetrieb"
+           @clear="clearAll('uxquestionnaire')"
+           ></ListHeader>
+      </MDBListGroupItem>
 
     </MDBListGroup>
   </MDBContainer>

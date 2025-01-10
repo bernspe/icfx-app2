@@ -104,6 +104,14 @@ const routes = [
             requiresAuth: true
         }
     },
+        {
+        path: "/patientdata/uxquestionnaire/:patientid/:item", name: 'uxquestionnaire', component: () => import("../components/UXQuestionnaireItem.vue"),
+        props: true,
+        meta: {
+            recordDuration: true,
+            requiresAuth: true
+        }
+    },
     {
         path: "/patientresult/sf36/:patientid",
         name: 'sf36result',
@@ -129,6 +137,13 @@ const routes = [
         path: "/medview/:patientid?/:preloadgroup?",
         name: "MedProfView",
         component: () => import("../components/MedProfMain.vue"),
+        props: true,
+        meta: {requiresAuth: true},
+    },
+    {
+        path: "/icfbrowser/:patientid?",
+        name: "ICFBrowser",
+        component: () => import("../components/ICFBrowser.vue"),
         props: true,
         meta: {requiresAuth: true},
     },

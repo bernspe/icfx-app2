@@ -77,6 +77,7 @@ export interface DataStore {
     icf: Record<string, ICFStruct>
     coreset: string
     sf36: Record<string, number>
+    uxquestionnaire: Record<string,number>
     merge?: MergeProperties
 }
 
@@ -92,6 +93,7 @@ export interface DataStoreStatistics {
         icf: number
         coreset: number
         sf36: number
+        uxquestionnaire: number
     }
 }
 
@@ -133,7 +135,7 @@ class AppStore extends Store<ApplicationData> {
     }
 
     emptyDataStore(): DataStore {
-        return {id: '', date: '', owner: '', creator: user_store.getState().id, whodas: {}, env: {}, icf: {}, coreset: '', sf36: {}, merge: undefined};
+        return {id: '', date: '', owner: '', creator: user_store.getState().id, whodas: {}, env: {}, icf: {}, coreset: '', sf36: {}, uxquestionnaire: {}, merge: undefined};
     }
 
     clearData() {
@@ -167,6 +169,7 @@ class AppStore extends Store<ApplicationData> {
         if (k === 'icf') return (Object.keys(d.icf|| {})?.length != 0) ? Object.values(d.icf).map(icf => icf.selected > 0 ? 1 as number : 0 as number).reduce((a, b) => a + b) : 0
         if (k === 'coreset') return (d.coreset?.length != 0) ? 1 : 0
         if (k === 'sf36') return (Object.keys(d.sf36 || {})?.length != 0) ? Object.keys(d.sf36).length : 0
+        if (k === 'uxquestionnaire') return (Object.keys(d.uxquestionnaire || {})?.length != 0) ? Object.keys(d.uxquestionnaire).length : 0
         return 0
     }
 
@@ -182,13 +185,14 @@ class AppStore extends Store<ApplicationData> {
                 icf: this.statisticsCalculator('icf', d),
                 coreset: this.statisticsCalculator('coreset', d),
                 sf36: this.statisticsCalculator('sf36', d),
+                uxquestionnaire: this.statisticsCalculator('uxquestionnaire', d),
             }
         }))
     }
 
     transformAPIResponse(d:DataStoreAPI):DataStore {
         return {id:d.id,creator:d.creator,owner:d.owner, date: d.last_modified, merge: d.merge,
-                whodas:d.data?.whodas || {}, env: d.data?.env || {}, icf: d.data.icf || {},coreset: d.data?.coreset || '',sf36: d.data?.sf36 || {}}
+                whodas:d.data?.whodas || {}, env: d.data?.env || {}, icf: d.data.icf || {},coreset: d.data?.coreset || '',sf36: d.data?.sf36 || {}, uxquestionnaire: d.data?.uxquestionnaire || {}}
     }
 
     putCreatorsLastDatasetToCurrentData() {
@@ -259,7 +263,7 @@ class AppStore extends Store<ApplicationData> {
                     xhrFields: {
                         withCredentials: true
                     },
-                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36},
+                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36,uxquestionnaire: d.uxquestionnaire},
                         merge: d.merge,
                         owner: this.state.current_patient_id}
                 };

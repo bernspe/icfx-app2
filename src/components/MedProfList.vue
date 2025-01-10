@@ -11,7 +11,6 @@ import AvatarImage from "./AvatarImage.vue";
 import {translate_pseudonym} from "../language_helper";
 
 
-
 const medprof_list = ref<Array<UserData>>([])
 
 const searchInput = ref('')
@@ -29,7 +28,7 @@ onMounted(() => {
   //TODO: Get MedProf list by institution from API
   medprof_list.value = _userdata.filter(p => !p.groups.includes('patient'))
       .filter(p => p.institution.id === user_store.getState().institution.id)
-   .map(p=>({...p,translated_pseudonym:translate_pseudonym(p.pseudonym)}))
+      .map(p => ({...p, translated_pseudonym: translate_pseudonym(p.pseudonym)}))
   // End of MOCK
 
   app_store.clearData()
@@ -37,16 +36,16 @@ onMounted(() => {
 </script>
 
 <template>
-      <MDBRow class="d-flex align-items-center m-2">
+  <MDBRow class="d-flex align-items-center m-2">
     <MDBCol class="d-flex justify-content-start">
-  <h3 class="text-secondary m-4">Behandler auswählen</h3>
+      <h3 class="text-secondary m-4">Behandler auswählen</h3>
     </MDBCol>
-        <MDBCol class="d-flex justify-content-end">
-        <InfoButton component_name="MedProfList"/>
-        </MDBCol>
-    </MDBRow>
+    <MDBCol class="d-flex justify-content-end">
+      <InfoButton component_name="MedProfList"/>
+    </MDBCol>
+  </MDBRow>
 
-    <MDBInput
+  <MDBInput
       inputGroup
       :formOutline="false"
       wrapperClass="mb-3"
@@ -60,24 +59,29 @@ onMounted(() => {
       <span class="input-group-text border-0" id="search-addon">@</span>
     </template>
   </MDBInput>
- <MDBListGroup light class="me-4">
-    <MDBListGroupItem class="d-flex justify-content-between align-items-center"
-                      v-for="medprof in searched_list"
-    >
-      <div class="d-flex align-items-center p-2">
-        <AvatarImage :pseudonym="medprof.pseudonym" size="55px" color="red" label_position="right"/>
-        <div>
-                <img v-for="g in medprof.groups"
-            :src="imageServer()+`group-pics/${g}.jpg`"
-            alt=""
-            style="width: 45px; height: 45px"
-            class="rounded-circle"
-        />
-          <div v-for="g in medprof.groups" class="text-muted small">{{ g }}</div>
-          </div>
-      </div>
+  <MDBListGroup light class="me-4">
+    <MDBListGroupItem v-for="medprof in searched_list">
+      <router-link :to="{name: 'patientlist',params:{medprofid:medprof.id}}">
+        <MDBRow class="d-flex align-items-center">
+          <MDBCol>
+            <AvatarImage :pseudonym="medprof.pseudonym" size="55px" color="red" label_position="right"/>
+          </MDBCol>
+          <MDBCol>
+            <img v-for="g in medprof.groups"
+                 :src="imageServer()+`group-pics/${g}.jpg`"
+                 alt=""
+                 style="width: 45px; height: 45px"
+                 class="rounded-circle"
+            />
+            <div v-for="g in medprof.groups" class="text-muted small">{{ g }}</div>
+          </MDBCol>
 
-      <router-link :to="{name: 'patientlist',params:{medprofid:medprof.id}}">Auswählen</router-link>
+          <MDBCol class="d-flex justify-content-end">
+            Auswählen
+          </MDBCol>
+        </MDBRow>
+
+      </router-link>
 
     </MDBListGroupItem>
   </MDBListGroup>

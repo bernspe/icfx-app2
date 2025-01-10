@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {MDBCard, MDBCardHeader, MDBCardFooter, MDBCardBody, MDBCol, MDBRow, MDBCardImg, MDBListGroup, MDBListGroupItem, MDBBtn, MDBIcon, MDBDatatable, MDBCardText} from "mdb-vue-ui-kit";
+import {MDBCard, MDBCardHeader, MDBCardFooter, MDBCardBody, MDBCol, MDBRow, MDBCardImg, MDBListGroup, MDBListGroupItem, MDBBtn, MDBIcon, MDBDatatable, MDBCardText, MDBSpinner} from "mdb-vue-ui-kit";
 
 import {computed, onMounted, ref} from "vue";
 import {user_store} from "../user_store";
@@ -11,7 +11,7 @@ import GroupImage from "./GroupImage.vue";
 const _userdata = computed(()=>user_store.getState().userdata)
 
 const leaderdata = ref({
-  columns: ['Pseudonym','MedProf-Gruppe','Anzahl beurteilte Patienten','Gesamtvarianz', 'Punkte'],
+  columns: ['Pseudonym','Gruppe','Patienten','Varianz', 'Punkte'],
   rows:[]
 })
 
@@ -24,7 +24,8 @@ onMounted(()=>{
     leaderdata.value.rows = r.map(entry=>{
       let idx = _userdata.value.map(u => u.id).indexOf(entry[0])
       let pts = Math.floor(entry[1]/(entry[2]!==0 ? entry[2] : 1) * 1000)
-    return [_userdata.value[idx].pseudonym, _userdata.value[idx].groups[0],entry[1],entry[2],pts]
+      let varianz = Math.floor(entry[2]*1000)/1000
+    return [_userdata.value[idx].pseudonym, _userdata.value[idx].groups[0],entry[1],varianz,pts]
     }).sort((a,b)=>b[4]-a[4])
   }).finally(()=>loading.value=false)
 })
@@ -35,6 +36,10 @@ onMounted(()=>{
     <MDBCardImg top style="max-height: 200px; width: auto; object-fit: contain" :src="imageServer()+`gold-medal.png`" />
     <MDBCardHeader>
       <h1>Leaderboard</h1>
+      <MDBRow v-if="loading" class="m-3">
+        <MDBSpinner class="me-4"></MDBSpinner> <span class="text-secondary">Lade Daten...</span>
+      </MDBRow>
+
     </MDBCardHeader>
 
     <MDBCardBody>
@@ -43,7 +48,7 @@ onMounted(()=>{
         <MDBListGroupItem>
            <MDBRow class="align-items-center">
              <MDBCol><h3 class="text-primary">Platz</h3></MDBCol>
-             <MDBCol v-for="c in leaderdata.columns"><h3>{{ c }}</h3></MDBCol>
+             <MDBCol v-for="c in leaderdata.columns"><h4>{{ c }}</h4></MDBCol>
            </MDBRow>
         </MDBListGroupItem>
         <MDBListGroupItem v-for="(row,idx) in leaderdata.rows">

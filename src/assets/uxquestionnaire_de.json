@@ -1,0 +1,378 @@
+{
+  "1": {
+    "chapter": "Komplexität",
+    "question": "Ich finde es oft zu kompliziert, digitale Technologien zur Unterstützung meiner Gesundheitsversorgung zu nutzen.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "2": {
+    "chapter": "Komplexität",
+    "question": "Ich benötige oft mehr Zeit als erwartet, um digitale Gesundheitsanwendungen oder -technologien zu verstehen und zu nutzen.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "3": {
+    "chapter": "Komplexität",
+    "question": "Ich empfinde die digitalen Gesundheitsangebote, die mir zur Verfügung stehen, als zu unübersichtlich oder schwer verständlich.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "4": {
+    "chapter": "Komplexität",
+    "question": "Ich finde es schwierig, mit den neuen Funktionen oder Technologien im Bereich der Gesundheitsversorgung Schritt zu halten",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "5": {
+    "chapter": "Komplexität",
+    "question": "Es würde für mich zu viel Zeit in Anspruch nehmen, vollständig zu verstehen, wie ich digitale Technologien zur Verbesserung meiner Gesundheitsversorgung nutzen kann.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "6": {
+    "chapter": "Datensicherheit",
+    "question": "Ich befürchte, dass meine Nutzung digitaler Gesundheitsdienste weniger vertraulich ist, als ich es mir wünschen würde.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "7": {
+    "chapter": "Datensicherheit",
+    "question": "Ich habe Bedenken, dass die Informationen, die ich über digitale Gesundheitsplattformen teile, nicht ausreichend geschützt sind.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "8": {
+    "chapter": "Datensicherheit",
+    "question": "Ich fürchte, dass böswillige Personen (z. B. Hacker) durch digitale Gesundheitsanwendungen leicht auf meine persönlichen Daten zugreifen könnten.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "9": {
+    "chapter": "Datensicherheit",
+    "question": "Ich habe das Gefühl, dass meine persönlichen Gesundheitsinformationen durch digitale Technologien zu leicht zugänglich sind.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "10": {
+    "chapter": "Datensicherheit",
+    "question": "Ich befürchte, dass meine persönlichen Gesundheitsdaten im Internet leicht von anderen gestohlen werden könnten.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "11": {
+    "chapter": "icFx",
+    "question": "Ich finde, dass die Funktionen des ICF-Programms gut auf meine Bedürfnisse abgestimmt sind.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "12": {
+    "chapter": "icFx",
+    "question": "Ich kann einen großen Nutzen aus der Verwendung des ICF-Programms für meine Gesundheits- oder Rehabilitationsziele ziehen.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "13": {
+    "chapter": "icFx",
+    "question": "Das ICF-Programm bietet mir genau die Funktionen, die ich für meine Zwecke benötige.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "14": {
+    "chapter": "icFx",
+    "question": "Die verschiedenen Funktionen im ICF-Programm helfen mir, meine Gesundheitsziele effektiv zu erreichen.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "15": {
+    "chapter": "icFx",
+    "question": "Ich denke, dass die Übersicht der Ergebnisse  des ICF-Programms sehr hilfreich sind und es mir dabei unterstützt, meine Gesundheitsziele zu verbessern.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "16": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich würde das ICF-Programm nicht öfter nutzen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "17": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich finde das System unnötig komplex",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "18": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich dachte, dass System wäre einfach zu bedienen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "19": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich glaube, dass ich zukünftig Unterstützung in der Nutzung brauchen werde",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "20": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich denke, dass Nutzer schnell mit dem Programm umgehen können",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "21": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich fand das Programm einfach zu bedienen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "22": {
+    "chapter": "Usability",
+    "question": "Es war einfach, meine Angabe in dem ICF-Programm einzusetzen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "23": {
+    "chapter": "Usability",
+    "question": "Die Benutzeroberfläche (das Design) gefällt mir gut",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "24": {
+    "chapter": "Usability",
+    "question": "Ich habe mich bei der Nutzung des ICF-Programms wohlgefühlt",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "25": {
+    "chapter": "Usability",
+    "question": "Die Informationen waren alle verständlich und gut auffindbar",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "26": {
+    "chapter": "Usability",
+    "question": "Wenn ich meine Eingabe korrigieren wollte, konnte ich dies schnell umsetzen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "27": {
+    "chapter": "Usability",
+    "question": "Insgesamt bin ich zufrieden mit der Nutzung des Programms",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ]
+  },
+  "28": {
+    "chapter": "Demografische Daten",
+    "question": "Wie alt sind sie?",
+    "answers": null
+  },
+  "29": {
+    "chapter": "Demografische Daten",
+    "question": "Welchem Geschlecht gehören sie an?",
+    "answers": [
+      "männlich",
+      "weiblich",
+      "divers"
+    ]
+  },
+  "30": {
+    "chapter": "Demografische Daten",
+    "question": "Welche der folgenden Optionen beschreiben am ehsten ihren hächsten abgeschlossenen Schulabschluss?",
+    "answers": [
+      "kein Schulabschluss",
+      "Hauptschulabschluss",
+      "Realschulabschluss",
+      "Mittlere Reife",
+      "Fachabitur",
+      "Fachhochschulreife",
+      "Abitur",
+      "Allgemeine",
+      "Hochschulreife",
+      "Sonstiges"
+    ]
+  },
+  "31": {
+    "chapter": "Demografische Daten",
+    "question": "In welchem Stadt- oder Gemeindetyp leben sie derzeit?",
+    "answers": [
+      "Landgemeinde",
+      "Kleinstadt",
+      "Mittelstadt",
+      "Großstadt"
+    ]
+  },
+  "32": {
+    "chapter": "Demografische Daten",
+    "question": "Verfügen sie über einen schnellen Internetanschluss? ",
+    "answers": [
+      "Ja",
+      "Nein"
+    ]
+  },
+  "33": {
+    "chapter": "Demografische Daten",
+    "question": "Wie häufig nutzen sie das Internet?",
+    "answers": [
+      "Täglich",
+      "Mehrmals pro Woche",
+      "Weniger als einmal pro Woche",
+      "Nie"
+    ]
+  },
+  "34": {
+    "chapter": "Demografische Daten",
+    "question": "Wie fühlen sie sich im Umgang mit digitalen Gesundheitsdienste wie z.B. Videotelefonie mit einem Arzt?",
+    "answers": [
+      "Sehr sicher",
+      "Eher sicher",
+      "Unsicher",
+      "Sehr unsicher",
+      "Ich habe noch nie solche Dienste genutzt"
+    ]
+  },
+  "35": {
+    "chapter": "Offene Textnennung",
+    "question": "Welche Probleme ergaben sich bei der Nutzung des Programms",
+    "answers": null
+  },
+  "36": {
+    "chapter": "Offene Textnennungen",
+    "question": "Ein Fragebogen kann nicht immer alles erfassen, hier ist Platz für weiteres Feedback",
+    "answers": null
+  }
+}

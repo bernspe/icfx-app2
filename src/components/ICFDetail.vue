@@ -5,11 +5,14 @@ import {
     MDBTextarea
 } from 'mdb-vue-ui-kit'
 import _icfcodes from "../assets/icf_codes3.json";
-import {app_store} from "../app_store";
+import {useRoute, useRouter} from "vue-router";
 import {computed} from "vue";
 
+const router = useRouter()
+const route = useRoute()
 const props = defineProps<{ code: string , patientid:string, mode?: string , backUrl?:string, upUrl?: string, nextUrl?: string}>()
 
+const backwards = computed(()=> route.query?.redirect)
 </script>
 
 <template>
@@ -26,17 +29,6 @@ const props = defineProps<{ code: string , patientid:string, mode?: string , bac
           <p>{{ _icfcodes[code].h }}</p>
         </MDBListGroupItem>
 
-        <!--
-        <MDBListGroupItem>
-          <h5 class="text-primary">Erklärung von unseren Mitarbeitern</h5>
-          <p>Bla Bla</p>
-        </MDBListGroupItem>
-
-                <MDBListGroupItem>
-          <h5 class="text-primary">Wie es andere Patienten verstanden haben...</h5>
-          <p>Bla Bla</p>
-        </MDBListGroupItem>
--->
         <MDBListGroupItem>
           <h5 class="text-primary">Was verstehst Du darunter?</h5>
           <MDBRow>
@@ -55,7 +47,7 @@ const props = defineProps<{ code: string , patientid:string, mode?: string , bac
     <MDBCardFooter>
       <MDBRow class="d-flex align-items-center">
         <MDBCol class="justify-content-start">
-          <router-link :to="`/patientdata/icf/${patientid}/${code}`">Zurück</router-link>
+          <router-link :to="backwards ? backwards : `/patientdata/icf/${patientid}/${code}`">Zurück</router-link>
         </MDBCol>
       </MDBRow>
     </MDBCardFooter>

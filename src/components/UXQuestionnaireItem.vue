@@ -7,7 +7,8 @@ import {
   MDBCardFooter,
   MDBRow,
   MDBCol,
-  MDBProgressBar, MDBProgress, MDBSpinner
+  MDBProgressBar, MDBProgress, MDBSpinner,
+    MDBInput
 } from 'mdb-vue-ui-kit'
 import {VueScrollPicker} from 'vue-scroll-picker'
 import {computed, onMounted, ref, watch} from "vue";
@@ -16,9 +17,9 @@ import {app_store, type DataStore} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate} from "vue-router";
 import {imageServer} from "../process_vars";
 import {random} from "lodash";
-import __sf36 from "../assets/sf36_de.json";
+import __uxq from "../assets/uxquestionnaire_de.json";
 
-const _sf36:Record<string,Record<string,any>> = __sf36
+const _uxq:Record<string,Record<string,any>> = __uxq
 
 const props = defineProps({
   patientid: {type: String},
@@ -27,14 +28,14 @@ const props = defineProps({
 
 const navigate = ref(false)
 
-const sf36_item_number  = computed(()=>Object.keys(_sf36).indexOf(props.item))
+const uxq_item_number  = computed(()=>Object.keys(_uxq).indexOf(props.item))
 
 const percentDone = computed(() => {
-    return Math.floor(sf36_item_number.value / Object.keys(_sf36).length * 100)
+    return Math.floor(uxq_item_number.value / Object.keys(_uxq).length * 100)
 })
 
 const backUrl = computed(() => {
-  if (sf36_item_number.value > 0) return `/patientdata/sf36/${props.patientid}/${Object.keys(_sf36)[sf36_item_number.value - 1]}`
+  if (uxq_item_number.value > 0) return `/patientdata/uxquestionnaire/${props.patientid}/${Object.keys(_uxq)[uxq_item_number.value - 1]}`
   else return `/patientview/${props.patientid}`
 })
 
@@ -43,15 +44,18 @@ const upUrl = computed(() => {
 })
 
 const nextUrl = computed(() => {
-  if (sf36_item_number.value < Object.keys(_sf36).length-1) return `/patientdata/sf36/${props.patientid}/${Object.keys(_sf36)[sf36_item_number.value + 1]}`
-  else return `/modulefinish/sf36/${props.patientid}`
+  if (uxq_item_number.value < Object.keys(_uxq).length-1) return `/patientdata/uxquestionnaire/${props.patientid}/${Object.keys(_uxq)[uxq_item_number.value + 1]}`
+  else return `/modulefinish/uxquestionnaire/${props.patientid}`
 })
 
 const optionslist = computed(()=> {
-  let sf36_item = _sf36[props.item]
+  let uxq_item = _uxq[props.item]
   let optlist = []
-  if (Object.keys(sf36_item).includes('answers')) {
-    optlist = sf36_item.answers.map((x:string, idx: number) => ({name: x, value: idx}))
+  if (Object.keys(uxq_item).includes('answers')) {
+    if (uxq_item.answers)
+      optlist = uxq_item.answers.map((x:string, idx: number) => ({name: x, value: idx}))
+    else
+      optlist = []
   }
   return optlist
 })
@@ -59,24 +63,27 @@ const optionslist = computed(()=> {
 
 const result = computed({
   get: () => {
-    let data = app_store.getState().patient_data.sf36
+    let data = app_store.getState().patient_data.uxquestionnaire
     let ks = Object.keys(data || {})
     if (ks.includes(props.item)) {
-      return Number(data[props.item])
+      if (_uxq[props.item].answers) // is this a wheel val
+        return Number(data[props.item])
+      else
+        return data[props.item] // return string
     } else {
-      return _sf36[props.item].default
+      return _uxq[props.item].default
     }
   },
   set: (val) => {
     let data: DataStore = app_store.getState().patient_data
-      data = {...data, sf36: {...app_store.getState().patient_data.sf36, [props.item]: val}}
+      data = {...data, uxquestionnaire: {...app_store.getState().patient_data.uxquestionnaire, [props.item]: val}}
     app_store.setCurrentData(data)
   }
 })
 
 const calculated_data = computed(() => {
   let data: DataStore = app_store.getState().patient_data
-    data = {...data, sf36: {...app_store.getState().patient_data.sf36, [props.item]: result.value}}
+    data = {...data, uxquestionnaire: {...app_store.getState().patient_data.uxquestionnaire, [props.item]: result.value}}
   return data
 })
 
@@ -108,14 +115,16 @@ onBeforeRouteUpdate(async (to, from) => {
           Geschafft: {{ percentDone }}%
         </MDBProgressBar>
       </MDBProgress>
-    <MDBCardTitle class="m-4">{{ _sf36[props.item].question }}</MDBCardTitle>
+    <MDBCardTitle class="m-4">{{ _uxq[props.item].question }}</MDBCardTitle>
     <MDBCardBody class="m-0 p-0">
-      <VueScrollPicker v-if="optionslist.length>0"
+      <VueScrollPicker v-if="optionslist?.length>0 && _uxq[props.item].answers"
           :options="optionslist"
           v-model:model-value="result"
           style="font-size: 20px">
       </VueScrollPicker>
-      <h5 class="text-secondary" v-if="!_sf36[props.item].answers">Die Fragen kommen auf den nächsten Seiten. Klicke einfach auf Weiter.</h5>
+      <MDBRow v-else class="m-4">
+      <MDBInput label="Texteingabe" v-model="result"></MDBInput>
+        </MDBRow>
     </MDBCardBody>
     <MDBCardFooter>
       <MDBRow class="d-flex align-items-center">

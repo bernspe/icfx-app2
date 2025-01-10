@@ -74,6 +74,12 @@ const finishtext: Record<string, any> = {
     expl: 'Vielen Dank, dass Sie die zusätzlichen Fragen zur Lebensqualität mit beantwortet haben. Wir denken, dass Sie den richtigen Schritt gegangen sind, um ihre Mauer einstürzen zu lassen.',
     pic: 'wall_kick.png',
     startItem: sf36_keys.value[0],
+  },
+    uxquestionnaire: {
+    heading: 'Benutzerfreundlichkeit',
+    expl: 'Vielen Dank, dass Sie die zusätzlichen Fragen zur Benutzerfreundlichkeit mit beantwortet haben. Sie helfen uns damit, das Programm weiter zu verbessern.',
+    pic: 'wall_social.png',
+    startItem: '1',
   }
 }
 

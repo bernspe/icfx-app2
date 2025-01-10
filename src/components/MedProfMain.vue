@@ -197,7 +197,10 @@ const lastIcfEdited = computed(() => {
   if (vals.length > 0) {
     let i = Object.values(data.value.icf || {}).map(x => x.selected != 0).lastIndexOf(true)
     if (i === -1) return 0
-    else return i
+    else {
+      let i2 = Object.values(data.value.icf || {}).map(x => x.selected === 0).indexOf(true)
+      return (i>i2) ? i2 : i
+    }
   } else return 0
 })
 
@@ -462,6 +465,17 @@ onMounted(() => {
           @clear="clearAll"
       ></ListHeader>
       <ICFThumbPanel :icfs="icfsFromCoresetData" :patientid="patientid"/>
+      <router-link :to="`/icfbrowser/${patientid}`">
+        <MDBCard style="max-width: 16rem;" class="p-2 text-center">
+          <MDBCardHeader>
+            <img style="max-height: 100px; width: auto; object-fit: contain;" :src="imageServer()+'module-types/icf_browser.svg'"/>
+            <h3 class="mt-2">ICF Browser</h3>
+          </MDBCardHeader>
+          <MDBCardBody>
+            ICF Item selbst auswählen
+          </MDBCardBody>
+        </MDBCard>
+       </router-link>
     </MDBAccordionItem>
   </MDBAccordion>
 </template>

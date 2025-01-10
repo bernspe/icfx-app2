@@ -48,7 +48,7 @@ watch(_showDetails, (newVal, oldVal) => {
     <MDBCol class="text-secondary" v-if="!isPatient || TestBetrieb">
       <MDBSwitch label="Alle ansehen" v-model="_showDetails"/>
     </MDBCol>
-    <MDBCol v-if="percentEdited===100">
+    <MDBCol v-if="percentEdited>=100">
       <MDBPopconfirm
           class="me-1 btn-outline-danger"
               tag="button"
@@ -62,7 +62,7 @@ watch(_showDetails, (newVal, oldVal) => {
       </MDBPopconfirm>
     </MDBCol>
     <MDBCol class="d-flex justify-content-end">
-      <div v-if="percentEdited===100">
+      <div v-if="percentEdited>=100">
         <router-link router-link :to="`/patientdata/${module}/${patientid}/${firstItemToGo}`" v-if="startButtonActive">
           <MDBBtn outline="primary" class="m-1">
             <span class="me-2">Re-Start</span>
