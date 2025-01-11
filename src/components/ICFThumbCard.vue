@@ -137,7 +137,7 @@ onMounted(() => {
 <template>
   <MDBCard
       class="m-2 text-center"
-      style="max-width:16rem;"
+      style="max-width:20rem;"
   >
     <div v-if="_icfcodes[code]?.p">
       <div v-if="mode==='thumb'" class="thumbimg" @click="mouseOverAct($event,code)">

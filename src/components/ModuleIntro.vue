@@ -95,11 +95,11 @@ const introtext: Record<string, any> = {
       <h1>{{ introtext[props.module].heading }}</h1>
     </MDBCardHeader>
     <MDBCardBody>
-      <p v-if="((module==='icf') && !isPatient)">{{ introtext.icf_medprof.expl }}</p>
+      <p v-if="((module==='icf') && !isPatient)" v-html="introtext.icf_medprof.expl"></p>
       <p v-else v-html="introtext[props.module].expl"></p>
       <div v-if="module==='uxquestionnaire'">
         <p>
-        <a href="" target="_blank" rel="noopener noreferrer">Studieninformationen</a>
+          <router-link to="/help#studydocs"> Studieninformationen </router-link>
           </p>
         <MDBBtn color="tertiary" @click="uxq_ok1=true">Zur Studie</MDBBtn>
         <div v-if="uxq_ok1">

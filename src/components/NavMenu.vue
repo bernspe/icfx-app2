@@ -184,6 +184,14 @@ const medprof_groups = computed(() => {
 
         <div class="text-center" style="min-height: 3rem">
       <hr class="mt-0 mb-2" />
+
+                  <MDBSideNavItem>
+                    <MDBSideNavLink to="/help#references">
+                      <MDBIcon icon="copyright" class="fa-fw me-3" />
+                      <span>Quellennachweis</span>
+                    </MDBSideNavLink>
+        </MDBSideNavItem>
+
         <MDBSideNavItem>
            <a href="https://renecol.org/impressum/" target="_blank">Impressum</a>
         </MDBSideNavItem>

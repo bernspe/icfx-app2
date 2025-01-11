@@ -18,6 +18,7 @@ const countDown = () => {
 
 const killCounter = () =>  {
   clearTimeout(counter.value)
+  router.push('/')
 }
 
 watch(counterval,(newVal, oldVal) => {

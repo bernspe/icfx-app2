@@ -4,7 +4,7 @@ import {computed, provide, ref} from "vue";
 import {user_store} from "../user_store";
 import {app_store, DataStore, ICFStruct} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate, useRoute, useRouter} from "vue-router";
-import {MDBCol, MDBRow, MDBProgress, MDBProgressBar, MDBSpinner, MDBAlert} from "mdb-vue-ui-kit";
+import {MDBCol, MDBRow, MDBProgress, MDBProgressBar, MDBSpinner, MDBAlert, MDBContainer} from "mdb-vue-ui-kit";
 
 const props = defineProps<{ code: string, patientid: string }>()
 
@@ -76,6 +76,7 @@ onBeforeRouteUpdate(async (to, from) => {
 </script>
 
 <template>
+   <MDBContainer class="text-center">
   <MDBRow class="d-flex align-items-center m-2 ">
 
       <MDBProgress class="m-2" :height="20">
@@ -86,6 +87,7 @@ onBeforeRouteUpdate(async (to, from) => {
 
     <div class="w-100"></div>
   </MDBRow>
+<MDBRow class="d-flex justify-content-center">
   <ICFThumbCard :code="code"
                 :backUrl="backUrl"
                 :upUrl="upUrl"
@@ -93,13 +95,13 @@ onBeforeRouteUpdate(async (to, from) => {
                 :patientid="patientid"
                 @next="goToNext"
                 mode="large"/>
-
+</MDBRow>
   <MDBRow class="d-flex align-items-center m-2">
     <MDBCol class="justify-content-center">
       <MDBSpinner v-if="navigate" class="ms-3" color="primary" size="lg" />
     </MDBCol>
   </MDBRow>
-
+   </MDBContainer>
 </template>
 
 <style scoped>

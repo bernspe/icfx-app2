@@ -71,31 +71,20 @@ const register = (e: Event) => {
   <MDBContainer class="text-center">
     <MDBCard tag="form" @submit.prevent="register" autocomplete="on" novalidate>
       <MDBCardHeader>
-        <MDBCardImg v-if="user_store.getState().institution.logo_url" :src="user_store.getState().institution.logo_url"/>
+        <MDBCardImg style="max-height: 150px;" v-if="user_store.getState().institution.logo_url" :src="user_store.getState().institution.logo_url"/>
         <MDBCardTitle class="text-secondary mt-2">
           <h1 class="text-secondary">Willkommen auf der ICFx-Plattform <span v-if=" user_store.getState().institution">von</span> {{ user_store.getState().institution.name }}</h1>
+          <router-link to="/help#videohelp">Einführungsvideos</router-link>
         </MDBCardTitle>
       </MDBCardHeader>
-      <MDBCardBody class="m-2 p-2">
-        <MDBRow class="d-flex align-items-top">
-          <MDBCol>
-            <MDBRow>
-              <h2 class="text-secondary">Über ICFx erfahren</h2>
-              <MDBCol>
-              <img :src="imageServer()+'icfx-notebook-logo.jpg'"
-                   style="max-height: 250px; width: auto; object-fit: contain;"/>
-                </MDBCol>
-
-            </MDBRow>
-
-          </MDBCol>
-
-          <MDBCol>
-            <MDBRow class="g-5 needs-validation align-items-center">
+      <MDBCardBody class="m-2">
+            <MDBRow class="needs-validation d-flex align-items-center justify-content-center">
               <h2 class="text-primary">Als {{ findGroup(group).name }} neu registrieren</h2>
-              <MDBCol>
+              <MDBRow class="mt-3 mb-3">
+                <MDBCol>
                 <img :src="imageServer()+`group-pics/${findGroup(group).icon}`"
-                     style="max-height: 150px; width: auto; object-fit: contain;"/>
+                     style="max-height: 100px; width: auto; object-fit: contain;"/>
+                  </MDBCol>
                 <p>
                   Bitte wählen Sie eine vierstellige PIN, die sie sich gut merken können.
                 </p>
@@ -109,8 +98,9 @@ const register = (e: Event) => {
                     required
                     invalidFeedback="Bitte eine vierstellige Zahl"
                     ></MDBInput>
-              </MDBCol>
-              <MDBCol v-if="group !== 'patient'">
+              </MDBRow>
+              <MDBRow v-if="group !== 'patient'" class="mt-3">
+                <hr>
                 <p>Sie benötigen noch den <span class="text-decoration-underline"> Codenamen</span>, um sich als
                   {{ findGroup(group).name }} registrieren zu können. Fragen Sie
                   dazu am besten den Verantwortlichen bei {{ user_store.getState().institution.name }}.</p>
@@ -123,25 +113,19 @@ const register = (e: Event) => {
                     required
                     invalidFeedback="Das stimmt anscheinend nicht."
                     ></MDBInput>
-              </MDBCol>
+              </MDBRow>
             </MDBRow>
-          </MDBCol>
-        </MDBRow>
 
       </MDBCardBody>
 
       <MDBCardFooter>
-        <MDBRow class="d-flex align-items-center" v-if="user_store.getState().institution.logo_url">
-          <MDBCol class="d-flex justify-content-center">
-            <MDBCardImg :src="user_store.getState().institution.logo_url"/>
-          </MDBCol>
-        </MDBRow>
-        <MDBRow class="mt-2 align-items-center d-flex justify-content-between">
+        <MDBRow class="my-2 align-items-center d-flex justify-content-between">
           <MDBCol>
-            <router-link to="/"><MDBIcon icon="home" class="me-2"/>Home</router-link>
-          </MDBCol>
-          <MDBCol>
-            <router-link :to="`/login/${institution_id}`">Ich bin schon registriert -> Anmeldung</router-link>
+            <router-link :to="`/login/${institution_id}`">
+              <MDBBtn color="secondary">
+              Ich bin schon registriert <MDBIcon icon="arrow-right" class="mx-2"/> Anmeldung
+              </MDBBtn>
+            </router-link>
           </MDBCol>
           <MDBCol>
             <MDBBtn :color="status==='loading' ? 'primary' : status" type="submit" :disabled="(pin.length!==4)">
@@ -151,13 +135,9 @@ const register = (e: Event) => {
           </MDBCol>
         </MDBRow>
 
-        <MDBRow class="d-flex justify-content-around">
-          <MDBCol>
-            <a href="https://renecol.org/impressum/" target="_blank">Impressum</a>
-          </MDBCol>
-          <MDBCol>
+        <MDBRow class="mt-4 d-flex justify-content-around">
+          <p>Mit Deiner Registrierung stimmst Du den Datenschutzbestimmungen zu.</p>
             <a href="https://renecol.org/datenschutzerklaerung/#icfx" target="_blank">Datenschutz</a>
-          </MDBCol>
         </MDBRow>
       </MDBCardFooter>
     </MDBCard>

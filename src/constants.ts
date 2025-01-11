@@ -26,8 +26,8 @@ const statusLabels = ['Wartet','Aktiv','Beendet']
 
 const roles =[
       {name: 'Patient/in',icon:'patient.jpg',group:'patient'},
-  {name: 'Ärztin/Arzt',icon:'physician.jpg',group:'physician'},
-    {name: 'Krankenschwester/Pfleger',icon:'nurse.jpg',group:'nurse'},
+  {name: 'Ärztin / Arzt',icon:'physician.jpg',group:'physician'},
+    {name: 'Krankenschwester / Pfleger',icon:'nurse.jpg',group:'nurse'},
     {name: 'Physiotherapeut/in',icon:'physiotherapist.jpg',group:'physiotherapist'},
     {name: 'Psycholog/in',icon:'psychologist.jpg',group:'psychologist'},
     {name: 'Sozialarbeiter/in',icon:'caremanager.jpg',group:'caremanager'},
