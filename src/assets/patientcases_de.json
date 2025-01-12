@@ -19,7 +19,7 @@
   },
     "4": {
     "title": "Die Zucker-Komplikation",
-    "history": "Aufgrund deiner schlecht laufenden Diabetes-Erkrankung hast du einige Komplikationen der Erkrankung kassiert: dein Fuß musste abgenommen werden, du kannst schlecht sehen und die Nieren machen wahrscheinlich bald schlapp. Auch bist du kaum belastbar, da das Herz schlecht funktioniert.",
+    "history": "Aufgrund deiner schlecht laufenden Diabetes-Erkrankung hast du einige Komplikationen der Erkrankung kassiert: dein Fuß musste abgenommen werden, du kannst schlecht sehen und die Nieren machen wahrscheinlich bald schlapp. Auch bist du kaum belastbar - du schaffst mit Mühe einen Treppenabsatz, da das Herz schlecht funktioniert.",
     "diagnoses": "E11,Z89,I50.1",
     "pic": "diabetes.jpg"
   },
@@ -31,8 +31,20 @@
   },
     "6": {
     "title": "Herzeleid",
-    "history": "Seitdem du einmal einen Herzinfarkt hattest, hast du glücklicherweise mit dem Rauchen aufgehört. Dennoch sind Folgeschäden zurückgeblieben. Du kannst nicht mehr so schnell Fahrrad fahren wie früher, auch das Rumtollen mit den Enkeln ist eher eine Belastung als eine Freude. Du hast Angst, dass es zu einem nochmaligen Infarkt kommt, obwohl du dich durch deinen Kardiologen gut betreut fühlst.",
+    "history": "Seitdem du einmal einen Herzinfarkt hattest, hast du glücklicherweise mit dem Rauchen aufgehört. Dennoch sind Folgeschäden zurückgeblieben. Du kannst nicht mehr so schnell (max. 15 km/h) und lange (max. 20 min.) Fahrrad fahren wie früher, auch das Rumtollen mit den Enkeln ist eher eine Belastung als eine Freude. Du hast Angst, dass es zu einem nochmaligen Infarkt kommt, obwohl du dich durch deinen Kardiologen gut betreut fühlst.",
     "diagnoses": "I50.1,I25.13",
     "pic": "cardial-problems.jpg"
+  },
+      "7": {
+    "title": "Heimatlos",
+    "history": "Aufgrund des Krieges hast du dein Land verlassen müssen, deine Familie wurde bei dem Angriff vollständig getötet. Dies ist nun schon 2 Jahre her. Hier bekommst du viele Angebote und könntest sogar eine Arbeit aufnehmen, aber du findest einfach nicht die Kraft dazu.",
+    "diagnoses": "F33",
+    "pic": "man-depressed.jpg"
+  },
+        "8": {
+    "title": "Nur eine Bandscheibenoperation",
+    "history": "Es sei nur eine Bandscheiben-Operation hat Dir der Operateur damals gesagt. Nun bist du schon seit 2 Jahren krank, kannst aufgrund der Schmerzen und der Inkontinenz keine Arbeit mehr auf der Baustelle machen. Laufen geht sehr langsam für höchstens 30 Minuten. Die Rentenversicherung bietet dir eine Umschulung an, aber zu welchem Beruf nur?",
+    "diagnoses": "G95.8,M51.1",
+    "pic": "dropping-tap.jpg"
   }
 }

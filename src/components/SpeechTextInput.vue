@@ -1,34 +1,23 @@
 <script setup lang="ts">
 
-import {MDBBtn, MDBCol, MDBIcon, MDBRow, MDBTextarea} from "mdb-vue-ui-kit";
+import {MDBBtn, MDBCol, MDBIcon, MDBRow, MDBTextarea, MDBSpinner} from "mdb-vue-ui-kit";
 import { useSpeechRecognition } from '@vueuse/core'
 import { ref, watch } from 'vue'
 import {language} from "../constants";
+import {user_store} from "../user_store";
+import {backendURL} from "../process_vars";
+import axios from "axios";
+import {Explanation} from "../app_store";
 
+const props = defineProps(['refcode'])
+const emit = defineEmits(['explained'])
 const lang = ref(language)
 
-function sample<T>(arr: T[], size: number) {
-  const shuffled = arr.slice(0)
-  let i = arr.length
-  let temp: T
-  let index: number
-  while (i--) {
-    index = Math.floor((i + 1) * Math.random())
-    temp = shuffled[index]
-    shuffled[index] = shuffled[i]
-    shuffled[i] = temp
-  }
-  return shuffled.slice(0, size)
-}
 
 const speech = useSpeechRecognition({
   lang,
   continuous: true,
 })
-const color = ref('transparent')
-
-const colors = ['aqua', 'azure', 'beige', 'bisque', 'black', 'blue', 'brown', 'chocolate', 'coral', 'crimson', 'cyan', 'fuchsia', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'indigo', 'ivory', 'khaki', 'lavender', 'lime', 'linen', 'magenta', 'maroon', 'moccasin', 'navy', 'olive', 'orange', 'orchid', 'peru', 'pink', 'plum', 'purple', 'red', 'salmon', 'sienna', 'silver', 'snow', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'white', 'yellow', 'transparent']
-const grammar = `#JSGF V1.0; grammar colors; public <color> = ${colors.join(' | ')} ;`
 
 const interpunktion = {punkt:'.',komma:','}
 const grammar2 = `#JSGF V1.0; grammar punctuation; public <punct> = ${Object.keys(interpunktion).join(' | ')} ;`
@@ -40,27 +29,13 @@ if (speech.isSupported.value) {
   //speechRecognitionList.addFromString(grammar, 1)
   speechRecognitionList.addFromString(grammar2, 1)
   speech.recognition!.grammars = speechRecognitionList
-
-  watch(speech.result, (newVal,oldVal) => {
-    for (const i of speech.result.value.toLowerCase().split(' ').reverse()) {
-      if (colors.includes(i)) {
-        color.value = i
-        break
-      }
-    }
-
-  })
 }
-
-const sampled = ref<string[]>([])
 
 const accumulated_result = ref('')
 function startOrStop() {
   if (isListening.value) speech.stop()
   else {
-    color.value = 'transparent'
     speech.result.value = ''
-    sampled.value = sample(colors, 5)
     speech.start()
   }
 }
@@ -75,19 +50,61 @@ watch(isFinal, (newVal,oldVal)=> {
     accumulated_result.value += result.value
   }
 })
+
+const explainAPIRequest = (refcode: string, text: string) : Promise<Explanation> => {
+        return new Promise((resolve, reject) => {
+            if (user_store.getState().authenticated) {
+                var config = {
+                    method: 'POST',
+                    url: backendURL() + `explain/`,
+                    headers: {
+                        authorization: `Bearer ${user_store.getState().access_token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: {refcode: refcode, text: text}
+                };
+                axios(config).then((response) => {
+                    resolve(response.data)
+                }).catch((e) => {
+                    reject(e);
+                })
+            } else reject('Not authenticated')
+
+        })
+    }
+
+const isSending = ref(false)
+const sendText = () => {
+  isSending.value = true
+  explainAPIRequest(props.refcode,accumulated_result.value).then(()=> emit('explained')).finally(()=>isSending.value=false)
+}
 </script>
 
 <template>
 <MDBRow>
-            <MDBCol col="10">
+           <MDBRow>
           <MDBTextarea rows="4" label="Ich verstehe darunter ..." v-model:model-value="accumulated_result">
           </MDBTextarea>
-              </MDBCol>
-            <MDBCol col="2">
+             </MDBRow>
+              <MDBRow class="d-flex align-items-center justify-content-around">
+            <MDBCol>
               <MDBBtn :color="isListening ? 'primary' : 'secondary'" floating
-              @click="startOrStop"
-              ><MDBIcon icon="microphone"/></MDBBtn>
+              @click="startOrStop" class="mt-2"
+              ><MDBIcon icon="microphone" size="lg"/></MDBBtn>
             </MDBCol>
+                <MDBCol>
+                  <MDBBtn outline="danger" floating class="mt-2" @click="accumulated_result=''"><MDBIcon icon="circle-xmark" size="lg"/></MDBBtn>
+                </MDBCol>
+                <MDBCol>
+              <MDBBtn color="primary" @click="sendText" class="mt-2" floating :disabled="!accumulated_result">
+                <MDBSpinner v-if="isSending" class="me-2"/>
+                <MDBIcon v-else icon="check" size="lg"/>
+              </MDBBtn>
+            </MDBCol>
+                </MDBRow>
           </MDBRow>
 </template>
 

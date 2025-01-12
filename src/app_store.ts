@@ -7,6 +7,14 @@ import {getWhodasSum, normalizeWhodasSum} from "./calculation_helper";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
 
+export interface Explanation extends Object {
+    created: string
+    last_modified: string
+    creator: string
+    validator?: string
+    refcode: string
+    text: string
+}
 export interface PatientCase extends Object {
     title: string,
     history: string,
@@ -224,7 +232,8 @@ class AppStore extends Store<ApplicationData> {
                         resolve(load_sorted_data)
                     }).catch((e) => {
                         console.log('Retrieval of ICFDATA results failed', e)
-                        reject(e);
+                        resolve(this.state.api_patient_records)
+                        //reject(e);
                     })
                 } else reject('Not authenticated')
             } else { // LOAD FROM MOCK DATA
@@ -346,9 +355,36 @@ class AppStore extends Store<ApplicationData> {
         })
     }
 
-    setUsersOfThisInstitution(userarray: Array<UserData>) {
-        this.state.users_of_this_institution = userarray;
+
+    loadExplanationsFromApi(refcode: string): Promise<Array<Explanation>> {
+        return new Promise((resolve, reject) => {
+            if (user_store.getState().access_token) { // API CALL
+                if (user_store.getState().authenticated && !user_store.getState().mock_mode) {
+                    var config = {
+                        method: 'GET',
+                        url: backendURL() + "explain/getexplanationsbyrefcode/",
+                        headers: {
+                            authorization: `Bearer ${user_store.getState().access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        params: {
+                            refcode: refcode
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                    };
+                    axios(config).then((response:{data: Array<Explanation>}) => {
+                        resolve(response.data)
+                    }).catch((e) => {
+                        console.log('Retrieval of Explanations failed', e)
+                        reject(e);
+                    })
+                } else reject('Not authenticated')
+            }
+        })
     }
+
 }
 
 export const

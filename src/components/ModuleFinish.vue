@@ -77,7 +77,7 @@ const finishtext: Record<string, any> = {
   },
     uxquestionnaire: {
     heading: 'Benutzerfreundlichkeit',
-    expl: 'Vielen Dank, dass Sie die zusätzlichen Fragen zur Benutzerfreundlichkeit mit beantwortet haben. Sie helfen uns damit, das Programm weiter zu verbessern.',
+    expl: 'Vielen Dank für Ihre Teilnahme. Sie sind nun am Ende der Befragung angekommen. Sie können das Fenster nun schließen. Ihre Angaben wurden gespeichert.',
     pic: 'wall_social.png',
     startItem: '1',
   }

@@ -8,7 +8,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "2": {
     "chapter": "Komplexität",
@@ -19,7 +20,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "3": {
     "chapter": "Komplexität",
@@ -30,7 +32,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "4": {
     "chapter": "Komplexität",
@@ -41,7 +44,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "5": {
     "chapter": "Komplexität",
@@ -52,7 +56,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "6": {
     "chapter": "Datensicherheit",
@@ -63,7 +68,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "7": {
     "chapter": "Datensicherheit",
@@ -74,7 +80,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "8": {
     "chapter": "Datensicherheit",
@@ -85,7 +92,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "9": {
     "chapter": "Datensicherheit",
@@ -96,7 +104,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "10": {
     "chapter": "Datensicherheit",
@@ -107,7 +116,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "11": {
     "chapter": "icFx",
@@ -118,7 +128,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "12": {
     "chapter": "icFx",
@@ -129,7 +140,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "13": {
     "chapter": "icFx",
@@ -140,7 +152,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "14": {
     "chapter": "icFx",
@@ -151,7 +164,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "15": {
     "chapter": "icFx",
@@ -162,7 +176,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "16": {
     "chapter": "Verständlichkeit",
@@ -173,7 +188,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "17": {
     "chapter": "Verständlichkeit",
@@ -184,7 +200,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "18": {
     "chapter": "Verständlichkeit",
@@ -195,7 +212,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "19": {
     "chapter": "Verständlichkeit",
@@ -206,7 +224,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "20": {
     "chapter": "Verständlichkeit",
@@ -217,7 +236,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "21": {
     "chapter": "Verständlichkeit",
@@ -228,7 +248,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "22": {
     "chapter": "Usability",
@@ -239,7 +260,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "23": {
     "chapter": "Usability",
@@ -250,7 +272,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "24": {
     "chapter": "Usability",
@@ -261,7 +284,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "25": {
     "chapter": "Usability",
@@ -272,7 +296,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "26": {
     "chapter": "Usability",
@@ -283,7 +308,8 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "27": {
     "chapter": "Usability",
@@ -294,11 +320,12 @@
       "neutral",
       "stimme eher nicht zu",
       "stimme überhaupt nicht zu"
-    ]
+    ],
+    "default": 2
   },
   "28": {
     "chapter": "Demografische Daten",
-    "question": "Wie alt sind sie?",
+    "question": "Wie alt sind sie? (Alter in Jahren z.B. 70)",
     "answers": null
   },
   "29": {
@@ -308,11 +335,12 @@
       "männlich",
       "weiblich",
       "divers"
-    ]
+    ],
+    "default": 0
   },
   "30": {
     "chapter": "Demografische Daten",
-    "question": "Welche der folgenden Optionen beschreiben am ehsten ihren hächsten abgeschlossenen Schulabschluss?",
+    "question": "Welche der folgenden Optionen beschreibt am ehesten ihren höchsten abgeschlossenen Schulabschluss?",
     "answers": [
       "kein Schulabschluss",
       "Hauptschulabschluss",
@@ -321,28 +349,29 @@
       "Fachabitur",
       "Fachhochschulreife",
       "Abitur",
-      "Allgemeine",
-      "Hochschulreife",
+      "Allgemeine Hochschulreife",
       "Sonstiges"
-    ]
+    ],
+    "default": 3
   },
   "31": {
     "chapter": "Demografische Daten",
     "question": "In welchem Stadt- oder Gemeindetyp leben sie derzeit?",
     "answers": [
-      "Landgemeinde",
-      "Kleinstadt",
-      "Mittelstadt",
-      "Großstadt"
-    ]
+      "Landgemeinde / Kleinstadt (bis 20.000 Einwohner)",
+      "Mittelstadt (bis 100.000 Einwohner)",
+      "Großstadt (mehr als 100.000 Einwohner)"
+    ],
+    "default": 1
   },
   "32": {
     "chapter": "Demografische Daten",
-    "question": "Verfügen sie über einen schnellen Internetanschluss? ",
+    "question": "Verfügen sie über einen ausreichend schnellen Internetanschluss?",
     "answers": [
       "Ja",
       "Nein"
-    ]
+    ],
+    "default": 0
   },
   "33": {
     "chapter": "Demografische Daten",
@@ -352,7 +381,8 @@
       "Mehrmals pro Woche",
       "Weniger als einmal pro Woche",
       "Nie"
-    ]
+    ],
+    "default": 0
   },
   "34": {
     "chapter": "Demografische Daten",
@@ -363,7 +393,8 @@
       "Unsicher",
       "Sehr unsicher",
       "Ich habe noch nie solche Dienste genutzt"
-    ]
+    ],
+    "default": 2
   },
   "35": {
     "chapter": "Offene Textnennung",
