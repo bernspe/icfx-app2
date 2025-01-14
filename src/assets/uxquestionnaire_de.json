@@ -340,19 +340,21 @@
   },
   "30": {
     "chapter": "Demografische Daten",
-    "question": "Welche der folgenden Optionen beschreibt am ehesten ihren höchsten abgeschlossenen Schulabschluss?",
+    "question": "Welche der folgenden Optionen beschreibt am ehesten ihren höchsten Bildungsabschluss?",
     "answers": [
       "kein Schulabschluss",
       "Hauptschulabschluss",
-      "Realschulabschluss",
-      "Mittlere Reife",
-      "Fachabitur",
-      "Fachhochschulreife",
-      "Abitur",
-      "Allgemeine Hochschulreife",
+      "Realschulabschluss / Mittlere Reife",
+      "Fachhochschulreife / Fachabitur",
+      "Allgemeine Hochschulreife / Abitur",
+      "Lehre",
+      "Meister",
+      "Diplom",
+      "Master",
+      "Promotion",
       "Sonstiges"
     ],
-    "default": 3
+    "default": 2
   },
   "31": {
     "chapter": "Demografische Daten",
