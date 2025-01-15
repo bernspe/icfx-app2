@@ -22,6 +22,7 @@ import {user_store} from "../user_store";
 import GroupImage from "./GroupImage.vue";
 import {imageServer} from "../process_vars";
 import {useRoute, useRouter} from "vue-router";
+import PatientCaseCard from "./PatientCaseCard.vue";
 
 
 const router = useRouter()
@@ -157,6 +158,15 @@ const currentPerspectiveGroup2 = computed(() => {
     else return user_store.getState().groups
   } else return user_store.getState().groups
 })
+
+const patient_case = computed(() => {
+  if (app_store.getState().current_patient_id && _userdata.value.length > 0) {
+    let idx = _userdata.value.map(u => u.id).indexOf(app_store.getState().current_patient_id)
+    return _userdata.value[idx].patient_case
+  }
+  if (user_store.getState().patient_case) return user_store.getState().patient_case
+})
+
 const loadDataSetFromApi = (d: DataStore) => {
   // set current medprof user as primary dataset for merging
   secondaryData1.value = newestDataSetFromEachCreator.value.filter(dx => dx.creator === user_store.getState().id)[0]
@@ -430,6 +440,12 @@ onMounted(() => {
             v-show="preload_other_data"
             @entry_clicked="loadDataSetFromApi"
             :key="api_data_store_size"/>
+      </MDBRow>
+    </MDBAccordionItem>
+
+        <MDBAccordionItem header-title="Fallbeispiel" collapse-id="patient_case" v-if="patient_case">
+      <MDBRow class="d-flex align-items-center m-2">
+        <PatientCaseCard :casenumber="patient_case"/>
       </MDBRow>
     </MDBAccordionItem>
 

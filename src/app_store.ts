@@ -244,7 +244,7 @@ class AppStore extends Store<ApplicationData> {
                 }
 
                 const load_sorted_data = loaded_data.sort((a: DataStore, b: DataStore) => moment(b.date).diff(moment(a.date)));
-                this.state.api_patient_records = load_sorted_data
+                //this.state.api_patient_records = load_sorted_data
                 this.putCreatorsLastDatasetToCurrentData()
                 resolve(load_sorted_data)
             }

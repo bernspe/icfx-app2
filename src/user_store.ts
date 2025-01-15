@@ -33,6 +33,7 @@ export interface RemoteInstitutionDataset extends Object {
     name: string,
     logo_url?: string,
     suffix?: string
+    case_simulation?: boolean
 }
 
 export interface RemoteUserAPI {

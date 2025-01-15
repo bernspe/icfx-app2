@@ -36,7 +36,7 @@ onMounted(()=> {
   </MDBCardHeader>
   <MDBCardBody>
   <h2>Sorry für die Baustelle</h2>
-  <img :src="imageServer()+'/whodas-pics/version-1/man-hard-hat-with-helmet-drill-his-hand-is-digging-hole-building.jpg'" style="height:300px; width: auto; object-fit: contain;"/>
+  <img :src="imageServer()+'whodas-pics/version-1/man-hard-hat-with-helmet-drill-his-hand-is-digging-hole-building.jpg'" style="height:300px; width: auto; object-fit: contain;"/>
   <p class="lead">Wir arbeiten noch an einer Lösung.</p>
   </MDBCardBody>
   <MDBCardFooter>

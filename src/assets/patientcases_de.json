@@ -1,49 +1,49 @@
 {
   "1": {
     "title": "Das Hüftleiden",
-    "history": "Du kannst wegen einer Arthrose in der Hüfte schlecht laufen - kommst maximal 400 Meter weit. Zum Glück hast du Nachbarn, die für dich einkaufen gehen.",
+    "history": "<p>Du kannst wegen einer Arthrose in der Hüfte schlecht laufen - kommst <b>maximal 400 Meter</b> weit. Zum Glück hast du Nachbarn, die für dich einkaufen gehen.</p><p>Dein Orthopäde hat dir bereits geraten, ein Kunstgelenk einbauen zu lassen. Du hast aber Angst vor diesem Schritt. Da du <b>regelmässig Physiotherapie</b> bekommst, hoffst du, dass sich das noch etwas rauszögern lässt.</p>",
     "diagnoses": "M16",
     "pic": "old-woman-traveling-alone-summer.jpg"
   },
-    "2": {
+  "2": {
     "title": "Schlechte Sicht",
-    "history": "Wegen eines Augenleidens kannst du schlecht sehen und deswegen nicht selbst Auto fahren. Du benötigst Hilfe von deinen Kindern, die die Einkäufe machen. Deinen Haushalt schaffst du mit etwas Mühe selbst.",
+    "history": "<p>Wegen eines Augenleidens kannst du immer schlechter sehen und deswegen nicht mehr selbst Auto fahren. Du benötigst <b>zweimal in der Woche Hilfe von deinen Kindern</b>, die die Einkäufe machen. Deinen Haushalt schaffst du mit etwas Mühe selbst.</p><p>Schade, dass du abends nicht mehr zum Chor gehen kannst - du erkennst die Noten einfach nicht mehr.</p>",
     "diagnoses": "H26.0",
     "pic": "portrait-smart-attractive-business-woman-with-glasses-happy-expression.jpg"
   },
-    "3": {
+  "3": {
     "title": "Arm dran",
-    "history": "Irgendwie ist der rechte Arm nach dem Sturz im letzten Jahr nicht so recht wieder geworden. Du hast dadurch Schwierigkeiten, deinen Haushalt zu bewältigen. Hilfe bekommst du keine, weil die Kinder weit weg wohnen.",
+    "history": "<p>Irgendwie ist der rechte Arm nach dem Sturz im letzten Jahr nicht so recht wieder geworden. Du hast dadurch Schwierigkeiten, deinen Haushalt zu bewältigen. <b>Hilfe bekommst du keine</b>, weil die Kinder weit weg wohnen.</p><p>Einkaufen geht ja noch, aber Wäsche aufhängen und Wohnung saubermachen geht <b>nicht mehr</b>, weshalb du jetzt eine Haushaltshilfe beantragt hast. </p>",
     "diagnoses": "S42.2",
     "pic": "right-arm.jpg"
   },
-    "4": {
+  "4": {
     "title": "Die Zucker-Komplikation",
-    "history": "Aufgrund deiner schlecht laufenden Diabetes-Erkrankung hast du einige Komplikationen der Erkrankung kassiert: dein Fuß musste abgenommen werden, du kannst schlecht sehen und die Nieren machen wahrscheinlich bald schlapp. Auch bist du kaum belastbar - du schaffst mit Mühe einen Treppenabsatz, da das Herz schlecht funktioniert.",
+    "history": "<p>Aufgrund deines schlecht laufenden Diabetes hast du einige Komplikationen der Erkrankung kassiert: dein Fuß musste abgenommen werden (weil die Prothese nicht funktioniert, sitzt du <b>im Rollstuhl</b>), du kannst schlecht sehen (<b>Zeitung lesen geht nicht mehr</b>) und die Nieren machen wahrscheinlich bald schlapp - dein Hausarzt hat schon mit Dialyse gedroht.</p> <p>Auch bist du kaum belastbar - du schaffst <b>mit Mühe einen Treppenabsatz</b>, da das Herz schlecht funktioniert.</p><p>Aufgrund der fehlenden Belastbarkeit bekommst du eine volle Erwerbsminderungsrente.</p>",
     "diagnoses": "E11,Z89,I50.1",
     "pic": "diabetes.jpg"
   },
-    "5": {
+  "5": {
     "title": "Darm ohne Charme",
-    "history": "Nach einer missglückten Darmoperation kannst du nicht mehr alles essen. Ausserdem brauchst du immer eine Toilette in der Nähe. Häufiger mal weggehen ist schwierig.",
+    "history": "<p>Nach einer missglückten Darmoperation kannst du nicht mehr alles essen. Ausserdem brauchst du <b>immer eine Toilette in der Nähe</b>. Häufiger mal weggehen ist schwierig.</p><p>Dummerweise hat dein Arbeitgeber von diesen Problemen Wind bekommen und dir aus fadenscheinigen Gründen <b>gekündigt</b>.</p>",
     "diagnoses": "Z85.0,Z93.4",
     "pic": "toilet-problem.jpg"
   },
-    "6": {
+  "6": {
     "title": "Herzeleid",
-    "history": "Seitdem du einmal einen Herzinfarkt hattest, hast du glücklicherweise mit dem Rauchen aufgehört. Dennoch sind Folgeschäden zurückgeblieben. Du kannst nicht mehr so schnell (max. 15 km/h) und lange (max. 20 min.) Fahrrad fahren wie früher, auch das Rumtollen mit den Enkeln ist eher eine Belastung als eine Freude. Du hast Angst, dass es zu einem nochmaligen Infarkt kommt, obwohl du dich durch deinen Kardiologen gut betreut fühlst.",
+    "history": "<p>Seitdem du einmal einen Herzinfarkt hattest, hast du glücklicherweise mit dem Rauchen aufgehört. Dennoch sind Folgeschäden zurückgeblieben. Du kannst <b>nicht mehr so schnell (max. 15 km/h) und lange (max. 20 min.) Fahrrad fahren</b> wie früher, auch das Rumtollen mit den Enkeln ist eher eine Belastung als eine Freude. Du hast Angst, dass es zu einem nochmaligen Infarkt kommt, obwohl du dich <b>durch deinen Kardiologen gut betreut</b> fühlst.</p><p>Wie du die letzten 5 Jahre in deinem <b>Beruf als Abteilungsleiter mit all dem Streß</b> durchstehst, weißt du noch nicht. Du überlegst, ob du nicht früher aufhörst oder in der Firmenhierarchie etwas zurücktrittst.</p>",
     "diagnoses": "I50.1,I25.13",
     "pic": "cardial-problems.jpg"
   },
-      "7": {
+  "7": {
     "title": "Heimatlos",
-    "history": "Aufgrund des Krieges hast du dein Land verlassen müssen, deine Familie wurde bei dem Angriff vollständig getötet. Dies ist nun schon 2 Jahre her. Hier bekommst du viele Angebote und könntest sogar eine Arbeit aufnehmen, aber du findest einfach nicht die Kraft dazu.",
+    "history": "<p>Aufgrund des <b>Krieges</b> hast du dein <b>Land verlassen</b> müssen, deine Familie wurde bei dem Angriff vollständig getötet. Dies ist nun schon 2 Jahre her. Hier bekommst du <b>viele Angebote und könntest sogar eine Arbeit</b> aufnehmen, aber du findest einfach <b>nicht die Kraft</b> dazu.</p><p>Schwierig ist auch, dass du immer noch <b>nicht richtig Deutsch</b> kannst, so dass du die Leute auf der Straße <b>kaum verstehst</b>. Mit den ebenfalls geflüchteten Landsleuten aus deiner Heimat verstehst du dich schlecht - du hast hier <b>einfach keine Freunde</b>.</p>",
     "diagnoses": "F33",
     "pic": "man-depressed.jpg"
   },
-        "8": {
+  "8": {
     "title": "Nur eine Bandscheibenoperation",
-    "history": "Es sei nur eine Bandscheiben-Operation hat Dir der Operateur damals gesagt. Nun bist du schon seit 2 Jahren krank, kannst aufgrund der Schmerzen und der Inkontinenz keine Arbeit mehr auf der Baustelle machen. Laufen geht sehr langsam für höchstens 30 Minuten. Die Rentenversicherung bietet dir eine Umschulung an, aber zu welchem Beruf nur?",
+    "history": "<p>Es sei nur eine Bandscheiben-Operation hat Dir der Operateur damals gesagt. Nun bist du schon <b>seit 2 Jahren krank</b>, kannst aufgrund der Schmerzen und der Inkontinenz <b>keine Arbeit mehr auf der Baustelle machen</b>. Laufen geht sehr langsam für <b>höchstens 30 Minuten</b>. Die Rentenversicherung <b>bietet dir eine Umschulung an</b>, aber zu welchem Beruf nur?</p> <p>Hinzu kommt, dass du seit einem halben Jahr auf <b>soziale Unterstützungsleistungen</b> angewiesen bist. Das nagt ganz schön an deinem Selbstbewußtsein. Den Kontakt zu deinen <b>Freunden</b> hast du abgebrochen.</p>",
     "diagnoses": "G95.8,M51.1",
     "pic": "dropping-tap.jpg"
   }

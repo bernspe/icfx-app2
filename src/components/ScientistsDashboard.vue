@@ -19,6 +19,7 @@ import {app_store, ICFItemStructure, ICFStruct} from "../app_store";
 
 import ICFResultBarGraph from "./ICFResultBarGraph.vue";
 import {useRoute, useRouter} from "vue-router";
+import WhodasResultBarGraphByPatientCase from "./WhodasResultBarGraphByPatientCase.vue";
 
 export interface RowStructure {
   content: string,
@@ -28,7 +29,12 @@ export interface RowStructure {
   icfdata: Record<string, ICFStruct>,
   id: string,
   merge: string,
-  patient: string
+  patient: string,
+  whodas: Record<string, number>,
+  env: Record<string, number>,
+  coreset: string,
+  sf36: Record<string, number>,
+  patient_case: string
 }
 
 
@@ -38,15 +44,15 @@ const route = useRoute()
 const searchPatient = ref('')
 
 const datasetPatients = {
-  columns: ["Pseudonym", "ID"],
-  rows: user_store.getState().userdata?.filter(x => x.groups.includes('patient')).map(u => ([u.pseudonym, u.id])) || []
+  columns: ["Pseudonym","patient_case", "ID"],
+  rows: user_store.getState().userdata?.filter(x => x.groups.includes('patient')).map(u => ([u.pseudonym, u.patient_case, u.id])) || []
 }
 
 const collectSelectedPatients = (rows: Array<any>) => {
   selectedPatients.value = rows
 }
 
-const selectedPatients = ref([{pseudonym: '', id: ''}])
+const selectedPatients = ref([{pseudonym: '',patient_case:'', id: ''}])
 
 const loadIcfs = () => {
   if (selectedPatients.value) {
@@ -68,7 +74,12 @@ const loadIcfs = () => {
             content: content,
             merge: d.merge ? d.merge.operation : 'N',
             id: d.id,
-            icfdata: d.icf
+            icfdata: d.icf,
+            whodas: d.whodas,
+            env: d.env,
+            coreset: d.coreset,
+            sf36: d.sf36,
+            patient_case: patient.patient_case,
           }
           if (datasetIcfs.value.rows) datasetIcfs.value.rows.push(t)
           else datasetIcfs.value.rows = [t]
@@ -135,7 +146,17 @@ onMounted(()=> {
         </MDBCol>
       </MDBRow>
 
+      <MDBRow class="m-2">
+      <h2 class="text-primary">Whodas</h2>
+      <WhodasResultBarGraphByPatientCase :datarows="icfRows" v-if="icfRows"/>
+
+        </MDBRow>
+
+      <MDBRow class="m-2">
+      <h2 class="text-primary">ICFs</h2>
       <ICFResultBarGraph :datarows="icfRows" v-if="icfRows"/>
+</MDBRow>
+
 
       <h2 class="text-secondary">Access Token</h2>
       <h4 class="text-primary">{{ user_store.getState().access_token }}

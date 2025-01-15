@@ -32,7 +32,7 @@ const patient = computed(() => {
         {{ patient.title }}
       </MDBCardTitle>
       <MDBCardText>
-        {{ patient.history }}
+        <p v-html="patient.history"/>
       </MDBCardText>
     </MDBCardBody>
     <MDBCardFooter class="p-2">
