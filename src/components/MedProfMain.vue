@@ -209,7 +209,7 @@ const lastIcfEdited = computed(() => {
     if (i === -1) return 0
     else {
       let i2 = Object.values(data.value.icf || {}).map(x => x.selected === 0).indexOf(true)
-      return (i>i2) ? i2 : i
+      return (i>i2) ? i : i2
     }
   } else return 0
 })
@@ -445,7 +445,7 @@ onMounted(() => {
 
         <MDBAccordionItem header-title="Fallbeispiel" collapse-id="patient_case" v-if="patient_case">
       <MDBRow class="d-flex align-items-center m-2">
-        <PatientCaseCard :casenumber="patient_case"/>
+        <PatientCaseCard :casenumber="patient_case" :omit-weiter-button="true"/>
       </MDBRow>
     </MDBAccordionItem>
 

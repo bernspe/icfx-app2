@@ -136,7 +136,7 @@ const register = (e: Event) => {
         </MDBRow>
 
         <MDBRow class="mt-4 d-flex justify-content-around">
-          <p>Mit Deiner Registrierung stimmst Du den Datenschutzbestimmungen zu.</p>
+          <p>Mit Ihrer Registrierung stimmen Sie den Datenschutzbestimmungen zu.</p>
             <a href="https://renecol.org/datenschutzerklaerung/#icfx" target="_blank">Datenschutz</a>
         </MDBRow>
       </MDBCardFooter>

@@ -11,7 +11,7 @@ import {imageServer} from "../process_vars";
 import {PatientCase} from "../app_store";
 const router = useRouter()
 const route = useRoute()
-const props = defineProps(['casenumber'])
+const props = defineProps(['casenumber','omitWeiterButton'])
 
 const patientcases: Record<string, PatientCase> = _patientcases
 
@@ -35,7 +35,7 @@ const patient = computed(() => {
         <p v-html="patient.history"/>
       </MDBCardText>
     </MDBCardBody>
-    <MDBCardFooter class="p-2">
+    <MDBCardFooter class="p-2" v-if="!omitWeiterButton">
     <router-link :to="route.query.redirect?.toString() || '/'">Zu den Fragebögen</router-link>
     </MDBCardFooter>
   </MDBCard>

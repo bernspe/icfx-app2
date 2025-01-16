@@ -20,6 +20,7 @@ import {app_store, ICFItemStructure, ICFStruct} from "../app_store";
 import ICFResultBarGraph from "./ICFResultBarGraph.vue";
 import {useRoute, useRouter} from "vue-router";
 import WhodasResultBarGraphByPatientCase from "./WhodasResultBarGraphByPatientCase.vue";
+import ResultDescriptiveStatisticsWholeInstitution from "./ResultDescriptiveStatisticsWholeInstitution.vue";
 
 export interface RowStructure {
   content: string,
@@ -122,9 +123,15 @@ onMounted(()=> {
     </MDBCardHeader>
     <MDBCardBody class="p-2">
       <h2 class="text-secondary">
+        Deskriptive Statistik
+      </h2>
+      <MDBRow>
+          <ResultDescriptiveStatisticsWholeInstitution/>
+      </MDBRow>
+
+      <h2 class="text-secondary">
         ICF Verteilung
       </h2>
-
       <MDBRow>
         <MDBCol md="4">
           <h3 class="text-secondary">Patientenauswahl</h3>
