@@ -1,11 +1,12 @@
 {
   "1": {
-    "s": "Umweltfaktoren",
-    "t": "Wie beeinflussen äußere Gegebenheiten wie zum Beispiel Klima, Luftqualität, Lärm, und Wohnumfeld Ihr Leben?",
-    "d": "Beantworten Sie die Fragen bitte vor dem Hintergrund ihrer aktuellen Situation. Dabei dürfen  z.B. auch negative oder positive Einflüsse von Jahreszeiten oder aktuelle Beeinträchtigungen von z.B. Baulärm mit einfliessen.",
+    "s": "Umwelt",
+    "t": "<p>Wie werden Sie beeinflusst durch:</p><ul><li>Wetter,</li><li>Qualität der Luft (frische Luft, Abgase, Rauch),</li><li>Lärm und</li><li>Wohnumfeld?</li></ul>",
+
+    "d": "Beachten Sie für die Antwort bitte Ihre persönliche Situation. Sie können auch positive oder negative Einflüsse von Jahreszeiten bei Ihrer Antwort beachten. Sie können auch aktuelle Beeinträchtigungen wie Baulärm beachten.",
     "e": [
-      "Haben Faktoren, wie z.B. die Luftfeuchtigkeit, die Lufttemperatur, die Anzahl der Sonnentage, graues Wetter ohne Sonne Einfluss auf Ihr Leben?",
-      "Hat ihr Wohnumfeld, wie z.B. laute Umgebung, oder viel Natur einen Einfluss auf Ihr Leben?"
+     "<p>Wie werden Sie beeinflusst durch:</p><ul><li>Luftfeuchtigkeit,</li><li>Lufttemperatur (Hitze, Kälte),</li><li>Anzahl sonniger Tage oder</li><li>graues Wetter ohne Sonnenschein?</li></ul>",
+      "<p>Wie beeinflusst Sie die Umgebung ihres Wohnorts? Wohnen Sie zum Beispiel:</p><ul><li>in einer lauten Umgebung oder</li><li>in einer Umgebung mit viel Natur?</li></ul>"
     ],
     "l": "e210,e215,e220,e225,e230,e235,e240,e245,e250,e255,e260",
     "p": [
@@ -18,11 +19,10 @@
   },
   "2": {
     "s": "Gesundheitswesen",
-    "t": "Sollten Sie in erheblichem Maße auf Einrichtungen des Gesundheitssystems angewiesen sein - ist Ihr Leben positiv oder negativ davon beeinflusst?",
-    "d": "Beziehen Sie sich bitte auf die derzeit von Ihnen benötigten oder bereits genutzten Einrichtungen wie Krankenhäuser, Arztpraxen, Apotheken, etc. Die Antwort kann sich auch darauf beziehen, dass Einrichtungen nicht vorhanden sind.",
+    "t": "Wenn Sie häufig Hilfe von Einrichtungen des Gesundheitswesens wie Krankenhäusern oder Apotheken brauchen: Wie beeinflussen diese Einrichtungen ihr Leben?",
+    "d": "<p>Denken Sie bei Ihrer Antwort an Einrichtungen, die sie entweder:</p><ul><li>gerade nutzen,</li><li>bereits genutzt haben oder</li><li>brauchen.</li><ul><p>Sie können an Einrichtungen denken, die Sie brauchen, aber die es noch nicht gibt.</p>",
     "e": [
-      "Als Einrichtungen des Gesundheitswesens können neben Krankenhäusern, Pflegeeinrichtungen, Ambulanzen, niedergelassenen Ärzten auch Apotheken und der Medizinprodukt-Fachhandel gesehen werden.",
-      "Haben Sie z. B. Schwierigkeiten einen Arzttermin zu bekommen oder müssen sie lange auf eine gewünschte Behandlung warten. Werden Sie durch ambulante Pflegekräfte versorgt, was Ihnen sehr hilft? Etc…"
+      "<p>Sie können bei Ihrer Antwort an folgende Fragen denken:</p><ul><li>Haben Sie Probleme, einen Termin beim Arzt zu bekommen?</li><li>Müssen sie lange auf eine gewünschte Behandlung warten?</li><li>Kommen zu Ihnen Pflegekräfte nach Hause und hilft Ihnen das in Ihrem Alltag?</li></ul>"
     ],
     "l": "e580,",
     "p": [
@@ -35,14 +35,12 @@
   },
   "3": {
     "s": "Gesellschaft",
-    "t": "Wie wirken sich öffentliche Einrichtungen auf die Qualität Ihres Lebens aus?",
-    "d": "Bekommen Sie Unterstützung von öffentlichen Stellen? Werden Sie von öffentlichen Stellen geärgert?",
+    "t": "Wie beeinflussen öffentliche Einrichtungen Ihr Leben?",
+    "d": "<p>Denken Sie bei der Frage darüber nach, ob Sie:</p><ul><li>Hilfe von öffentlichen Einrichtungen bekommen oder </li><li>Probleme beim Besuch von öffentlichen Einrichtungen haben?</li></ul>",
     "e": [
-      "Öffentliche Einrichtungen sind u.a. Museen, Sporthallen und -plätze, Parkanlagen, Büchereien, Kirchliche Einrichtungen, Gemeinschaftshäuser und Bildungseinrichtungen.",
-      "öffentliche Einrichtungen sind Einrichtungen die im öffentlichen Interesse von Gemeinden und Kommunen unterhalten werden",
-      "auch das Sozialamt, Integrationsamt, Job-Center o.ä. zählen zu den öffentlichen Stellen",
-      "Beurteilen Sie ob sie mit notwendigen Behörden oder öffentlichen Dienstleistungen gut zurechtkommen. Besteht ein Mangel an solchen Einrichtungen? Haben Sie Schwierigkeiten mit Scheiben und Formularen von Behörden/ Einrichtungen( z. B. Landratsamt, Finanzamt)?",
-      "Nutzen sie öffentliche Einrichtungen wie Bibliotheken, Schwimmbäder, Sportanlagen gern und bereichern diese Ihr Leben?"
+      "<p>Öffentliche Einrichtungen sind zum Beispiel:</p><ul><li>Museen, </li><li>Sporthallen und Sportplätze,</li><li>Parkanlagen,</li><li>Büchereien,</li><li>Kirchliche Einrichtungen,</li><li>Gemeinschaftshäuser und</li><li>Bildungseinrichtungen wie Schulen oder Universitäten.</li></ul>",
+      "<p>Auch Ämter gehören zu öffentlichen Einrichtungen, zum Beispiel:</p><ul><li>das Sozialamt,</li><li>das Integrationsamt, </li><li>das Arbeitsamt.</li></ul> <p>Kommen Sie gut mit solchen Einrichtungen zurecht? Fehlen Ihnen bestimmte Einrichtungen? Haben Sie Probleme mit Formularen von Behörden oder Einrichtungen wie:</p><ul><li>dem Landratsamt oder</li><li>dem Finanzamt?</li></ul>",
+"<p>Nutzen sie gerne öffentliche Einrichtungen wie:</p><ul><li>Bibliotheken,</li><li>Schwimmbäder,</li><li>Sportanlagen?</li></ul><p>Machen solche Einrichtungen ihr Leben besser?</p>"
     ],
     "l": "e525,e555,e570,e575,e585,e590",
     "p": [
@@ -55,11 +53,11 @@
   },
   "4": {
     "s": "Soziale Kontakte",
-    "t": "Wie wirken sich soziale Kontakte (Familie, Freunde, Kollegen, Vorgesetzte) aktuell auf Ihr Leben aus?",
-    "d": "Bitte geben Sie an, ob Sie von Menschen aus Ihrem Umfeld eher unterstützt oder eher geärgert werden.",
+    "t": "<p>Wie beeinflussen soziale Kontakte Ihr Leben?</p><p>Soziale Kontakte sind Mitmenschen aus Ihrem Umfeld, zum Beispiel:</p><ul><li>Familie,</li><li>Freunde,</li><li>Kollegen,</li><li> Vorgesetzte.</li></ul>",
+    "d": "<p>Denken Sie bei der Frage darüber nach, ob:</p><ul><li>Sie von Menschen in ihrem Umfeld unterstützt werden?</li><li>Sie Probleme mit Ihren Mitmenschen haben?</li></ul>",
     "e": [
-      "Soziale Kontakte beziehen sich auf die Interaktion und Beziehungen zwischen Menschen. Sie umfassen den Austausch von Informationen, Emotionen und Ressourcen durch Gespräche, Treffen, gemeinsame Aktivitäten und andere Kommunikationsformen.",
-      "Soziale Kontakte können einerseits als Bereicherung wahrgenommen werden, aber auch als belastend empfunden werden."
+      "<p>Mit sozialen Kontakten sind Kontakte und Beziehungen zwischen Menschen gemeint. Mit sozialen Kontakten machen Sie verschiedene Dinge, zum Beispiel:</p><ul><li>sprechen Sie über verschiedene Themen,</li><li>treffen Sie sich,</li><li>unternehmen Sie verschiedene Dinge zusammen.</li></ul>",
+      "<p>Mit Menschen zu sprechen oder etwas zu unternehmen kann:</p><ul><li>glücklich machen,</li><li>aber auch anstrengend sein.</li></ul>"
     ],
     "l": "e310,e315,e320,e325,e330,e335,e340,e350,e355,e360",
     "p": [
@@ -72,13 +70,14 @@
   },
   "5": {
     "s": "Technik",
-    "t": "Gibt es bestimmte Aspekte des technischen Fortschritts, der Digitalisierung oder innovative Hilfsmittel, die eine deutliche Auswirkung auf ihr Leben haben?",
-    "d": "Bitte entscheiden Sie, ob Sie durch Errungenschaften des Fortschritts sich eher unterstützt oder bedroht fühlen.",
+    "t": "<p>Wie werden Sie beeinflusst durch: </p><ul><li>neue Technik,</li><li>die Digitalisierung,</li><li>neue Hilfsmittel?</li></ul>",
+    "d": "Denken Sie, dass neue Technologien Ihnen helfen können? Oder machen Ihnen neue Technologien eher Angst?",
     "e": [
-      "Wir alle nutzen im Alltag Hilfsmittel und Technologien, die uns in verschiedenster Form unterstützten, z.B. das Auto, öffentliche Verkehrsmittel oder der Personenaufzug zur Fortbewegung. Oder Radio,  TV und Computer zur Unterhaltung oder um sich zu informieren.",
-      "Digitale Technologien sind längst in unserem Alltag angekommen: Das Smartphone und Apps, die wir damit verwenden, können wesentliche Dinge für uns erledigen, wie z.B. Arzttermine planen und vereinbaren, Rezepte einlösen, Kontakt zu Krankenkassen, Informationen erhalten zu Erkrankungen und Behandlungsmethoden",
-      "Verschiedene Hilfsmittel unterstützen Menschen mit Behinderungen, wie Gehhilfen, Rollstühle oder Orthesen.",
-      "Die Verfügbarkeit von Medikamenten und ausreichende und gute Ernährung zählt hier auch mit dazu."
+      "<p>Es gibt viele verschiedene Hilfsmittel und Technologien, die unseren Alltag erleichtern, zum Beispiel:</p><ul><li>Autos,</li><li>öffentliche Verkehrsmittel wie Bus und Bahn oder </li><li>Fahrstühle.</li></ul>",
+      "<p>Es gibt andere Hilfsmittel, mit denen wir Information bekommen oder unterhalten werden, zum Beispiel:</p><ul><li>das Radio,</li><li>der Fernseher oder</li><li>der Computer.</li></ul>",
+      "<p>Solche digitalen Technologien sind Teil vom Alltag vieler Menschen. Das Handy mit verschiedenen Apps kann uns helfen:</p><ul><li>Arzttermine zu planen und zu vereinbaren,</li><li>Rezepte einzulösen,</li><li>Kontakt zu Krankenkassen aufzunehmen,</li><li>Informationen zu Krankheiten und Behandlungsmethoden zu erhalten.</li></ul>",
+      "<p>Es gibt verschiedene Hilfsmittel, die Menschen mit Behinderungen unterstützen, wie:</p><ul><li>Gehhilfen,</li><li>Rollstühle oder</li><li>Orthesen.</li></ul>",
+      "<p>Ob Medikamente und gute Ernährung verfügbar sind, zählt auch zu dieser Frage.</p>"
     ],
     "l": "e110,e115,e120,e125,e130,e140,e150,e155,e165",
     "p": [

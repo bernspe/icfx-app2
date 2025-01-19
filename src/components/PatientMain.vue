@@ -11,7 +11,7 @@ import __env from '../assets/env_factors_de.json'
 const _whodas: Record<string, WhodasEnvItemStructure> = __whodas;
 const _env: Record<string, WhodasEnvItemStructure> = __env;
 import _sf36 from '../assets/sf36_de.json'
-import __uxq from "../assets/uxquestionnaire_de.json";
+import __uxq from "../assets/uxquestionnaire_patient_de.json";
 
 const _uxq:Record<string,Record<string,any>> = __uxq
 

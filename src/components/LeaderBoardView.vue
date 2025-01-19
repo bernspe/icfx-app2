@@ -51,6 +51,7 @@ onMounted(()=>{
              <MDBCol v-for="c in leaderdata.columns"><h4>{{ c }}</h4></MDBCol>
            </MDBRow>
         </MDBListGroupItem>
+
         <MDBListGroupItem v-for="(row,idx) in leaderdata.rows">
           <MDBRow class="align-items-center">
             <MDBCol><h3 class="text-primary">{{ idx+1 }}</h3></MDBCol>

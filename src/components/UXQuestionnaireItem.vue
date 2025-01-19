@@ -14,9 +14,13 @@ import {VueScrollPicker} from 'vue-scroll-picker'
 import {computed, onMounted, ref, watch} from "vue";
 import {app_store, type DataStore} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate} from "vue-router";
-import __uxq from "../assets/uxquestionnaire_de.json";
+import __uxq_patient from "../assets/uxquestionnaire_patient_de.json";
+import __uxq_medprof from "../assets/uxquestionnaire_medprof_de.json";
+import {user_store} from "../user_store";
 
-const _uxq: Record<string, Record<string, any>> = __uxq
+const isPatient = computed(() => user_store.getState().groups.includes('patient'))
+
+const _uxq = computed<Record<string,any>>(()=> isPatient.value ? __uxq_patient : __uxq_medprof)
 
 const props = defineProps({
   patientid: {type: String},
@@ -25,28 +29,28 @@ const props = defineProps({
 
 const navigate = ref(false)
 
-const uxq_item_number = computed(() => Object.keys(_uxq).indexOf(props.item))
+const uxq_item_number = computed(() => Object.keys(_uxq.value).indexOf(props.item))
 
 const percentDone = computed(() => {
-  return Math.floor(uxq_item_number.value / Object.keys(_uxq).length * 100)
+  return Math.floor(uxq_item_number.value / Object.keys(_uxq.value).length * 100)
 })
 
 const backUrl = computed(() => {
-  if (uxq_item_number.value > 0) return `/patientdata/uxquestionnaire/${props.patientid}/${Object.keys(_uxq)[uxq_item_number.value - 1]}`
-  else return `/patientview/${props.patientid}`
+  if (uxq_item_number.value > 0) return `/patientdata/uxquestionnaire/${props.patientid}/${Object.keys(_uxq.value)[uxq_item_number.value - 1]}`
+  else return upUrl.value
 })
 
 const upUrl = computed(() => {
-  return `/patientview/${props.patientid}`
+  return isPatient.value ? `/patientview/${props.patientid}` : `medview/${props.patientid}`
 })
 
 const nextUrl = computed(() => {
-  if (uxq_item_number.value < Object.keys(_uxq).length - 1) return `/patientdata/uxquestionnaire/${props.patientid}/${Object.keys(_uxq)[uxq_item_number.value + 1]}`
+  if (uxq_item_number.value < Object.keys(_uxq.value).length - 1) return `/patientdata/uxquestionnaire/${props.patientid}/${Object.keys(_uxq.value)[uxq_item_number.value + 1]}`
   else return `/modulefinish/uxquestionnaire/${props.patientid}`
 })
 
 const optionslist = computed(() => {
-  let uxq_item = _uxq[props.item]
+  let uxq_item = _uxq.value[props.item]
   let optlist = []
   if (Object.keys(uxq_item).includes('answers')) {
     if (uxq_item.answers)
@@ -63,12 +67,12 @@ const result = computed({
     let data = app_store.getState().patient_data.uxquestionnaire
     let ks = Object.keys(data || {})
     if (ks.includes(props.item)) {
-      if (_uxq[props.item].answers) // is this a wheel val
+      if (_uxq.value[props.item].answers) // is this a wheel val
         return Number(data[props.item])
       else
         return data[props.item] // return string
     } else {
-      return _uxq[props.item].default
+      return _uxq.value[props.item].default
     }
   },
   set: (val) => {

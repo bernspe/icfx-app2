@@ -23,7 +23,13 @@ import GroupImage from "./GroupImage.vue";
 import {imageServer} from "../process_vars";
 import {useRoute, useRouter} from "vue-router";
 import PatientCaseCard from "./PatientCaseCard.vue";
+import __uxq from "../assets/uxquestionnaire_medprof_de.json";
+const _uxq:Record<string,Record<string,any>> = __uxq
 
+const uxq_keys = computed(() => Object.keys(_uxq))
+const uxq_keys_with_answers = Object.values(_uxq).filter(x=>x.answers).length
+const lastUxqItemEdited = computed(()=> Object.keys(data.value.uxquestionnaire || {}).length)
+const uxqEdited = computed(() => Math.ceil(Object.keys(data.value.uxquestionnaire || {}).length / uxq_keys_with_answers*100))
 
 const router = useRouter()
 const route = useRoute()
@@ -487,6 +493,19 @@ onMounted(() => {
           </MDBCardBody>
         </MDBCard>
        </router-link>
+    </MDBAccordionItem>
+
+    <MDBAccordionItem header-title="Evaluation" collapse-id="uxq">
+      <ListHeader
+           label="Benutzerfreundlichkeit"
+           :number-icf-items="0"
+           :patientid="patientid"
+           :last-item-edited="uxq_keys[lastUxqItemEdited]"
+           :percent-edited="uxqEdited"
+           module="uxquestionnaire"
+           :start-button-active="true"
+           @clear="clearAll"
+           ></ListHeader>
     </MDBAccordionItem>
   </MDBAccordion>
 </template>

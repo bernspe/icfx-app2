@@ -1,4 +1,4 @@
-const AuspraegungBeschwerden = ['Keine Probleme','Geringe Probleme','Mäßige Probleme','Starke Probleme','Maximale Probleme bzw. nicht möglich']
+const AuspraegungBeschwerden = ['Keine Probleme','Wenige Probleme','Einige Probleme','Starke Probleme','Sehr starke Probleme oder gar nicht möglich']
 const Auspraegung = ['keine','geringe','mäßige','starke','maximale']
 type HEX = `#${string}`;
 const InactiveColor = '#dddfda'

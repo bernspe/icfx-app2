@@ -62,7 +62,7 @@ const nextUrl = computed(() => {
 
 
 const scroll_optionslist = ref([
-  {name: 'POSITIV', value: 5, icon:'thumbs-up'} ,{name: 'POSITIV und NEGATIV', value: 9, icon: 'plus-minus'},{name: 'NEGATIV', value: 3, icon:'thumbs-down'}, {name: 'Weder noch', value: 4, icon: 'circle-xmark'},
+  {name: 'positiv (gut)', value: 5, icon:'thumbs-up'} ,{name: 'positiv und negativ (zugleich gut und schlecht)', value: 9, icon: 'plus-minus'},{name: 'negativ (schlecht)', value: 3, icon:'thumbs-down'}, {name: 'gar nicht', value: 4, icon: 'circle-xmark'},
 ])
 
 
@@ -128,20 +128,19 @@ onBeforeRouteUpdate(async (to, from) => {
         class="image-blurred-edge"
     />
 
-    <MDBCardHeader>
-      <p class="text-primary">{{ env[Number(item) - 1].t }}</p>
 
-      <router-link :to="`/patientdata/env-detail/${patientid}/${item}`">
-        Was soll das bedeuten?
-        <MDBIcon class="ms-3" icon="circle-info"></MDBIcon>
-      </router-link>
 
-    </MDBCardHeader>
+
+
 
     <MDBCardBody class="m-0 p-0">
       <MDBRow>
-
-
+        <h2 class="text-center text-primary mt-2">{{ env[Number(item) - 1].s }}</h2>
+        <p class="text-start" v-html="env[Number(item) - 1].t"></p>
+         <router-link :to="`/patientdata/env-detail/${patientid}/${item}`">
+        Was soll das bedeuten?
+        <MDBIcon class="ms-3" icon="circle-info"></MDBIcon>
+      </router-link>
       </MDBRow>
 
           <VueScrollPicker

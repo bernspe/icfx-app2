@@ -129,11 +129,11 @@ onBeforeRouteUpdate(async (to, from) => {
         class="image-blurred-edge"
     />
 
-    <MDBCardHeader>
-      <p class="text-primary">{{ whodas[Number(item) - 1].t }}</p>
-    </MDBCardHeader>
-
-    <MDBCardBody class="m-0 p-0">
+    <MDBCardBody class="m-0 p-0 text-start">
+      <MDBRow>
+         <h2 class="text-primary text-center mt-2">{{ whodas[Number(item) - 1].s }}</h2>
+        <p v-html="whodas[Number(item) - 1].t"/>
+      </MDBRow>
       <VueScrollPicker
           :options="scroll_optionslist"
           v-model:model-value="result"

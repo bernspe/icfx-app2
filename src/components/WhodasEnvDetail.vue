@@ -40,15 +40,18 @@ onMounted(()=> {
 <template>
   <MDBCard class="m-2">
     <MDBCardHeader>
-      <h1 class="text-primary text-center">{{ whodasEnv[Number(item) - 1].t }}</h1>
-      <p class="text-secondary text-center">{{ whodasEnv[Number(item) - 1].d }}</p>
+      <p class="text-start text-secondary" v-html="whodasEnv[Number(item) - 1].t"></p>
     </MDBCardHeader>
     <MDBCardBody>
+      <MDBRow v-if="whodasEnv[Number(item) - 1].d">
+        <h2 class="text-primary">Aufgabe</h2>
+         <p v-html="whodasEnv[Number(item) - 1].d"/>
+      </MDBRow>
       <MDBRow v-if="whodasEnv[Number(item) - 1].e">
-        <h2 class="text-primary">Erklärungen von unseren Mitarbeitern</h2>
+        <h2 class="text-primary">Beispiele</h2>
         <MDBListGroup class="m-2 p-2">
           <MDBListGroupItem v-for="explanation in whodasEnv[Number(item) - 1].e">
-            <p>{{ explanation }}</p>
+            <p v-html="explanation"/>
           </MDBListGroupItem>
         </MDBListGroup>
       </MDBRow>
@@ -65,8 +68,8 @@ onMounted(()=> {
       </MDBRow>
 
       <MDBRow>
-        <h2 class="text-primary">Hilf anderen Menschen beim Verstehen</h2>
-        <h4 class="text-secondary">... und erkläre Ihnen Deine Sichtweise</h4>
+        <h2 class="text-primary">Helfen Sie anderen Menschen beim Verstehen</h2>
+        <h4 class="text-secondary">... und erklären Sie ihnen Ihre Sichtweise</h4>
         <SpeechTextInput :refcode="whodas_or_env+'_'+item" @explained="getExplanations"/>
       </MDBRow>
     </MDBCardBody>

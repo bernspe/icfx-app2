@@ -37,7 +37,7 @@
   },
   "4": {
     "chapter": "Komplexität",
-    "question": "Ich finde es schwierig, mit den neuen Funktionen oder Technologien im Bereich der Gesundheitsversorgung Schritt zu halten",
+    "question": "Ich finde es schwierig, mit den neuen Funktionen oder Technologien im Bereich der Gesundheitsversorgung Schritt zu halten.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -121,7 +121,7 @@
   },
   "11": {
     "chapter": "icFx",
-    "question": "Ich finde, dass die Funktionen des ICF-Programms gut auf meine Bedürfnisse abgestimmt sind.",
+    "question": "Ich finde, dass die Funktionen des ICFx-Programms gut auf meine Bedürfnisse abgestimmt sind.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -133,7 +133,7 @@
   },
   "12": {
     "chapter": "icFx",
-    "question": "Ich kann einen großen Nutzen aus der Verwendung des ICF-Programms für meine Gesundheits- oder Rehabilitationsziele ziehen.",
+    "question": "Ich kann einen großen Nutzen aus der Verwendung des ICFx-Programms für meine Gesundheits- oder Rehabilitationsziele ziehen.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -145,7 +145,7 @@
   },
   "13": {
     "chapter": "icFx",
-    "question": "Das ICF-Programm bietet mir genau die Funktionen, die ich für meine Zwecke benötige.",
+    "question": "Das ICFx-Programm bietet mir genau die Funktionen, die ich für meine Zwecke benötige.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -157,7 +157,7 @@
   },
   "14": {
     "chapter": "icFx",
-    "question": "Die verschiedenen Funktionen im ICF-Programm helfen mir, meine Gesundheitsziele effektiv zu erreichen.",
+    "question": "Die verschiedenen Funktionen im ICFx-Programm helfen mir, meine Gesundheitsziele effektiv zu erreichen.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -169,7 +169,7 @@
   },
   "15": {
     "chapter": "icFx",
-    "question": "Ich denke, dass die Übersicht der Ergebnisse  des ICF-Programms sehr hilfreich sind und es mir dabei unterstützt, meine Gesundheitsziele zu verbessern.",
+    "question": "Ich denke, dass die Übersicht der Ergebnisse  des ICFx-Programms sehr hilfreich sind und es mich dabei unterstützt, meine Gesundheitsziele zu verbessern.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -181,7 +181,7 @@
   },
   "16": {
     "chapter": "Verständlichkeit",
-    "question": "Ich würde das ICF-Programm nicht öfter nutzen",
+    "question": "Ich würde das ICFx-Programm öfter nutzen.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -193,7 +193,7 @@
   },
   "17": {
     "chapter": "Verständlichkeit",
-    "question": "Ich finde das System unnötig komplex",
+    "question": "Ich finde das System unnötig komplex.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -205,7 +205,7 @@
   },
   "18": {
     "chapter": "Verständlichkeit",
-    "question": "Ich dachte, dass System wäre einfach zu bedienen",
+    "question": "Ich dachte, dass System wäre einfach zu bedienen.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -217,7 +217,7 @@
   },
   "19": {
     "chapter": "Verständlichkeit",
-    "question": "Ich glaube, dass ich zukünftig Unterstützung in der Nutzung brauchen werde",
+    "question": "Ich glaube, dass ich zukünftig Unterstützung in der Nutzung brauchen werde.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -241,7 +241,7 @@
   },
   "21": {
     "chapter": "Verständlichkeit",
-    "question": "Ich fand das Programm einfach zu bedienen",
+    "question": "Ich fand das Programm einfach zu bedienen.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -253,7 +253,7 @@
   },
   "22": {
     "chapter": "Usability",
-    "question": "Es war einfach, meine Angabe in dem ICF-Programm einzusetzen",
+    "question": "Es war einfach, meine Angabe in dem ICFx-Programm einzusetzen",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -277,7 +277,7 @@
   },
   "24": {
     "chapter": "Usability",
-    "question": "Ich habe mich bei der Nutzung des ICF-Programms wohlgefühlt",
+    "question": "Ich habe mich bei der Nutzung des ICFx-Programms wohlgefühlt.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -289,7 +289,7 @@
   },
   "25": {
     "chapter": "Usability",
-    "question": "Die Informationen waren alle verständlich und gut auffindbar",
+    "question": "Die Informationen waren alle verständlich und gut auffindbar.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -301,7 +301,7 @@
   },
   "26": {
     "chapter": "Usability",
-    "question": "Wenn ich meine Eingabe korrigieren wollte, konnte ich dies schnell umsetzen",
+    "question": "Wenn ich meine Eingabe korrigieren wollte, konnte ich dies schnell umsetzen.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -313,7 +313,7 @@
   },
   "27": {
     "chapter": "Usability",
-    "question": "Insgesamt bin ich zufrieden mit der Nutzung des Programms",
+    "question": "Insgesamt bin ich zufrieden mit der Nutzung des Programms.",
     "answers": [
       "stimme vollkommen zu",
       "stimme eher zu",
@@ -349,9 +349,8 @@
       "Allgemeine Hochschulreife / Abitur",
       "Lehre",
       "Meister",
-      "Diplom",
-      "Master",
-      "Promotion",
+      "Master / Diplom / Staatsexamen",
+      "Promotion oder höher",
       "Sonstiges"
     ],
     "default": 2
@@ -400,12 +399,12 @@
   },
   "35": {
     "chapter": "Offene Textnennung",
-    "question": "Welche Probleme ergaben sich bei der Nutzung des Programms",
+    "question": "Welche Probleme ergaben sich bei der Nutzung des Programms ?",
     "answers": null
   },
   "36": {
     "chapter": "Offene Textnennungen",
-    "question": "Ein Fragebogen kann nicht immer alles erfassen, hier ist Platz für weiteres Feedback",
+    "question": "Ein Fragebogen kann nicht immer alles erfassen, hier ist Platz für weiteres Feedback.",
     "answers": null
   }
 }

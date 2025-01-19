@@ -1,0 +1,315 @@
+{
+  "1": {
+    "chapter": "Digitale Technologien",
+    "question": "Digitale Gesundheitsdienste erleichtern Patienten den Zugang zu medizinischen Dienstleistungen.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "2": {
+    "chapter": "Digitale Technologien",
+    "question": "Ich empfehle Patienten digitale Gesundheitsdienste im Behandlungskontext.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "3": {
+    "chapter": "Digitale Technologien",
+    "question": "Wie häufig nutzen sie digitale Gesundheitsdienste und Technologien im beruflichen Kontext?",
+    "answers": [
+      "Täglich",
+      "Mehrmals pro Woche",
+      "Weniger als einmal pro Woche",
+      "Nie"
+    ],
+    "default": 2
+  },
+  "4": {
+    "chapter": "Digitale Technologien",
+    "question": "Wie fühlen sie sich im Umgang mit digitalen Gesundheitsdiesnste im Praxisalltag mit ihren Patienten?",
+    "answers": [
+      "Sehr sicher",
+      "Eher sicher",
+      "Unsicher",
+      "Sehr unsicher",
+      "Ich habe noch nie solche Dienste genutzt"
+    ],
+    "default": 2
+  },
+  "5": {
+    "chapter": "Digitale Technologien",
+    "question": "Digitale Gesundheitsdienste erleichtern meine Arbeit.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "6": {
+    "chapter": "icFx",
+    "question": "Ich kann einen großen Nutzen aus der Verwendung des ICFx-Programms für die Gesundheits- oder Rehabilitationsziele  der Patienten ziehen.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "7": {
+    "chapter": "icFx",
+    "question": "Das ICFx-Programm bietet mir genau die Funktionen, die ich für meine Zwecke benötige.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "8": {
+    "chapter": "icFx",
+    "question": "Die verschiedenen Funktionen im ICFx-Programm helfen mir, die Gesundheitsziele der Patienten besser zu monitoren.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "9": {
+    "chapter": "icFx",
+    "question": "Ich denke, dass die Übersicht der Ergebnisse  des ICFx-Programms sehr hilfreich für die Patienten ist und es die Erreichung der Gesundheitsziele der Patienten unterstützt.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "10": {
+    "chapter": "icFx",
+    "question": "Ich denke, dass die Übersicht der Ergebnisse des ICFx-Programms hilfreich für meine Arbeit mit dem Patienten ist.",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "11": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich würde das ICFx-Programm öfter nutzen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "12": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich finde das System unnötig komplex",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "13": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich dachte, dass System wäre einfach zu bedienen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "14": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich glaube, dass ich zukünftig Unterstützung in der Nutzung brauchen werde",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "15": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich denke, dass Nutzer schnell mit dem Programm umgehen können",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "16": {
+    "chapter": "Verständlichkeit",
+    "question": "Ich fand das Programm einfach zu bedienen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "17": {
+    "chapter": "Usability",
+    "question": "Es war einfach, meine Angabe in dem ICFx-Programm einzusetzen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "18": {
+    "chapter": "Usability",
+    "question": "Die Benutzeroberfläche (das Design) gefällt mir gut",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "19": {
+    "chapter": "Usability",
+    "question": "Ich habe mich bei der Nutzung des ICFx-Programms wohlgefühlt",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "20": {
+    "chapter": "Usability",
+    "question": "Die Informationen waren alle verständlich und gut auffindbar",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "21": {
+    "chapter": "Usability",
+    "question": "Wenn ich meine Eingabe korrigieren wollte, konnte ich dies schnell umsetzen",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "22": {
+    "chapter": "Usability",
+    "question": "Insgesamt bin ich zufrieden mit der Nutzung des Programms",
+    "answers": [
+      "stimme vollkommen zu",
+      "stimme eher zu",
+      "neutral",
+      "stimme eher nicht zu",
+      "stimme überhaupt nicht zu"
+    ],
+    "default": 2
+  },
+  "23": {
+    "chapter": "Demografische Daten",
+    "question": "Wie alt sind sie? (Alter in Jahren z.B. 40)",
+    "answers": null
+  },
+  "24": {
+    "chapter": "Demografische Daten",
+    "question": "Welchem Geschlecht gehören sie an?",
+    "answers": [
+      "männlich",
+      "weiblich",
+      "divers"
+    ],
+    "default": 0
+  },
+  "25": {
+    "chapter": "Demografische Daten",
+    "question": "In welchem Stadt- oder Gemeindetyp arbeiten sie derzeit?",
+    "answers": [
+      "Landgemeinde / Kleinstadt (bis 20.000 Einwohner)",
+      "Mittelstadt (bis 100.000 Einwohner)",
+      "Großstadt (mehr als 100.000 Einwohner)"
+    ],
+    "default": 1
+  },
+  "26": {
+    "chapter": "Demografische Daten",
+    "question": "Verfügen sie an Ihrem Arbeitsplatz über einen ausreichend schnellen Internetanschluss?",
+    "answers": [
+      "Ja",
+      "Nein"
+    ],
+    "default": 0
+  },
+  "27": {
+    "chapter": "Demografische Daten",
+    "question": "Wie häufig nutzen sie das Internet im beruflichen Kontext?",
+    "answers": [
+      "Täglich",
+      "Mehrmals pro Woche",
+      "Weniger als einmal pro Woche",
+      "Nie"
+    ],
+    "default": 0
+  },
+  "28": {
+    "chapter": "Offene Textnennungen",
+    "question": "Ein Fragebogen kann nicht immer alles erfassen, hier ist Platz für weiteres Feedback",
+    "answers": null
+  }
+}
