@@ -26,7 +26,7 @@ const patient = computed(() => {
 <template>
 <MDBContainer class="text-center">
   <MDBCard class="m-2 p-2">
-    <MDBCardImg top :src="imageServer()+'patient_cases/'+patient.pic"/>
+    <MDBCardImg top :src="imageServer()+'patient_cases/'+patient.pic" style="max-height: 300px; width: auto; object-fit: contain;"/>
     <MDBCardBody>
       <MDBCardTitle>
         {{ patient.title }}

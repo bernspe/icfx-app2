@@ -97,6 +97,10 @@ const introtext: Record<string, any> = {
     <MDBCardBody>
       <p v-if="((module==='icf') && !isPatient)" v-html="introtext.icf_medprof.expl"></p>
       <p v-else v-html="introtext[props.module].expl"></p>
+      <p v-if="((module==='whodas') || (module==='env'))">
+        <p>Dieses Modul ist in leichter Sprache geschrieben.</p>
+        <a href="https://verso-gruppe.de" target="_blank"> <img :src="imageServer()+'verso-logo.jpg'"/></a>
+      </p>
       <div v-if="module==='uxquestionnaire'">
         <p>
           <router-link to="/help#studydocs"> Studieninformationen </router-link>

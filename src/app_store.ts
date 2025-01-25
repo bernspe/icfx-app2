@@ -87,6 +87,7 @@ export interface DataStore {
     sf36: Record<string, number>
     uxquestionnaire: Record<string,number>
     merge?: MergeProperties
+    lastActiveIcf?: string
 }
 
 
@@ -200,7 +201,13 @@ class AppStore extends Store<ApplicationData> {
 
     transformAPIResponse(d:DataStoreAPI):DataStore {
         return {id:d.id,creator:d.creator,owner:d.owner, date: d.last_modified, merge: d.merge,
-                whodas:d.data?.whodas || {}, env: d.data?.env || {}, icf: d.data.icf || {},coreset: d.data?.coreset || '',sf36: d.data?.sf36 || {}, uxquestionnaire: d.data?.uxquestionnaire || {}}
+                whodas:d.data?.whodas || {},
+            env: d.data?.env || {},
+            icf: d.data.icf || {},
+            coreset: d.data?.coreset || '',
+            sf36: d.data?.sf36 || {},
+            uxquestionnaire: d.data?.uxquestionnaire || {},
+        lastActiveIcf: d.data?.lastActiveIcf || ''}
     }
 
     putCreatorsLastDatasetToCurrentData() {
@@ -272,7 +279,7 @@ class AppStore extends Store<ApplicationData> {
                     xhrFields: {
                         withCredentials: true
                     },
-                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36,uxquestionnaire: d.uxquestionnaire},
+                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36,uxquestionnaire: d.uxquestionnaire, lastActiveIcf:this.state.active_icf},
                         merge: d.merge,
                         owner: this.state.current_patient_id}
                 };

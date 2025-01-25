@@ -119,23 +119,36 @@ const lastEnvItemEdited = computed(()=> Object.keys(data.value.env || {}).length
 const envEdited = computed(() => Math.ceil(Object.keys(data.value.env || {}).length / env_keys.value.length*100))
 const showEnvDetails = ref(false)
 
-const nextIcfToEdit = computed(()=> {
-   const vals = Object.values(data.value.icf || {})
+const lastIcfEdited = computed(() => {
+  const vals = Object.values(data.value?.icf || {})
   if (vals.length > 0) {
-    let i = Object.values(data.value.icf || {}).map(x => x.selected != 0).lastIndexOf(true)
-    if (i===-1) return 0
-    else return i+1
-  }
-  else return 0
+    // check for lastActiveIcf in API data
+    let i=0
+    if (data.value.lastActiveIcf)
+    {
+      i = Object.keys(data.value.icf || {}).indexOf(data.value.lastActiveIcf)
+      if (i === -1) return 0
+      else return i
+    } else {
+      i = Object.values(data.value.icf || {}).map(x => x.selected != 0).lastIndexOf(true)
+      if (i === -1) return 0
+      else {
+        let i2 = Object.values(data.value.icf || {}).map(x => x.selected === 0).indexOf(true)
+        return (i > i2) ? i : i2
+      }
+    }
+  } else return 0
 })
 
 const icfEdited = computed(() => {
-  const vals = Object.values(data.value.icf || {})
-  if (vals.length > 0)
-    return Math.ceil((vals.filter(x => x.selected != 0).length) / vals.length * 100)
+  const vals = Object.values(data.value?.icf || {})
+  if (vals.length > 0) {
+    return Math.ceil((lastIcfEdited.value + 1) / vals.length * 100)
+    }
   else
     return 0
 })
+
 const showIcfDetails = ref(false)
 
 const lastSf36ItemEdited = computed(()=> Object.keys(data.value.sf36 || {}).length)
@@ -289,7 +302,7 @@ onMounted(() => {
            :number-icf-items="Object.keys(icfsFromWhodasEnvData).length"
            :show-details="showIcfDetails"
            :patientid="patientid"
-           :last-item-edited="Object.keys(icfsFromWhodasEnvData)[nextIcfToEdit]"
+           :last-item-edited="Object.keys(icfsFromWhodasEnvData)[lastIcfEdited]"
            module="icf"
            :start-button-active="whodasEdited + envEdited === 200 || TestBetrieb"
            :percent-edited="icfEdited"

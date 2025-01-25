@@ -186,6 +186,7 @@ class UserStore extends Store<User> {
             this.state.id = r.id
             this.state.pseudonym = r.pseudonym
             this.state.groups = r.groups
+            this.state.is_staff = r.is_staff
             this.state.diagnoses = r.diagnoses
             this.state.institution = Object.assign({}, r.institution)
             resolve('assigned')

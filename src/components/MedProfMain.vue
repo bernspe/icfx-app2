@@ -28,13 +28,13 @@ const _uxq:Record<string,Record<string,any>> = __uxq
 
 const uxq_keys = computed(() => Object.keys(_uxq))
 const uxq_keys_with_answers = Object.values(_uxq).filter(x=>x.answers).length
-const lastUxqItemEdited = computed(()=> Object.keys(data.value.uxquestionnaire || {}).length)
-const uxqEdited = computed(() => Math.ceil(Object.keys(data.value.uxquestionnaire || {}).length / uxq_keys_with_answers*100))
+const lastUxqItemEdited = computed(()=> Object.keys(data.value?.uxquestionnaire || {}).length)
+const uxqEdited = computed(() => Math.ceil(Object.keys(data.value?.uxquestionnaire || {}).length / uxq_keys_with_answers*100))
 
 const router = useRouter()
 const route = useRoute()
 
-const accordion_activeItem = ref('icf')
+const accordion_activeItem = ref('')
 
 const props = defineProps({patientid: {type: String, required: true}, preloadgroup: {type: String, required: false}})
 const _userdata = computed(() => user_store.getState().userdata)
@@ -208,22 +208,33 @@ const selected_icf_keys = computed<Array<string>>(() => {
   }).flat())]
 })
 
+
 const lastIcfEdited = computed(() => {
   const vals = Object.values(data.value?.icf || {})
   if (vals.length > 0) {
-    let i = Object.values(data.value.icf || {}).map(x => x.selected != 0).lastIndexOf(true)
-    if (i === -1) return 0
-    else {
-      let i2 = Object.values(data.value.icf || {}).map(x => x.selected === 0).indexOf(true)
-      return (i>i2) ? i : i2
+    // check for lastActiveIcf in API data
+    let i=0
+    if (data.value.lastActiveIcf)
+    {
+      i = Object.keys(data.value.icf || {}).indexOf(data.value.lastActiveIcf)
+      if (i === -1) return 0
+      else return i
+    } else {
+      i = Object.values(data.value.icf || {}).map(x => x.selected != 0).lastIndexOf(true)
+      if (i === -1) return 0
+      else {
+        let i2 = Object.values(data.value.icf || {}).map(x => x.selected === 0).indexOf(true)
+        return (i > i2) ? i : i2
+      }
     }
   } else return 0
 })
 
 const icfEdited = computed(() => {
   const vals = Object.values(data.value?.icf || {})
-  if (vals.length > 0)
-    return Math.ceil(vals.filter(x => x.selected != 0).length / vals.length * 100)
+  if (vals.length > 0) {
+    return Math.ceil((lastIcfEdited.value + 1) / vals.length * 100)
+    }
   else
     return 0
 })
@@ -311,7 +322,6 @@ watch(mergedIcfData, (newVal, oldVal) => {
   if (newVal) {
     data.value = newVal
     app_store.setCurrentData(data.value)
-    console.log('MErge changed: ',newVal)
   }
 })
 

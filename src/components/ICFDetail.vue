@@ -37,11 +37,11 @@ onMounted(() => {
 <template>
   <MDBCard
       class="m-2">
-    <MDBCardHeader>
+    <MDBCardHeader v-if="code">
       <h2 class="text-primary text-center">{{ _icfcodes[code].t }}</h2>
 
     </MDBCardHeader>
-    <MDBCardBody>
+    <MDBCardBody v-if="code">
       <MDBListGroup>
         <MDBListGroupItem>
           <h5 class="text-primary">Offizielle Erklärung der WHO</h5>

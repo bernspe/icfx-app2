@@ -53,6 +53,7 @@ const medprof_groups = computed(() => {
   }
 })
 
+const isStaff = computed(()=> user_store.getState().is_staff)
 
 </script>
 
@@ -176,7 +177,7 @@ const medprof_groups = computed(() => {
           <span>Behandler-Liste</span>
         </MDBSideNavLink>
       </MDBSideNavItem>
-      <MDBSideNavItem v-if="user_store.getState().is_staff || user_store.getState().mock_mode">
+      <MDBSideNavItem v-if="isStaff || user_store.getState().mock_mode">
         <MDBSideNavLink to="/scientistview">
           <MDBIcon icon="microscope" class="fa-fw me-3"/>
           <span>Scientists Dashboard</span>

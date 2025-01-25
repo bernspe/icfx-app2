@@ -20,7 +20,7 @@ const currentItemPosition = computed(() => icfItemList.value.indexOf(props.code)
 
 const percentDone = computed(() => {
   if (icfItemList.value.length > 0)
-    return Math.ceil(currentItemPosition.value / icfItemList.value.length * 100)
+    return Math.ceil((currentItemPosition.value+1) / icfItemList.value.length * 100)
   else return 0
 })
 

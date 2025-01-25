@@ -25,10 +25,12 @@ const grammar2 = `#JSGF V1.0; grammar punctuation; public <punct> = ${Object.key
 if (speech.isSupported.value) {
   // @ts-expect-error missing types
   const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
-  const speechRecognitionList = new SpeechGrammarList()
-  //speechRecognitionList.addFromString(grammar, 1)
-  speechRecognitionList.addFromString(grammar2, 1)
-  speech.recognition!.grammars = speechRecognitionList
+  if (SpeechGrammarList) {
+    const speechRecognitionList = new SpeechGrammarList()
+    //speechRecognitionList.addFromString(grammar, 1)
+    speechRecognitionList.addFromString(grammar2, 1)
+    speech.recognition!.grammars = speechRecognitionList
+  }
 }
 
 const accumulated_result = ref('')

@@ -96,10 +96,9 @@ watch(_showDetails, (newVal, oldVal) => {
           </router-link>
           <router-link router-link :to="`/patientdata/${module}/${patientid}/${lastItemEdited}`">
             <MDBBtn outline="primary" class="m-1">
-              <!--
+
               <span class="me-2">{{ percentEdited }}% Weiter</span>
-              -->
-              <span class="me-2">Weiter</span>
+
               <MDBIcon icon="play"/>
             </MDBBtn>
           </router-link>
