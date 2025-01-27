@@ -13,7 +13,7 @@ const _showDetails = ref(props.showDetails)
 
 const showStartOrWeiterButton = computed(() => {
   if (props.module === 'icf') return props.numberIcfItems !== 0
-  else return props.percentEdited < 100
+  else return props.percentEdited < 95
 })
 
 const firstItemToGo = computed(() => {
@@ -50,7 +50,7 @@ watch(_showDetails, (newVal, oldVal) => {
       <MDBSwitch label="Alle ansehen" v-model="_showDetails"/>
     </MDBCol>
     -->
-    <MDBCol v-if="percentEdited>=100">
+    <MDBCol v-if="percentEdited>=95">
       <MDBPopconfirm
           class="me-1 btn-outline-danger"
               tag="button"
@@ -64,7 +64,7 @@ watch(_showDetails, (newVal, oldVal) => {
       </MDBPopconfirm>
     </MDBCol>
     <MDBCol class="d-flex justify-content-end">
-      <div v-if="percentEdited>=100">
+      <div v-if="percentEdited>=95">
         <router-link router-link :to="`/patientdata/${module}/${patientid}/${firstItemToGo}`" v-if="startButtonActive">
           <MDBBtn outline="primary" class="m-1">
             <span class="me-2">Re-Start</span>
