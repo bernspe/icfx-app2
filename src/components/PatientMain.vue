@@ -323,7 +323,7 @@ onMounted(() => {
            :last-item-edited="sf36_keys[lastSf36ItemEdited]"
            module="sf36"
            :percent-edited="sf36Edited"
-           :start-button-active="icfEdited===100 || TestBetrieb"
+           :start-button-active="icfEdited>=95 || TestBetrieb"
            @show-details-changed="showSf36Details=$event"
            @clear="clearAll('sf36')"
            ></ListHeader>
@@ -345,7 +345,7 @@ onMounted(() => {
            :last-item-edited="uxq_keys[lastUxqItemEdited]"
            :percent-edited="uxqEdited"
            module="uxquestionnaire"
-           :start-button-active="icfEdited===100 || TestBetrieb"
+           :start-button-active="icfEdited>=95 || TestBetrieb"
            @clear="clearAll('uxquestionnaire')"
            ></ListHeader>
       </MDBListGroupItem>

@@ -9,6 +9,7 @@ import {
   MDBCard,
   MDBCardHeader,
   MDBCardBody,
+  MDBSelect,
   MDBCardFooter,
   MDBContainer,
   MDBCheckbox
@@ -21,6 +22,9 @@ import ICFResultBarGraph from "./ICFResultBarGraph.vue";
 import {useRoute, useRouter} from "vue-router";
 import WhodasResultBarGraphByPatientCase from "./WhodasResultBarGraphByPatientCase.vue";
 import ResultDescriptiveStatisticsWholeInstitution from "./ResultDescriptiveStatisticsWholeInstitution.vue";
+import {roles} from "../constants";
+import {backendURL} from "../process_vars";
+import axios, {AxiosRequestConfig} from "axios";
 
 export interface RowStructure {
   content: string,
@@ -45,7 +49,7 @@ const route = useRoute()
 const searchPatient = ref('')
 
 const datasetPatients = {
-  columns: ["Pseudonym","patient_case", "ID"],
+  columns: ["Pseudonym", "patient_case", "ID"],
   rows: user_store.getState().userdata?.filter(x => x.groups.includes('patient')).map(u => ([u.pseudonym, u.patient_case, u.id])) || []
 }
 
@@ -53,7 +57,7 @@ const collectSelectedPatients = (rows: Array<any>) => {
   selectedPatients.value = rows
 }
 
-const selectedPatients = ref([{pseudonym: '',patient_case:'', id: ''}])
+const selectedPatients = ref([{pseudonym: '', patient_case: '', id: ''}])
 
 const loadIcfs = () => {
   if (selectedPatients.value) {
@@ -102,6 +106,67 @@ const loadIcfRows = (rows: Array<RowStructure>) => {
 const icfRows = ref<Array<RowStructure>>()
 
 
+const excelGroupOptions = computed(() => roles.map((r, idx) => ({text: r.name, value: idx, group: r.group})))
+const selectedGroup = ref('');
+
+const excelDataSetOptions = ref([
+  {text: 'WHODAS', value: 0, subset: 'whodas'},
+  {text: 'Umweltfaktoren', value: 1, subset: 'env'},
+  {text: 'ICFs', value: 2, subset: 'icf'},
+  {text: 'SF-36', value: 3, subset: 'sf36'},
+  {text: 'Bedienerfreundlichkeit', value: 4, subset: 'uxquestionnaire'}
+])
+const selectedDataSet = ref('');
+const excelDataSetCompletenessOptions = ref([
+  {text: 'WHODAS', value: 0, subset: 'whodas'},
+  {text: 'Umweltfaktoren', value: 1, subset: 'env'},
+  {text: 'ICFs', value: 2, subset: 'icf'},
+  {text: 'SF-36', value: 3, subset: 'sf36'},
+  {text: 'Bedienerfreundlichkeit', value: 4, subset: 'uxquestionnaire'}
+])
+const selectedDataSetForCompleteness = ref('')
+
+interface Response {
+  data: any;
+}
+
+function loadExcelTableFromApi(): Promise<Response> {
+  return new Promise((resolve, reject) => {
+    if (user_store.getState().authenticated) {
+      var config: AxiosRequestConfig = {
+        method: 'GET',
+        url: backendURL() + `icfdata/getdataxls/`,
+        responseType: 'blob',
+        headers: {
+          authorization: `Bearer ${user_store.getState().access_token}`,
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        },
+        params: {
+          subsets: selectedDataSet.value ? selectedDataSet.value.split(',').map(i => excelDataSetOptions.value[Number(i)].subset).join(',') : undefined,
+          subgroups: selectedGroup.value ? selectedGroup.value.split(',').map(i => excelGroupOptions.value[Number(i)].group).join(',') : undefined,
+          dropna: selectedDataSetForCompleteness.value ? selectedDataSetForCompleteness.value.split(',').map(i => excelDataSetOptions.value[Number(i)].subset).join(',') : undefined,
+        }
+      };
+      axios(config).then((response) => {
+        resolve(response)
+      }).catch((e) => {
+        console.log('Retrieval of Excel Table failed: ', e)
+        reject(e);
+      })
+    } else reject('Not authenticated')
+  })
+}
+
+function createExcel() {
+  loadExcelTableFromApi().then(response => {
+    const blob = new Blob([response.data]);
+    var dllink = document.createElement('a');
+    dllink.href = URL.createObjectURL(blob)
+    dllink.setAttribute("download", `icfx-dataset.xlsx`);
+    dllink.click()
+  })
+}
+
 const copyTokenToClipboard = () => {
   navigator.clipboard.writeText(user_store.getState().access_token);
 
@@ -109,8 +174,8 @@ const copyTokenToClipboard = () => {
   alert("Access token copied to clipboard");
 }
 
-onMounted(()=> {
-  if (user_store.getState().userdata?.length===0) {
+onMounted(() => {
+  if (user_store.getState().userdata?.length === 0) {
     router.push('/')
   }
 })
@@ -126,7 +191,7 @@ onMounted(()=> {
         Deskriptive Statistik
       </h2>
       <MDBRow>
-          <ResultDescriptiveStatisticsWholeInstitution/>
+        <ResultDescriptiveStatisticsWholeInstitution/>
       </MDBRow>
 
       <h2 class="text-secondary">
@@ -153,25 +218,56 @@ onMounted(()=> {
         </MDBCol>
       </MDBRow>
 
-      <MDBRow class="m-2">
-      <h2 class="text-primary">Whodas</h2>
-      <WhodasResultBarGraphByPatientCase :datarows="icfRows" v-if="icfRows"/>
+      <MDBRow class="m-2" v-if="icfRows">
+        <h2 class="text-primary">Whodas</h2>
+        <WhodasResultBarGraphByPatientCase :datarows="icfRows" v-if="icfRows"/>
 
+      </MDBRow>
+
+      <MDBRow class="m-2" v-if="icfRows">
+        <h2 class="text-primary">ICFs</h2>
+        <ICFResultBarGraph :datarows="icfRows" v-if="icfRows"/>
+      </MDBRow>
+
+      <MDBRow class="m-2">
+        <h2 class="text-primary">Excel - Area</h2>
+        <p>Configure your Excel Download</p>
+        <MDBRow>
+          <MDBCol>
+            <MDBSelect v-model:options="excelGroupOptions" label="Included Groups" v-model:selected="selectedGroup"
+                       multiple/>
+          </MDBCol>
+          <MDBCol>
+            <MDBSelect v-model:options="excelDataSetOptions" label="Included Datasets"
+                       v-model:selected="selectedDataSet" multiple/>
+          </MDBCol>
+          <MDBCol>
+            <MDBSelect v-model:options="excelDataSetCompletenessOptions" label="Enforce Completeness"
+                       v-model:selected="selectedDataSetForCompleteness" multiple/>
+          </MDBCol>
+          <MDBCol>
+            <MDBBtn color="primary" @click="createExcel"><MDBIcon icon="table" size="lg" class="me-2"/>Download Excel</MDBBtn>
+          </MDBCol>
         </MDBRow>
+      </MDBRow>
 
-      <MDBRow class="m-2">
-      <h2 class="text-primary">ICFs</h2>
-      <ICFResultBarGraph :datarows="icfRows" v-if="icfRows"/>
-</MDBRow>
+      <MDBRow class="m-2 mt-4">
+        <h2 class="text-primary">REST-API Area</h2>
 
-
-      <h2 class="text-secondary">Access Token</h2>
-      <h4 class="text-primary">{{ user_store.getState().access_token }}
-        <MDBBtn class="ms-3" color="tertiary" @click="copyTokenToClipboard">
-          <MDBIcon icon="clipboard" size="lg" class="me-2"/>
-          Copy to Clipboard
-        </MDBBtn>
-      </h4>
+        <h3 class="text-secondary">Access Token</h3>
+        <p>Use this Token in your REST API requests.</p>
+        <MDBRow class="d-flex align-items-bottom">
+          <MDBCol>
+            <p class="text-primary">{{ user_store.getState().access_token }}</p>
+          </MDBCol>
+          <MDBCol>
+            <MDBBtn color="primary" @click="copyTokenToClipboard">
+              <MDBIcon icon="clipboard" size="lg" class="me-2"/>
+              Copy to Clipboard
+            </MDBBtn>
+          </MDBCol>
+        </MDBRow>
+      </MDBRow>
     </MDBCardBody>
   </MDBCard>
 </template>
