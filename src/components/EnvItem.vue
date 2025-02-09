@@ -8,19 +8,21 @@ import {
   MDBRow,
   MDBCol,
   MDBProgressBar, MDBProgress, MDBIcon, MDBCardHeader,
-  MDBBtn, MDBSpinner
+  MDBBtn, MDBSpinner, MDBAnimation, MDBListGroup, MDBListGroupItem
 } from 'mdb-vue-ui-kit'
 
 import {WhodasEnvItemStructure} from "../app_store";
 import __env from '../assets/env_factors_de.json'
 
 const _env: Record<string, WhodasEnvItemStructure> = __env;
-import {computed, onMounted, ref, watch} from "vue";
-import {AuspraegungBeschwerden, UmweltFaktoren} from "../constants";
+import {computed, onMounted, provide, ref, watch} from "vue";
 import {app_store, type DataStore} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate} from "vue-router";
 import {imageServer} from "../process_vars";
-import {VueScrollPicker} from "vue-scroll-picker";
+
+import MetricsComponent from "./MetricsComponent.vue";
+import SpeechTextInput from "./SpeechTextInput.vue";
+import ExplanationComponent from "./ExplanationComponent.vue";
 
 
 const props = defineProps({
@@ -46,6 +48,10 @@ const env = computed(() => {
   return Object.values(_env)
 })
 
+const toggleExplanation = ref(false);
+provide('toggleExplanation', toggleExplanation)
+const toggleComment = ref(false);
+
 const backUrl = computed(() => {
   if (Number(props.item) > 1) return `/patientdata/env/${props.patientid}/${Number(props.item) - 1}`
   else return `/patientview/${props.patientid}`
@@ -61,9 +67,6 @@ const nextUrl = computed(() => {
 })
 
 
-const scroll_optionslist = ref([
-  {name: 'positiv (gut)', value: 5, icon:'thumbs-up'} ,{name: 'positiv und negativ (zugleich gut und schlecht)', value: 9, icon: 'plus-minus'},{name: 'negativ (schlecht)', value: 3, icon:'thumbs-down'}, {name: 'gar nicht', value: 4, icon: 'circle-xmark'},
-])
 
 
 
@@ -83,6 +86,8 @@ const result = computed({
     app_store.setCurrentData(data)
   }
 })
+
+provide('result',result)
 
 const calculated_data = computed(() => {
   let data: DataStore = app_store.getState().patient_data
@@ -104,6 +109,8 @@ onBeforeRouteLeave((to, from) => {
 // same as beforeRouteUpdate option but with no access to `this`
 onBeforeRouteUpdate(async (to, from) => {
   navigate.value=true
+    toggleComment.value=false
+  toggleExplanation.value=false
   app_store.saveDataToApi(calculated_data.value).finally(() => {
      navigate.value=false
     return true
@@ -121,40 +128,34 @@ onBeforeRouteUpdate(async (to, from) => {
       </MDBProgressBar>
     </MDBProgress>
 
+
     <img
         :src="imageServer()+`env-pics/version-1/${current_img}`"
         :alt="`Kontextfaktoren-Bild ${item}`"
         style="max-height:280px;max-width:100%; object-fit: contain; border-radius:10px;"
-        class="image-blurred-edge"
+        class="image-blurred-edge mainpic"
     />
 
-
-
-
-
-
-    <MDBCardBody class="m-0 p-0">
-      <MDBRow>
-        <h2 class="text-center text-primary mt-2">{{ env[Number(item) - 1].s }}</h2>
-        <p class="text-start" v-html="env[Number(item) - 1].t"></p>
-         <router-link :to="`/patientdata/env-detail/${patientid}/${item}`">
-        Was soll das bedeuten?
-        <MDBIcon class="ms-3" icon="circle-info"></MDBIcon>
-      </router-link>
+    <MDBCardBody class="m-0 p-0 text-center">
+      <MDBRow class="mb-4">
+        <h2 class="text-primary mt-2">{{ env[Number(item) - 1].s }}</h2>
+        <ExplanationComponent :explanations="env[Number(item) - 1].e" :code="item" module="env" />
+        <p v-html="env[Number(item) - 1].t"></p>
+        <MDBCol>
+        <MDBBtn :color="toggleExplanation ? 'secondary' : 'primary'" @click="toggleExplanation=!toggleExplanation"><MDBIcon icon="info-circle" class="me-2" size="lg"></MDBIcon><span>Hinweis</span></MDBBtn>
+     </MDBCol>
       </MDBRow>
 
-          <VueScrollPicker
-              :options="scroll_optionslist"
-              v-model:model-value="result"
-              style="font-size: 20px">
-      <template #default="{ option }">
-        <div class="custom-option">
-          <MDBIcon class="custom-option-icon" :icon="option.icon" />
-          <span>{{ option.name }}</span>
-        </div>
-      </template>
+ <MDBRow>
+   <MetricsComponent module="env" :item="item"/>
+ </MDBRow>
 
-          </VueScrollPicker>
+        <MDBBtn color="tertiary" @click="toggleComment=!toggleComment"><MDBIcon icon="circle-exclamation" size="lg" class="me-2"></MDBIcon>Mein Kommentar oder Problem</MDBBtn>
+        <MDBRow v-if="toggleComment" class="m-2">
+          <MDBCol class="d-flex justify-content-center">
+          <SpeechTextInput :refcode="'env_'+item"/>
+            </MDBCol>
+        </MDBRow>
 
     </MDBCardBody>
     <MDBCardFooter>
@@ -174,17 +175,33 @@ onBeforeRouteUpdate(async (to, from) => {
   </MDBCard>
 </template>
 
-<style scoped>
-.custom-option {
-  padding: 2px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+<style>
+.imgcontainer {
+  position: relative;
 }
-.custom-option-icon {
-  width: 20px;
-  height: 20px;
-  margin-right:10px;
-  fill: currentColor;
+
+
+.mainpic {
+  padding: 2px;
+}
+
+.secondarypic {
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+  width: 70px;
+  border: 3px dotted blue;
+  box-shadow: grey 3px 3px 5px;
+  opacity: 70%;
+  padding: 3px;
+}
+
+
+
+ul {
+    text-align: center;
+    list-style-position: inside;
 }
 </style>

@@ -1,7 +1,7 @@
 {
   "name": "icfx-app2",
   "private": true,
-  "version": "2.7.7",
+  "version": "2.9.1",
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
@@ -25,6 +25,7 @@
     "uuid": "^9.0.1",
     "v-network-graph": "^0.9.18",
     "vue": "^3.2.40",
+    "vue-3-slider-component": "^1.0.1",
     "vue-chartjs": "^5.3.1",
     "vue-google-charts": "^1.1.0",
     "vue-matomo": "^4.2.0",

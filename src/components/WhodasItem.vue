@@ -16,11 +16,12 @@ import __whodas from '../assets/whodas12_de.json';
 
 const _whodas: Record<string, WhodasEnvItemStructure> = __whodas;
 
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, provide, ref, watch} from "vue";
 import {AuspraegungBeschwerden, UmweltFaktoren} from "../constants";
 import {app_store, type DataStore} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate} from "vue-router";
 import {imageServer} from "../process_vars";
+import MetricsComponent from "./MetricsComponent.vue";
 
 
 const props = defineProps({
@@ -60,15 +61,6 @@ const nextUrl = computed(() => {
   else return `/modulefinish/whodas/${props.patientid}/`
 })
 
-const optionslist = ref( (AuspraegungBeschwerden.map((x, idx) => {
-      return {text: x, value: idx}
-    }))
-)
-
-const scroll_optionslist = computed(() => {
-  return optionslist.value.map(x => ({name: x.text, value: x.value}))
-})
-
 const result = computed({
   get: () => {
     let data =  app_store.getState().patient_data.whodas
@@ -85,6 +77,8 @@ const result = computed({
     app_store.setCurrentData(data)
   }
 })
+
+provide('result',result)
 
 const calculated_data = computed(() => {
   let data: DataStore = app_store.getState().patient_data
@@ -129,17 +123,14 @@ onBeforeRouteUpdate(async (to, from) => {
         class="image-blurred-edge"
     />
 
-    <MDBCardBody class="m-0 p-0 text-start">
+    <MDBCardBody class="m-0 p-0 text-center">
       <MDBRow>
-         <h2 class="text-primary text-center mt-2">{{ whodas[Number(item) - 1].s }}</h2>
+         <h2 class="text-primary  mt-2">{{ whodas[Number(item) - 1].s }}</h2>
         <p v-html="whodas[Number(item) - 1].t"/>
       </MDBRow>
-      <VueScrollPicker
-          :options="scroll_optionslist"
-          v-model:model-value="result"
-          style="font-size: 20px">
-      </VueScrollPicker>
-
+      <MDBRow>
+          <MetricsComponent module="whodas"/>
+</MDBRow>
     </MDBCardBody>
     <MDBCardFooter>
       <MDBRow class="d-flex align-items-center">

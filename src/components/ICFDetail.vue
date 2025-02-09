@@ -72,7 +72,7 @@ onMounted(() => {
     <MDBCardFooter>
       <MDBRow>
         <MDBCol class="justify-content-start">
-          <MDBBtn role="link" @click="router.back()">Zurück</MDBBtn>
+          <MDBBtn role="link" @click="router.back()" color="tertiary">Zurück</MDBBtn>
         </MDBCol>
       </MDBRow>
     </MDBCardFooter>

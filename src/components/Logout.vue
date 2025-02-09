@@ -6,6 +6,7 @@ import {backtranslate_pseudonym} from "../language_helper";
 import AvatarImage from "./AvatarImage.vue";
 import {useRoute, useRouter} from "vue-router";
 import {roles} from "../constants";
+import {app_store} from "../app_store";
 const router = useRouter()
 const route = useRoute()
 
@@ -25,6 +26,7 @@ watch(counterval,(newVal, oldVal) => {
   if (newVal===0) {
     user_store.clear_tokens()
     user_store.clear_userdata()
+    app_store.clearData()
     router.push('/')
   } else {
     countDown()

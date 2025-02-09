@@ -10,13 +10,14 @@ import {
   MDBProgressBar, MDBProgress, MDBSpinner
 } from 'mdb-vue-ui-kit'
 import {VueScrollPicker} from 'vue-scroll-picker'
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, provide, ref, watch} from "vue";
 import {AuspraegungBeschwerden, UmweltFaktoren} from "../constants";
 import {app_store, type DataStore} from "../app_store";
 import {onBeforeRouteLeave, onBeforeRouteUpdate} from "vue-router";
 import {imageServer} from "../process_vars";
 import {random} from "lodash";
 import __sf36 from "../assets/sf36_de.json";
+import MetricsComponent from "./MetricsComponent.vue";
 
 const _sf36:Record<string,Record<string,any>> = __sf36
 
@@ -47,16 +48,6 @@ const nextUrl = computed(() => {
   else return `/modulefinish/sf36/${props.patientid}`
 })
 
-const optionslist = computed(()=> {
-  let sf36_item = _sf36[props.item]
-  let optlist = []
-  if (Object.keys(sf36_item).includes('answers')) {
-    optlist = sf36_item.answers.map((x:string, idx: number) => ({name: x, value: idx}))
-  }
-  return optlist
-})
-
-
 const result = computed({
   get: () => {
     let data = app_store.getState().patient_data.sf36
@@ -73,6 +64,8 @@ const result = computed({
     app_store.setCurrentData(data)
   }
 })
+
+provide('result',result)
 
 const calculated_data = computed(() => {
   let data: DataStore = app_store.getState().patient_data
@@ -110,11 +103,12 @@ onBeforeRouteUpdate(async (to, from) => {
       </MDBProgress>
     <MDBCardTitle class="m-4">{{ _sf36[props.item].question }}</MDBCardTitle>
     <MDBCardBody class="m-0 p-0">
-      <VueScrollPicker v-if="optionslist.length>0"
-          :options="optionslist"
-          v-model:model-value="result"
-          style="font-size: 20px">
-      </VueScrollPicker>
+
+             <MDBRow v-if="_sf36[props.item].answers">
+          <MetricsComponent module="sf36" :item="item"/>
+</MDBRow>
+
+
       <h5 class="text-secondary" v-if="!_sf36[props.item].answers">Die Fragen kommen auf den nächsten Seiten. Klicke einfach auf Weiter.</h5>
     </MDBCardBody>
     <MDBCardFooter>

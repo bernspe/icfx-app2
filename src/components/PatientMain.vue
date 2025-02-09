@@ -196,7 +196,7 @@ const preloadData = (autoassign: boolean) => {
       // fuse data from API and from Store if Store contains values
       if (r.length !== 0) show_preload_switch.value = true
       // aktuelle Daten
-      let s = Object.values(app_store.getState().patient_data).some(v => Object.keys(v).length > 0) ? app_store.getState().patient_data : app_store.emptyDataStore()
+      let s = Object.values(app_store.getState().patient_data).some(v => Object.keys(v || {}).length > 0) ? app_store.getState().patient_data : app_store.emptyDataStore()
       if (autoassign) {
         data.value = Object.assign({}, r[0])
       } else

@@ -97,6 +97,7 @@ onMounted(() => {
         user_store.getAPIInstitutions().then((res) => {
           let i = res.filter(x => x.id === route.query.institution)[0]
           user_store.set_institution(i.id, i.name, i.logo_url)
+          user_store.setMockMode(false)
           let casenumber = route.query.casenumber
           if (casenumber === 'random')
             casenumber =  _.sample(Object.keys(_patientcases)) || "1"
@@ -111,6 +112,20 @@ onMounted(() => {
           loadData()
           user_store.getAPIInstitutions().then((res) => apiInstitutions.value = res)
         })
+      } else {
+      if (ks.includes('institution')) {
+        user_store.getAPIInstitutions().then((res) => {
+          let i = res.filter(x => x.id === route.query.institution)[0]
+          user_store.set_institution(i.id, i.name, i.logo_url)
+          user_store.setMockMode(false)
+          router.push('/login/' + route.query.institution)
+        }).catch(() => {
+          loadData()
+          user_store.getAPIInstitutions().then((res) => apiInstitutions.value = res)
+        })
+      }
+      loadData()
+          user_store.getAPIInstitutions().then((res) => apiInstitutions.value = res)
       }
     } else {
       // if everything fails, just display the start page and load possible institutions

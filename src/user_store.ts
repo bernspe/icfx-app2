@@ -11,10 +11,12 @@ import {
     wbauth_token_label, wbauth_usermode_label,
     wbauth_username_label
 } from "./constants";
+import {app_store} from "./app_store";
 
 
 export interface UserData {
     id: string,
+    selector_type: string,
     pseudonym: string,
     translated_pseudonym?: string,
     last_login?: string,
@@ -38,6 +40,7 @@ export interface RemoteInstitutionDataset extends Object {
 
 export interface RemoteUserAPI {
     id: string,
+    selector_type: string,
     pseudonym: string,
     groups: Array<string>
     is_staff?: boolean
@@ -51,6 +54,7 @@ export interface User extends Object {
     access_token: string,
     mock_mode: boolean,
     authenticated: boolean,
+    selector_type: string,
     userdata: Array<RemoteUserAPI>,
     times_per_page: Array<number>,
     id: string,
@@ -72,6 +76,7 @@ class UserStore extends Store<User> {
             access_token: '',
             mock_mode: false,
             authenticated: false,
+            selector_type: 'scroller',
             userdata: [],
             times_per_page: [default_page_time],
             id: '',
@@ -121,6 +126,7 @@ class UserStore extends Store<User> {
 
     set_user(r: User | UserData | RemoteUserAPI) {
         this.state.id = r.id
+        this.state.selector_type = this.state.selector_type ? this.state.selector_type : (r.selector_type || 'scroller')
         this.state.pseudonym = r.pseudonym
         this.state.groups = r.groups
         this.state.is_staff = r.is_staff || false
@@ -174,6 +180,13 @@ class UserStore extends Store<User> {
         this.state.times_per_page.push(default_page_time)
     }
 
+    set_selector_type (seltype: string) {
+        this.state.selector_type = seltype
+        if (this.state.authenticated) {
+            this.updateAccountDetails({selector_type: seltype})
+        }
+    }
+
     set_institution(institution_id: string, institution_name: string, url?: string) {
         this.state.institution.id = institution_id
         this.state.institution.name = institution_name
@@ -184,6 +197,7 @@ class UserStore extends Store<User> {
         return new Promise<string>((resolve, reject) => {
             this.state.authenticated = true
             this.state.id = r.id
+            this.state.selector_type = r.selector_type
             this.state.pseudonym = r.pseudonym
             this.state.groups = r.groups
             this.state.is_staff = r.is_staff

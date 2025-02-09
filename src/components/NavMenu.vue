@@ -12,6 +12,7 @@ import {imageServer} from "../process_vars.ts";
 
 import AvatarImage from "./AvatarImage.vue";
 import GroupImage from "./GroupImage.vue";
+import {selector_types} from "../constants.ts";
 
 
 const sidenavScroll = ref(true);
@@ -54,6 +55,19 @@ const medprof_groups = computed(() => {
 })
 
 const isStaff = computed(()=> user_store.getState().is_staff)
+
+const changeSelectorType = ()=> {
+  const idx = selector_types.indexOf(user_store.getState().selector_type)
+  if (idx > -1) {
+    if (idx<selector_types.length-1) user_store.set_selector_type(selector_types[idx+1])
+    else user_store.set_selector_type(selector_types[0])
+  }
+}
+
+const selectorIcon = computed(()=> {
+  let d = {scroller: 'scroll', slider: 'sliders'};
+  return d[user_store.getState().selector_type]
+})
 
 </script>
 
@@ -119,6 +133,9 @@ const isStaff = computed(()=> user_store.getState().is_staff)
       <hr class="mt-0 mb-2"/>
     </div>
     <MDBSideNavMenu scrollContainer>
+      <MDBSideNavItem>
+        <MDBBtn class="ms-2" color="tertiary" @click="changeSelectorType"><i :class="`fas fa-${selectorIcon} me-3`"></i>  {{ user_store.getState().selector_type }}</MDBBtn>
+      </MDBSideNavItem>
       <MDBSideNavItem>
         <MDBSideNavLink to="/logout" v-if="user_store.getState().authenticated && !user_store.getState().mock_mode">
           <MDBIcon icon="right-from-bracket" class="fa-fw me-3"/>

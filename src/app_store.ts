@@ -2,18 +2,25 @@ import {Store} from "./store";
 import {backendClientId, backendClientKey, backendURL} from "./process_vars";
 import _patientinput from './assets/mock-patientinput.json'
 import moment from "moment";
-import {UserData, user_store} from "./user_store";
+import {UserData, user_store, RemoteUserAPI} from "./user_store";
 import {getWhodasSum, normalizeWhodasSum} from "./calculation_helper";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
+import _userdata from "./assets/mock-userdata.json";
 
+export interface FulfillmentStats  {
+    [key: string]:Record<string, number>
+}
 export interface Explanation extends Object {
+    id: number
     created: string
     last_modified: string
     creator: string
+    owner: string
     validator?: string
     refcode: string
     text: string
+    open_to_all: boolean
 }
 export interface PatientCase extends Object {
     title: string,
@@ -115,6 +122,7 @@ interface ApplicationData extends Object {
     users_of_this_institution: Array<UserData>
     api_all_patient_records: Array<DataStore>
     api_patient_records: Array<DataStore>
+    fulfillmentStatistics: FulfillmentStats
 }
 
 class AppStore extends Store<ApplicationData> {
@@ -126,8 +134,8 @@ class AppStore extends Store<ApplicationData> {
             patient_data: this.emptyDataStore(), // current dataset
             users_of_this_institution: [],
             api_all_patient_records: [], // all patients
-            api_patient_records: [] // current patient all datasets
-
+            api_patient_records: [], // current patient all datasets
+            fulfillmentStatistics: {},
         };
     }
 
@@ -153,6 +161,7 @@ class AppStore extends Store<ApplicationData> {
         this.state.active_icf = '';
         this.state.patient_data = this.emptyDataStore()
         this.state.api_patient_records = []
+        this.state.fulfillmentStatistics = {}
     }
 
 
@@ -331,6 +340,37 @@ class AppStore extends Store<ApplicationData> {
             }
         })
     }
+
+        getAPIFulfillmentStatistics(groups: Array<string>): Promise<FulfillmentStats> {
+        return new Promise((resolve, reject) => {
+             if (user_store.getState().authenticated) {
+                    var config = {
+                        method: 'GET',
+                        url: backendURL() + "icfdata/getdatasetstatisticsbygroup/",
+                        headers: {
+                            authorization: `Bearer ${user_store.getState().access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        params: {
+                            subgroups: groups.join(',')
+                        }
+                    };
+                    axios(config).then((response) => {
+                        this.state.fulfillmentStatistics = response.data
+                        resolve(response.data)
+                    }).catch((e) => {
+                        console.log('Retrieval of fulfillment stats failed', e)
+                        reject(e);
+                    })
+                } else {
+                 reject()
+                }
+        })
+    }
+
 
     updateUserDiagnoses(targetUser: string, diagnoses: string): Promise<string> {
         return new Promise((resolve, reject) => {

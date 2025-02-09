@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import {MDBListGroup, MDBListGroupItem, MDBBadge, MDBInput, MDBRow, MDBCol} from 'mdb-vue-ui-kit'
+import {MDBListGroup, MDBListGroupItem, MDBBadge, MDBInput, MDBRow, MDBCol, MDBSwitch} from 'mdb-vue-ui-kit'
 
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, provide, ref, watch} from "vue";
 import {RemoteUserAPI, user_store, UserData} from "../user_store";
-import {app_store} from "../app_store";
+import {app_store, FulfillmentStats} from "../app_store";
 import AvatarImage from "./AvatarImage.vue";
 import {backtranslate_pseudonym, translate_pseudonym} from "../language_helper";
 import {imageServer} from "../process_vars";
 
-import _patientcases from "../assets/patientcases_de.json";
+import __patientcases from "../assets/patientcases_de.json";
+import GroupImage from "./GroupImage.vue";
+import GroupFulfillmentStatsView from "./GroupFulfillmentStatsView.vue";
+import {roles} from "../constants";
+
+const _patientcases: Record<string, any> = __patientcases
 
 const patientFromCasenumber = (casenumber?: number) => {
   if (!casenumber) return ''
@@ -19,7 +24,7 @@ const patientFromCasenumber = (casenumber?: number) => {
 
 const _userdata = computed(() => user_store.getState().userdata)
 
-const medprof_groups = computed(() => {
+const   medprof_groups = computed(() => {
   if (user_store.getState().id && (!user_store.getState().groups.includes('patient')) && _userdata.value.length > 0) {
     let idx = _userdata.value.map(u => u.id).indexOf(user_store.getState().id)
     return _userdata.value[idx].groups
@@ -27,7 +32,7 @@ const medprof_groups = computed(() => {
 })
 
 const targetUrl = (patientid: string) => {
-  if ((user_store.getState().groups.includes('patient')) || (user_store.getState().groups.length===0)) return `/patientview/${patientid}`
+  if ((user_store.getState().groups.includes('patient')) || (user_store.getState().groups.length === 0)) return `/patientview/${patientid}`
   else return `/medview/${patientid}`
 }
 
@@ -54,6 +59,17 @@ const searched_list = computed<Array<UserData>>(() => {
     return patient_list.value
 })
 
+const showFulfillment = ref(false)
+const fulfillmentStatistics = ref<FulfillmentStats>({})
+
+watch(showFulfillment, (value: boolean) => {
+  if (value) {
+    app_store.getAPIFulfillmentStatistics(roles.map(r=>r.group)).then(stats=>fulfillmentStatistics.value=stats)
+  } else {
+    fulfillmentStatistics.value={}
+  }
+})
+
 
 onMounted(() => {
   user_store.getAPIUsersOfThisInstitution().then(r => {
@@ -63,7 +79,6 @@ onMounted(() => {
       user_store.set_user(r[md_idx])
     }
 
-    // TODO: patient_list needs to be computed value to have translated pseudonymas
     patient_list.value = sortNAddTranslatedPseudonym(r)
   })
 
@@ -81,31 +96,17 @@ onMounted(() => {
           :pseudonym="user_store.getState().pseudonym" size="55px" color="green" label_position="right"/>
     </MDBCol>
     <MDBCol class="d-flex justify-content-start">
-      <div v-for="g in medprof_groups">
-        <img
-            :src="imageServer()+`group-pics/${g}.jpg`"
-            alt=""
-            style="width: 45px; height: 45px"
-            class="rounded-circle"
-        />
-        <MDBBadge
-            class="translate-middle p-1"
-            badge="info"
-            pill
-            notification
-        >{{ g }}
-        </MDBBadge>
+           <div v-for="g in medprof_groups">
+        <GroupImage :group="g"/>
       </div>
     </MDBCol>
 
   </MDBRow>
   <MDBRow class="d-flex align-items-center m-2">
     <h1 class="text-secondary">Patienten</h1>
-    <MDBCol class="d-flex justify-content-start">
       <h2 class="text-primary m-4">Patient auswählen</h2>
-    </MDBCol>
 
-  </MDBRow>
+
   <MDBInput
       inputGroup
       :formOutline="false"
@@ -120,20 +121,37 @@ onMounted(() => {
       <span class="input-group-text border-0" id="search-addon">@</span>
     </template>
   </MDBInput>
+      </MDBRow>
+
+   <MDBRow class="d-flex align-items-center m-2 p-2">
+     <MDBCol class="d-flex justify-content-start ms-4">
+       <div>
+     <h2 class="text-secondary">Status anzeigen</h2>
+       <p class="text-secondary">Zeigt an, welche Berufsgruppen ICF Items erzeugt haben</p>
+         </div>
+       </MDBCol>
+     <MDBCol class="d-flex justify-content-end">
+       <MDBSwitch v-model="showFulfillment"/>
+     </MDBCol>
+   </MDBRow>
   <MDBListGroup light class="me-4">
     <MDBListGroupItem
-                      v-for="patient in searched_list"
+        v-for="patient in searched_list"
     >
       <router-link :to="targetUrl(patient.id)">
         <MDBRow class="d-flex justify-content-between align-items-center">
           <MDBCol>
-      <div>
-        <AvatarImage :pseudonym="patient.pseudonym" size="55px" color="blue" label_position="right"/>
+            <div>
+              <AvatarImage :pseudonym="patient.pseudonym" size="55px" color="blue" label_position="right"/>
+              <span class="text-info fst-italic"
+                    v-if="patient.patient_case"> {{ patientFromCasenumber(patient.patient_case).title }}</span>
+            </div>
+          </MDBCol>
 
-        <span class="text-info fst-italic"
-              v-if="patient.patient_case"> {{ patientFromCasenumber(patient.patient_case).title }}</span>
-      </div>
-            </MDBCol>
+          <MDBCol v-if="showFulfillment && Object.keys(fulfillmentStatistics).includes(patient.id)" class="d-flex justify-content-center align-items-center">
+            <GroupFulfillmentStatsView :ownerid="patient.id" />
+          </MDBCol>
+
           <MDBCol class="d-flex justify-content-end">
             Weiter
           </MDBCol>

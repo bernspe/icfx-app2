@@ -10,7 +10,7 @@ const UmweltColor_old = ['#97322b','#97682b','#97682b', '#97832b'     ,'#bfdb82'
 const UmweltColor = ['#5f0f40','#9a031e','#e36414','#fb8b24','#f0f3bd','#02c39a','#00a896','#028090','#05668d']
 const UmweltTextColor = '#2b2b2b'
 
-
+const selector_types = ['scroller','slider']
 const wbauth_token_label ='WB_token'
 const wbauth_username_label = 'WB_username'
 const wbauth_usermode_label = 'WB_usermode'
@@ -41,6 +41,7 @@ export {dateTimeFormat,
   wbauth_usermode_label,wbauth_token_label,wbauth_username_label,wbauth_current_journey_location_label,
   Auspraegung,AuspraegungBeschwerden,InactiveColor, AuspraegungColor,AuspraegungTextColor,
   UmweltFaktoren,UmweltColor, UmweltTextColor,
+    selector_types,
   dateformat,
   db_dateformat,language,startLabel, statusLabels, roles, modules,
 default_page_time}

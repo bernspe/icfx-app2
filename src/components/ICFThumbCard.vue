@@ -5,15 +5,22 @@ import {
 } from 'mdb-vue-ui-kit'
 import {AuspraegungBeschwerden, AuspraegungColor, UmweltColor, UmweltFaktoren} from "../constants";
 import {imageServer} from "../process_vars";
-import {ICFItemStructure} from '../app_store';
+import {Explanation, ICFItemStructure} from '../app_store';
 import __icfcodes from "../assets/icf_codes3.json";
 
 const _icfcodes: Record<string, ICFItemStructure> = __icfcodes;
+
+
+
 import {app_store, DataStore, ICFStruct} from "../app_store";
-import {computed, inject, onMounted, ref, watch} from "vue";
+import {computed, inject, onMounted, provide, ref, watch} from "vue";
 import {VueScrollPicker} from "vue-scroll-picker";
 import {user_store} from "../user_store";
 import {useRoute, useRouter} from "vue-router";
+import _ from "lodash";
+import SpeechTextInput from "./SpeechTextInput.vue";
+import MetricsComponent from "./MetricsComponent.vue";
+import ExplanationComponent from "./ExplanationComponent.vue";
 
 const router = useRouter()
 const route = useRoute()
@@ -32,6 +39,9 @@ const firstTimeMounted = ref(props.mode === 'large')
 const isPatient = computed(() => user_store.getState().groups.includes('patient'))
 const currentCode = computed(() => props.code)
 
+const toggleExplanation = ref(false);
+const toggleComment = ref(false);
+
 const val2SelectionStatus = (val: number) => {
   if (props.code[0] === 'e') return (val !== 4) ? 1 : 0
   else return (val !== 0) ? 1 : 0
@@ -46,6 +56,8 @@ const icfitem = computed(() => {
     return {value: props.code[0] === 'e' ? 4 : 0, selected: 0}
   }
 })
+
+
 const mouseOverAct = (e: Event, code: string) => {
   if (props.mode === 'thumb' && code !== app_store.getState().active_icf) {
     if (app_store.getState().active_icf?.length > 0)
@@ -55,19 +67,6 @@ const mouseOverAct = (e: Event, code: string) => {
   app_store.set_active_icf(code)
 }
 
-const showScrollPicker = ref(true)
-
-const optionslist = computed(() => {
-  return props.code[0] === 'e' ? (UmweltFaktoren.map((x, idx) => {
-    return {text: x, value: idx}
-  })) : (AuspraegungBeschwerden.map((x, idx) => {
-    return {text: x, value: idx}
-  }))
-})
-
-const scroll_optionslist = computed(() => {
-  return optionslist.value.map(x => ({name: x.text, value: x.value}))
-})
 
 const result = computed({
   get: () => {
@@ -89,8 +88,12 @@ const result = computed({
   }
 })
 
+provide('result', result)
+
 watch(currentCode, (newVal, oldVal) => {
-  if (props.mode==='large') {
+  toggleComment.value = false
+  toggleExplanation.value = false
+  if (props.mode === 'large') {
     if (newVal !== oldVal) {
       const data = {
         ...app_store.getState().patient_data,
@@ -119,6 +122,9 @@ const saveNClose = (code: string) => {
   app_store.set_active_icf('')
 }
 
+provide('toggleExplanation', toggleExplanation)
+
+
 onMounted(() => {
   if (props.mode === 'large') {
     if (!props.code) router.push(props.upUrl ? props.upUrl : '/')
@@ -137,7 +143,7 @@ onMounted(() => {
 <template>
   <MDBCard
       class="m-2 text-center"
-      style="max-width:20rem;"
+      style="max-width:30rem;"
   >
     <div v-if="_icfcodes[code]?.p">
       <div v-if="mode==='thumb'" class="thumbimg" @click="mouseOverAct($event,code)">
@@ -189,21 +195,40 @@ onMounted(() => {
 
     <div v-if="code === app_store.getState().active_icf">
       <MDBCardHeader>
-        <h5 class="text-primary">{{ _icfcodes[code]?.t }}</h5>
-        <router-link :to="`/patientdata/icf-detail/${patientid}/${code}?redirect=${route.path}`">
-          Was soll das bedeuten?
-          <MDBIcon class="ms-3" icon="circle-info"></MDBIcon>
-        </router-link>
+        <MDBRow class="align-items-center m-2">
+          <MDBCol>
+            <h5 class="text-primary">{{ _icfcodes[code]?.t }}</h5>
+          </MDBCol>
+
+          <MDBCol>
+            <MDBBtn :color="toggleExplanation ? 'secondary' : 'primary'" @click="toggleExplanation=!toggleExplanation">
+              <MDBIcon icon="info-circle" class="me-2" size="lg"></MDBIcon>
+              <span v-if="mode==='large'">Hinweis</span></MDBBtn>
+          </MDBCol>
+
+        </MDBRow>
+
+
+        <ExplanationComponent :code="code" module="icf"/>
+
+
+
       </MDBCardHeader>
       <MDBCardBody v-if="code === app_store.getState().active_icf" class="m-0 p-0">
         <MDBRow>
-          <VueScrollPicker
-              :options="scroll_optionslist"
-              v-model:model-value="result"
-              :style="`font-size: ${mode==='large' ? '20px':'16px'}`"
-          >
-          </VueScrollPicker>
+          <MetricsComponent :icfcode="code" :icfmode="mode"/>
         </MDBRow>
+
+        <MDBBtn color="tertiary" v-if="mode==='large'" @click="toggleComment=!toggleComment">
+          <MDBIcon icon="circle-exclamation" size="lg" class="me-2"></MDBIcon>
+          Mein Kommentar
+        </MDBBtn>
+        <MDBRow v-if="toggleComment" class="m-2">
+          <MDBCol class="d-flex justify-content-center">
+            <SpeechTextInput :refcode="'icf_'+code"/>
+          </MDBCol>
+        </MDBRow>
+
         <MDBRow v-if="mode==='browser' || mode==='thumb'">
           <MDBCol class="d-flex justify-content-center m-2">
             <MDBBtn outline="primary" @click="saveNClose(code)">
