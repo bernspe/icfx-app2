@@ -115,7 +115,7 @@ const mergeOperations = [
   {operation: 'right', icon: 'sets_logical_right.svg', descriptor_de: 'rechts', descriptor_en: 'right'},
   {operation: 'left', icon: 'sets_logical_left.svg', descriptor_de: 'links', descriptor_en: 'left'},
 ]
-const currentMergeOperationIdx = ref(0)
+const currentMergeOperationIdx = ref(2)
 
 const changeMergeOperationIdx = () => {
   if (currentMergeOperationIdx.value < mergeOperations.length - 1) currentMergeOperationIdx.value += 1
@@ -296,7 +296,10 @@ const preloadData = (autoassign: boolean) => {
       }
       // aktuelle Daten
       let s = Object.values(app_store.getState().patient_data).some(v => Object.keys(v).length > 0) ? app_store.getState().patient_data : app_store.emptyDataStore()
-      loadDataSetFromApi(autoassign ? p : s)
+      // if this is a naked dataset, set generic as default
+      let f = autoassign ? p : s
+      if (Object.keys(f.icf).length===0) setTimeout(()=>core_options.value[0].checked=true,200)
+      loadDataSetFromApi(f)
     })
   }
 }
@@ -328,6 +331,7 @@ watch(mergedIcfData, (newVal, oldVal) => {
 onMounted(() => {
   if (props.patientid && _userdata.value?.length > 0) preloadData(preload_other_data.value)
   else router.push('/')
+
 })
 </script>
 
