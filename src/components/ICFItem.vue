@@ -52,7 +52,7 @@ const val2SelectionStatus = (code: string, val: number) => {
 }
 const modifySelectionStatus = (data: DataStore) => {
    let code = app_store.getState().active_icf
-  return {...data, icf: {...app_store.getState().patient_data.icf, [code]: {...data.icf[code], selected: (data.icf[code].selected <1) ? val2SelectionStatus(code,data.icf[code].value) : 1}}}
+  return {...data, icf: {...app_store.getState().patient_data.icf, [code]: {...data.icf[code], selected: (data.icf[code]?.selected <1) ? val2SelectionStatus(code,data.icf[code].value) : 1}}}
 }
 
 onBeforeRouteLeave((to, from) => {

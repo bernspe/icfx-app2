@@ -148,7 +148,7 @@ const rollingSecondaryDataset = (d: DataStore) => {
  * get the creator group of the selected dataset
  */
 const currentPerspectiveGroup1 = computed(() => {
-  if (secondaryData1.value.creator) {
+  if (secondaryData1.value?.creator) {
     let ud = user_store.getState().userdata
     let idx = ud.map(u => u.id).indexOf(secondaryData1.value.creator)
     if (idx >= 0) return ud[idx].groups
@@ -157,7 +157,7 @@ const currentPerspectiveGroup1 = computed(() => {
 })
 
 const currentPerspectiveGroup2 = computed(() => {
-  if (secondaryData2.value.creator) {
+  if (secondaryData2.value?.creator) {
     let ud = user_store.getState().userdata
     let idx = ud.map(u => u.id).indexOf(secondaryData2.value.creator)
     if (idx >= 0) return ud[idx].groups
