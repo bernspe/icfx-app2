@@ -10,9 +10,6 @@ import {
   MDBCardHeader,
   MDBCardBody,
   MDBSelect,
-  MDBCardFooter,
-  MDBContainer,
-  MDBCheckbox
 } from 'mdb-vue-ui-kit'
 import {computed, onMounted, ref, watch} from "vue";
 import {user_store} from "../user_store";
@@ -25,6 +22,7 @@ import ResultDescriptiveStatisticsWholeInstitution from "./ResultDescriptiveStat
 import {roles} from "../constants";
 import {backendURL} from "../process_vars";
 import axios, {AxiosRequestConfig} from "axios";
+import color_codes from "../assets/icf_eval_color_coding.json"
 
 export interface RowStructure {
   content: string,
@@ -101,10 +99,62 @@ const datasetIcfs = ref({
 })
 
 const loadIcfRows = (rows: Array<RowStructure>) => {
-  icfRows.value = rows
+  datasetRows.value = rows
 }
-const icfRows = ref<Array<RowStructure>>()
+const datasetRows = ref<Array<RowStructure>>()
 
+const icf_eval_options = ref(
+    Object.keys(color_codes).map((eval_method,idx)=>({text: eval_method,value:idx}))
+);
+
+const eval_selected = ref('');
+const getColorFromICFItemLogic = (item: ICFStruct | string | undefined) => {
+  if (item===undefined) return 'white'
+  if (typeof item === 'string') {
+    return 'white'
+  }
+  if (<ICFStruct>item) {
+    let eval_method = icf_eval_options.value[Number(eval_selected.value)]?.text || 'select_status'
+    let property = color_codes[eval_method]['prop']
+    return (color_codes[eval_method]['eval'][(item[property]).toString()])
+  }
+}
+
+const format = (icfdata:Record<string, ICFStruct>) => {
+  let rows = []
+  if (datasetRows?.value) {
+    let icf_codes = Array.from(new Set(datasetRows.value.map(r => Object.keys(r.icfdata)).flat()))
+    icf_codes.forEach((icfcode) => {
+      let icf_content = datasetRows.value.map(r => r.icfdata)
+      let r = [icfcode, ...icf_content.map(c => Object.keys(c).includes(icfcode) ? c[icfcode] : undefined)]
+      rows.push(r)
+    })
+
+
+    return icf_codes.map(code => {
+      return {
+        backgroundColor: getColorFromICFItemLogic(icfdata[code]),
+        fontWeight: 400
+      };
+    });
+  }
+}
+
+const datasetIcfRows = computed(()=> {
+  let columns=[]
+  let rows=[]
+  if (datasetRows?.value) {
+    let patientslabels = datasetRows.value.map((r,idx) =>  ({label: r.patient + ': ' + r.id.toString(), field: idx.toString(), format: format(r.icfdata)}))
+    columns = [{label:'ICF Code',field:'icfcode'}, ...patientslabels]
+    let icf_codes = Array.from(new Set(datasetRows.value.map(r => Object.keys(r.icfdata)).flat()))
+    icf_codes.forEach((icfcode) => {
+      let icf_content = datasetRows.value.map(r=>r.icfdata)
+      let r = [icfcode,...icf_content.map(c=>Object.keys(c).includes(icfcode) ? c[icfcode].value : undefined)]
+      rows.push(r)
+    })
+  }
+  return {columns, rows}
+})
 
 const excelGroupOptions = computed(() => roles.map((r, idx) => ({text: r.name, value: idx, group: r.group})))
 const selectedGroup = ref('');
@@ -218,15 +268,28 @@ onMounted(() => {
         </MDBCol>
       </MDBRow>
 
-      <MDBRow class="m-2" v-if="icfRows">
+      <MDBRow class="m-2" v-if="datasetRows">
         <h2 class="text-primary">Whodas</h2>
-        <WhodasResultBarGraphByPatientCase :datarows="icfRows" v-if="icfRows"/>
+        <WhodasResultBarGraphByPatientCase :datarows="datasetRows" v-if="datasetRows"/>
 
       </MDBRow>
 
-      <MDBRow class="m-2" v-if="icfRows">
+      <MDBRow class="m-2" v-if="datasetRows">
+        <MDBCol>
         <h2 class="text-primary">ICFs</h2>
-        <ICFResultBarGraph :datarows="icfRows" v-if="icfRows"/>
+          </MDBCol>
+        <MDBCol>
+          <MDBBtn color="tertiary" @click="loadIcfs"><MDBIcon icon="refresh" class="me-2"/>Refresh</MDBBtn>
+        </MDBCol>
+        <h3 class="text-secondary">ICF Rohdaten</h3>
+        <MDBSelect label="Evaluation Color Coding" v-model:options="icf_eval_options" v-model:selected="eval_selected" />
+        <ul class="color-legend">
+          <li class="color-legend-item" v-for="(color, key) in color_codes[icf_eval_options[Number(eval_selected)].text]['eval']">
+            {{ key }} : <span :style="{backgroundColor: color}">{{ color }}</span></li>
+        </ul>
+         <MDBDatatable :dataset="datasetIcfRows" :loading="loadingIcfs" :key="eval_selected"/>
+        <h3 class="text-secondary">ICF Chart</h3>
+        <ICFResultBarGraph :datarows="datasetRows" v-if="datasetRows"/>
       </MDBRow>
 
       <MDBRow class="m-2">
@@ -273,5 +336,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
+.color-legend-item {
+  display: inline-block;
+  margin-inline: 2rem;
+}
 </style>

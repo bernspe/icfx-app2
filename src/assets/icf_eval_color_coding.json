@@ -1,0 +1,34 @@
+{
+  "select_status": {
+    "prop": "selected",
+    "eval": {
+      "-1": "purple",
+      "0": "grey",
+      "1": "green"
+    }
+  },
+  "pure_value_disabilities": {
+    "prop": "value",
+    "eval": {
+      "0":"#f0f3bd",
+      "1":"#fb8b24",
+      "2": "#e36414",
+      "3":"#9a031e",
+      "4": "#5f0f40"
+    }
+  },
+  "pure_value_environment": {
+    "prop": "value",
+    "eval": {
+      "0": "#5f0f40",
+      "1": "#9a031e",
+      "2": "#e36414",
+      "3": "#fb8b24",
+      "4": "#f0f3bd",
+      "5": "#02c39a",
+      "6": "#00a896",
+      "7": "#028090",
+      "8": "#05668d"
+    }
+  }
+}

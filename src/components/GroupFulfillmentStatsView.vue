@@ -41,7 +41,7 @@ const data = computed(()=> {
 
       </template>
       <template #tip>
-        {{ role.name }}: {{ data[role.group] }} ICF Item{{data[role.group]!=1 ? 's' : ''}}
+        {{ role.name }}: {{ data[role.group] }} ICF Datensätze
       </template>
     </MDBTooltip>
 
