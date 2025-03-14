@@ -7,7 +7,7 @@ import {
 
 import _coresets from '../assets/coresets.json'
 import moment from "moment";
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, provide, ref, watch} from "vue";
 import type {DataStore, ICFItemStructure, ICFStruct} from "../app_store";
 import {app_store} from "../app_store";
 
@@ -42,11 +42,14 @@ const patient = computed(() => {
   return _userdata.value.filter(p => p.id === props.patientid)[0]
 })
 
+provide('patient',patient)
+
 const statsmoduleref = ref<HTMLElement>();
 
 const show_preload_switch = computed(() => {
   // check if the current medprof has already given his statement in order to be eligible for other perspectives
-  return alldata.value.filter(d => d.creator === user_store.getState().id).length > 0
+  // or allow if user is staff
+  return ((alldata.value.filter(d => d.creator === user_store.getState().id).length > 0) || (user_store.getState().is_staff))
 })
 
 const preload_other_data = ref(props.preloadgroup?.length != 0)
@@ -471,7 +474,7 @@ onMounted(() => {
 
     <MDBAccordionItem header-title="Diagnosen" collapse-id="diagnoses">
       <MDBRow class="d-flex align-items-center m-2">
-        <DiagnosisInput :diagnoses="patient?.diagnoses" :patientid="patientid"/>
+        <DiagnosisInput :patientid="patientid"/>
       </MDBRow>
     </MDBAccordionItem>
 

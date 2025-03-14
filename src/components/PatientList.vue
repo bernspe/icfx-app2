@@ -72,7 +72,7 @@ watch(showFulfillment, (value: boolean) => {
 
 
 onMounted(() => {
-  user_store.getAPIUsersOfThisInstitution().then(r => {
+  user_store.getAPIUsersOfThisInstitution(true).then(r => {
     // when Patientlist is reached through BehandlerListe
     if (props.medprofid && user_store.getState().mock_mode) {
       let md_idx = r.map(u => u.id).indexOf(props.medprofid)

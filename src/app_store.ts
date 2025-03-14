@@ -5,13 +5,14 @@ import moment from "moment";
 import {UserData, user_store, RemoteUserAPI} from "./user_store";
 import {getWhodasSum, normalizeWhodasSum} from "./calculation_helper";
 import axios from "axios";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import _userdata from "./assets/mock-userdata.json";
 import * as Sentry from "@sentry/vue";
 
-export interface FulfillmentStats  {
-    [key: string]:Record<string, number>
+export interface FulfillmentStats {
+    [key: string]: Record<string, number>
 }
+
 export interface Explanation extends Object {
     id: number
     created: string
@@ -22,7 +23,10 @@ export interface Explanation extends Object {
     refcode: string
     text: string
     open_to_all: boolean
+    entity?: string
+    code?: string
 }
+
 export interface PatientCase extends Object {
     title: string,
     history: string,
@@ -72,7 +76,7 @@ export interface MergeProperties {
 }
 
 export interface DataStoreAPI {
-        id: string,
+    id: string,
     created: string,
     last_modified: string,
     owner: string,
@@ -93,7 +97,7 @@ export interface DataStore {
     icf: Record<string, ICFStruct>
     coreset: string
     sf36: Record<string, number>
-    uxquestionnaire: Record<string,number>
+    uxquestionnaire: Record<string, number>
     merge?: MergeProperties
     lastActiveIcf?: string
 }
@@ -130,7 +134,7 @@ class AppStore extends Store<ApplicationData> {
     protected data(): ApplicationData {
         return {
             current_patient_id: '',
-            current_patient_diagnoses:'',
+            current_patient_diagnoses: '',
             active_icf: '',
             patient_data: this.emptyDataStore(), // current dataset
             users_of_this_institution: [],
@@ -153,7 +157,19 @@ class AppStore extends Store<ApplicationData> {
     }
 
     emptyDataStore(): DataStore {
-        return {id: '', date: '', owner: '', creator: user_store.getState().id, whodas: {}, env: {}, icf: {}, coreset: '', sf36: {}, uxquestionnaire: {}, merge: undefined};
+        return {
+            id: '',
+            date: '',
+            owner: '',
+            creator: user_store.getState().id,
+            whodas: {},
+            env: {},
+            icf: {},
+            coreset: '',
+            sf36: {},
+            uxquestionnaire: {},
+            merge: undefined
+        };
     }
 
     clearData() {
@@ -184,8 +200,8 @@ class AppStore extends Store<ApplicationData> {
 
     statisticsCalculator(k: string, d: DataStore) {
         if (k === 'whodas') return (Object.keys(d.whodas || {})?.length != 0) ? Object.values(d.whodas).reduce((a, b) => b > 0 ? a + 1 : a) : 0
-        if (k === 'env') return (Object.keys(d.env|| {})?.length != 0) ? Object.values(d.env).reduce((a, b) => b != 4 ? a + 1 : a) : 0
-        if (k === 'icf') return (Object.keys(d.icf|| {})?.length != 0) ? Object.values(d.icf).map(icf => icf.selected > 0 ? 1 as number : 0 as number).reduce((a, b) => a + b) : 0
+        if (k === 'env') return (Object.keys(d.env || {})?.length != 0) ? Object.values(d.env).reduce((a, b) => b != 4 ? a + 1 : a) : 0
+        if (k === 'icf') return (Object.keys(d.icf || {})?.length != 0) ? Object.values(d.icf).map(icf => icf.selected > 0 ? 1 as number : 0 as number).reduce((a, b) => a + b) : 0
         if (k === 'coreset') return (d.coreset?.length != 0) ? 1 : 0
         if (k === 'sf36') return (Object.keys(d.sf36 || {})?.length != 0) ? Object.keys(d.sf36).length : 0
         if (k === 'uxquestionnaire') return (Object.keys(d.uxquestionnaire || {})?.length != 0) ? Object.keys(d.uxquestionnaire).length : 0
@@ -209,20 +225,24 @@ class AppStore extends Store<ApplicationData> {
         }))
     }
 
-    transformAPIResponse(d:DataStoreAPI):DataStore {
-        return {id:d.id,creator:d.creator,owner:d.owner, date: d.last_modified, merge: d.merge,
-                whodas:d.data?.whodas || {},
+    transformAPIResponse(d: DataStoreAPI): DataStore {
+        return {
+            id: d.id, creator: d.creator, owner: d.owner, date: d.last_modified, merge: d.merge,
+            whodas: d.data?.whodas || {},
             env: d.data?.env || {},
             icf: d.data.icf || {},
             coreset: d.data?.coreset || '',
             sf36: d.data?.sf36 || {},
             uxquestionnaire: d.data?.uxquestionnaire || {},
-        lastActiveIcf: d.data?.lastActiveIcf || ''}
+            lastActiveIcf: d.data?.lastActiveIcf || ''
+        }
     }
 
     putCreatorsLastDatasetToCurrentData() {
-        let idx= this.state.api_patient_records.map(d=>d.creator).indexOf(user_store.getState().id)
-        if (idx >= 0) { this.state.patient_data = this.state.api_patient_records[idx]}
+        let idx = this.state.api_patient_records.map(d => d.creator).indexOf(user_store.getState().id)
+        if (idx >= 0) {
+            this.state.patient_data = this.state.api_patient_records[idx]
+        }
     }
 
     loadDataFromApi(patient_id: string): Promise<Array<DataStore>> {
@@ -240,8 +260,8 @@ class AppStore extends Store<ApplicationData> {
                             withCredentials: true
                         },
                     };
-                    axios(config).then((response:{data: Array<DataStoreAPI>}) => {
-                        let loaded_data = response.data.map(r=>this.transformAPIResponse(r))
+                    axios(config).then((response: { data: Array<DataStoreAPI> }) => {
+                        let loaded_data = response.data.map(r => this.transformAPIResponse(r))
                         const load_sorted_data = loaded_data.sort((a: DataStore, b: DataStore) => moment(b.date).diff(moment(a.date)));
                         this.state.api_patient_records = load_sorted_data
                         this.putCreatorsLastDatasetToCurrentData()
@@ -281,7 +301,7 @@ class AppStore extends Store<ApplicationData> {
             if (user_store.getState().authenticated) {
                 var config = {
                     method: method,
-                    url: backendURL() + `icfdata/${method==='PATCH' ? d.id+'/' : ''}`,
+                    url: backendURL() + `icfdata/${method === 'PATCH' ? d.id + '/' : ''}`,
                     headers: {
                         authorization: `Bearer ${user_store.getState().access_token}`,
                         'Content-Type': 'application/json'
@@ -289,9 +309,19 @@ class AppStore extends Store<ApplicationData> {
                     xhrFields: {
                         withCredentials: true
                     },
-                    data: {data: {whodas:d.whodas,env:d.env,icf:d.icf,coreset:d.coreset,sf36:d.sf36,uxquestionnaire: d.uxquestionnaire, lastActiveIcf:this.state.active_icf},
+                    data: {
+                        data: {
+                            whodas: d.whodas,
+                            env: d.env,
+                            icf: d.icf,
+                            coreset: d.coreset,
+                            sf36: d.sf36,
+                            uxquestionnaire: d.uxquestionnaire,
+                            lastActiveIcf: this.state.active_icf
+                        },
                         merge: d.merge,
-                        owner: this.state.current_patient_id}
+                        owner: this.state.current_patient_id
+                    }
                 };
                 axios(config).then((response) => {
                     resolve(response.data)
@@ -312,12 +342,12 @@ class AppStore extends Store<ApplicationData> {
                 let d = moment(data.date).diff(today, 'days') < -1
                 post_type = d ? 'POST' : 'PATCH'
             }
-            if ((!Object.keys(data).includes('id')) || (data.id?.length===0)) {
+            if ((!Object.keys(data).includes('id')) || (data.id?.length === 0)) {
                 post_type = 'POST'
             }
             if (!user_store.getState().mock_mode)
                 this.icfDataAPIRequest(post_type, d).then(response => {
-                    data = this.transformAPIResponse( response)
+                    data = this.transformAPIResponse(response)
                     this.state.patient_data = data;
                     this.state.api_patient_records[this.state.api_patient_records.length - 1] = data
                     resolve(data)
@@ -332,7 +362,7 @@ class AppStore extends Store<ApplicationData> {
                     data.date = today.format('YYYY-MM-DD HH:mm:ss')
                     data.owner = this.state.current_patient_id
                     data.creator = user_store.getState().id
-                    data.id=uuidv4()
+                    data.id = uuidv4()
                     this.state.api_patient_records.push(data)
                     // ENDMOCK
                 }
@@ -345,40 +375,40 @@ class AppStore extends Store<ApplicationData> {
         })
     }
 
-        getAPIFulfillmentStatistics(groups: Array<string>): Promise<FulfillmentStats> {
+    getAPIFulfillmentStatistics(groups: Array<string>): Promise<FulfillmentStats> {
         return new Promise((resolve, reject) => {
-             if (user_store.getState().authenticated) {
-                    var config = {
-                        method: 'GET',
-                        url: backendURL() + "icfdata/getdatasetstatisticsbygroup/",
-                        headers: {
-                            authorization: `Bearer ${user_store.getState().access_token}`,
-                            'Content-Type': 'application/json'
-                        },
-                        xhrFields: {
-                            withCredentials: true
-                        },
-                        params: {
-                            subgroups: groups.join(',')
-                        }
-                    };
-                    axios(config).then((response) => {
-                        this.state.fulfillmentStatistics = response.data
-                        resolve(response.data)
-                    }).catch((e) => {
-                        console.log('Retrieval of fulfillment stats failed', e)
-                        reject(e);
-                    })
-                } else {
-                 reject()
-                }
+            if (user_store.getState().authenticated) {
+                var config = {
+                    method: 'GET',
+                    url: backendURL() + "icfdata/getdatasetstatisticsbygroup/",
+                    headers: {
+                        authorization: `Bearer ${user_store.getState().access_token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    params: {
+                        subgroups: groups.join(',')
+                    }
+                };
+                axios(config).then((response) => {
+                    this.state.fulfillmentStatistics = response.data
+                    resolve(response.data)
+                }).catch((e) => {
+                    console.log('Retrieval of fulfillment stats failed', e)
+                    reject(e);
+                })
+            } else {
+                reject()
+            }
         })
     }
 
 
     updateUserDiagnoses(targetUser: string, diagnoses: string): Promise<string> {
         return new Promise((resolve, reject) => {
-                       setTimeout(() => {
+            setTimeout(() => {
                 if (targetUser && user_store.getState().access_token) {
                     const config = {
                         url: backendURL() + "users/" + targetUser + '/setdiagnoses/',
@@ -392,10 +422,9 @@ class AppStore extends Store<ApplicationData> {
                         },
                         data: {diagnoses: diagnoses}
                     }
-                    console.log(config)
                     axios(config).then((response) => {
-                        this.state.current_patient_diagnoses=response.data.diagnoses
-                resolve(this.state.current_patient_diagnoses)
+                        this.state.current_patient_diagnoses = response.data.diagnoses
+                        resolve(this.state.current_patient_diagnoses)
                     }).catch((e) => {
                         reject(e)
                     })
@@ -407,13 +436,13 @@ class AppStore extends Store<ApplicationData> {
     }
 
 
-    loadExplanationsFromApi(refcode: string): Promise<Array<Explanation>> {
+    loadExplanationsFromApi(refcode?: string): Promise<Array<Explanation>> {
         return new Promise((resolve, reject) => {
             if (user_store.getState().access_token) { // API CALL
                 if (user_store.getState().authenticated && !user_store.getState().mock_mode) {
                     var config = {
                         method: 'GET',
-                        url: backendURL() + "explain/getexplanationsbyrefcode/",
+                        url: backendURL() + (refcode ? "explain/getexplanationsbyrefcode/" : "explain/"),
                         headers: {
                             authorization: `Bearer ${user_store.getState().access_token}`,
                             'Content-Type': 'application/json'
@@ -425,10 +454,63 @@ class AppStore extends Store<ApplicationData> {
                             withCredentials: true
                         },
                     };
-                    axios(config).then((response:{data: Array<Explanation>}) => {
+                    axios(config).then((response: { data: Array<Explanation> }) => {
                         resolve(response.data)
                     }).catch((e) => {
                         console.log('Retrieval of Explanations failed', e)
+                        reject(e);
+                    })
+                } else reject('Not authenticated')
+            }
+        })
+    }
+
+        updateExplanationsAtApi(explanation: Explanation): Promise<Explanation> {
+        return new Promise((resolve, reject) => {
+            if (user_store.getState().access_token) { // API CALL
+                if (user_store.getState().authenticated && !user_store.getState().mock_mode) {
+                    var config = {
+                        method: 'PATCH',
+                        url: backendURL() + `explain/${explanation.id}/`,
+                        headers: {
+                            authorization: `Bearer ${user_store.getState().access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        data: explanation,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                    };
+                    axios(config).then((response: { data: Explanation }) => {
+                        resolve(response.data)
+                    }).catch((e) => {
+                        console.log('Update of Explanations failed', e)
+                        reject(e);
+                    })
+                } else reject('Not authenticated')
+            }
+        })
+    }
+
+        deleteExplanationsAtApi(explanation: Explanation): Promise<string> {
+        return new Promise((resolve, reject) => {
+            if (user_store.getState().access_token) { // API CALL
+                if (user_store.getState().authenticated && !user_store.getState().mock_mode) {
+                    var config = {
+                        method: 'DELETE',
+                        url: backendURL() + `explain/${explanation.id}/`,
+                        headers: {
+                            authorization: `Bearer ${user_store.getState().access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                    };
+                    axios(config).then(() => {
+                        resolve('OK')
+                    }).catch((e) => {
+                        console.log('Delete of Explanations failed', e)
                         reject(e);
                     })
                 } else reject('Not authenticated')

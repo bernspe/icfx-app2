@@ -201,6 +201,12 @@ const selectorIcon = computed(()=> {
         </MDBSideNavLink>
       </MDBSideNavItem>
 
+            <MDBSideNavItem v-if="isStaff || user_store.getState().mock_mode">
+        <MDBSideNavLink to="/explainview">
+          <MDBIcon icon="comment" class="fa-fw me-3"/>
+          <span>Explain Admin</span>
+        </MDBSideNavLink>
+      </MDBSideNavItem>
       <div class="text-center" style="min-height: 3rem">
         <hr class="mt-0 mb-2"/>
 

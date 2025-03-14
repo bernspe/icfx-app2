@@ -158,6 +158,12 @@ const routes = [
         component: () => import("../components/ScientistsDashboard.vue"),
         meta: {requiresAuth: true},
     },
+        {
+        path: "/explainview",
+        name: "ExplainView",
+        component: () => import("../components/ExplainItemAdmin.vue"),
+        meta: {requiresAuth: true},
+    },
     {
         path: "/register/:institution_id/:group?/:casenumber?",
         name: "register",

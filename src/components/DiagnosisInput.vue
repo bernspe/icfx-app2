@@ -1,12 +1,23 @@
 <script setup lang="ts">
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, ComputedRef, inject, onMounted, ref, watch, watchEffect} from "vue";
 import { MDBSelect, MDBRow, MDBCol, MDBAutocomplete, MDBChip, MDBInput , MDBListGroup, MDBListGroupItem} from "mdb-vue-ui-kit";
 import _icd_long from "../assets/icd_codes.json"
-import {user_store} from "../user_store";
+import {RemoteUserAPI, user_store} from "../user_store";
 import {app_store} from "../app_store";
 
-const props = defineProps(['diagnoses','patientid'])
-const diag_input = ref("");
+const patientid = ref('')
+const diag_input = ref( "") ;
+
+const patient = inject<ComputedRef<RemoteUserAPI>>('patient')
+
+watchEffect(()=> {
+  if (patient?.value) {
+      patientid.value=patient.value.id
+      diag_input.value = patient.value.diagnoses
+  }
+})
+
+
 
 const icd_options = ref(
     //Object.entries(_icd_short).map(([k,v],idx) => ({text:v,secondaryText:k,value:idx}))
@@ -14,7 +25,7 @@ const icd_options = ref(
     );
 
 const diagnoses_list = computed(()=> {
-  if (diag_input.value.length>2) {
+  if (diag_input.value?.length>2) {
     // remove , and ;  remove whitespace and use only those longer than 2 characters
     let d_array = diag_input.value.split(/\,|\;/gm).map(x=>x.trim()).filter(x=>x.length>2);
 
@@ -32,12 +43,10 @@ const diagnoses_list = computed(()=> {
 })
 
 const saveDiagnoses = () => {
-  app_store.updateUserDiagnoses(props.patientid,diag_input.value).then(d=>diag_input.value=d)
+  if (patientid.value)
+  app_store.updateUserDiagnoses(patientid.value,diag_input.value).then(d=>diag_input.value=d)
 }
 
-onMounted(()=> {
-  diag_input.value=props.diagnoses || ''
-})
 </script>
 
 <template>
