@@ -13,7 +13,7 @@ import {
   MDBListGroup,
   MDBListGroupItem,
   MDBTable, MDBBadge,
-    MDBBtn, MDBIcon, MDBTextarea
+    MDBBtn, MDBIcon, MDBTextarea, MDBSwitch
 } from "mdb-vue-ui-kit";
 import {app_store, Explanation, ICFItemStructure, WhodasEnvItemStructure} from "../app_store";
 import {user_store} from "../user_store";
@@ -36,13 +36,19 @@ const refcode2Item = (refcode: string) => {
 }
 
 const textAreaValue = ref('')
+const publicSwitch = ref(false)
 
 watch(activeRow, (value) => {
   textAreaValue.value = explanations.value[value].text
+  publicSwitch.value = explanations.value[value].open_to_all
 })
 
-const updateItem = (idx: number) => {
-  let e = {...explanations.value[idx], validator: user_store.getState().id, text: textAreaValue.value}
+const updateItem = (idx: number, onlyValidation?: boolean) => {
+  let e;
+  if (onlyValidation)
+    e = {...explanations.value[idx], validator: user_store.getState().id}
+  else
+    e = {...explanations.value[idx], validator: user_store.getState().id, text: textAreaValue.value, open_to_all:publicSwitch.value}
   app_store.updateExplanationsAtApi(e).then(e=>(explanations.value[idx]={...e,...refcode2Item(e.refcode)}))
 }
 
@@ -59,8 +65,10 @@ const creators = computed(()=> {
 onMounted(()=> {
   app_store.loadExplanationsFromApi().then(expl=> {
     explanations.value = expl.map(e=>({...e,...refcode2Item(e.refcode)}))
-    if (expl?.length>0)
-    textAreaValue.value=expl[0].text
+    if (expl?.length>0) {
+      textAreaValue.value = expl[0].text
+      publicSwitch.value = expl[0].open_to_all
+    }
   })
 })
 </script>
@@ -77,6 +85,7 @@ onMounted(()=> {
               <th></th>
               <th>Item</th>
               <th>Comment Text</th>
+              <th>Public</th>
               <th>Validation</th>
               <th>Action</th>
               <!--
@@ -132,9 +141,18 @@ onMounted(()=> {
 
               <td>
                 <div v-if="activeRow === idx">
-                  <MDBTextarea label="Kommentar" rows="4" v-model="textAreaValue" @blur="updateItem(idx)"/>
+                  <MDBTextarea label="Kommentar" rows="4" v-model="textAreaValue" @blur="updateItem(idx, false)"/>
                 </div>
                 <div v-else> {{ e.text }}</div>
+              </td>
+
+              <td>
+                 <div v-if="activeRow === idx">
+                <MDBSwitch v-model="publicSwitch" @update:modelValue ="updateItem(idx, false)"/>
+                 </div>
+                <div v-else>
+                  {{ e.open_to_all }}
+                </div>
               </td>
 
               <td>
@@ -143,7 +161,7 @@ onMounted(()=> {
               </td>
 
               <td class="p-1">
-                <MDBBtn @click="updateItem(idx)" outline="success"><MDBIcon icon="check" class="me-2"/>Validate</MDBBtn>
+                <MDBBtn @click="updateItem(idx, true)" outline="success"><MDBIcon icon="check" class="me-2"/>Validate</MDBBtn>
                 <MDBBtn @click="activeRow=idx" outline="primary"><MDBIcon icon="pen" class="me-2"></MDBIcon>Edit</MDBBtn>
                 <MDBBtn outline="danger" @click="deleteItem(idx)"><MDBIcon icon="trash" class="me-2"/>Delete</MDBBtn>
               </td>
