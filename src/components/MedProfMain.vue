@@ -24,25 +24,26 @@ import {imageServer} from "../process_vars";
 import {useRoute, useRouter} from "vue-router";
 import PatientCaseCard from "./PatientCaseCard.vue";
 import __uxq from "../assets/uxquestionnaire_medprof_de.json";
-const _uxq:Record<string,Record<string,any>> = __uxq
+import {mergeOperations} from "../constants";
+
+const _uxq: Record<string, Record<string, any>> = __uxq
 
 const uxq_keys = computed(() => Object.keys(_uxq))
-const uxq_keys_with_answers = Object.values(_uxq).filter(x=>x.answers).length
-const lastUxqItemEdited = computed(()=> Object.keys(data.value?.uxquestionnaire || {}).length)
-const uxqEdited = computed(() => Math.ceil(Object.keys(data.value?.uxquestionnaire || {}).length / uxq_keys_with_answers*100))
+const uxq_keys_with_answers = Object.values(_uxq).filter(x => x.answers).length
+const lastUxqItemEdited = computed(() => Object.keys(data.value?.uxquestionnaire || {}).length)
+const uxqEdited = computed(() => Math.ceil(Object.keys(data.value?.uxquestionnaire || {}).length / uxq_keys_with_answers * 100))
 
 const router = useRouter()
 const route = useRoute()
 
-const accordion_activeItem = ref('')
 
 const props = defineProps({patientid: {type: String, required: true}, preloadgroup: {type: String, required: false}})
 const _userdata = computed(() => user_store.getState().userdata)
 const patient = computed(() => {
   return _userdata.value.filter(p => p.id === props.patientid)[0]
 })
-
-provide('patient',patient)
+const accordion_activeItem = ref((props.preloadgroup === 'patient') ? 'icf' : '')
+provide('patient', patient)
 
 const statsmoduleref = ref<HTMLElement>();
 
@@ -77,7 +78,7 @@ const mergedIcfData = computed(() => {
       let k2 = Object.keys(sd2)
       if (mergeOperations[currentMergeOperationIdx.value].operation === 'and') {
         let k3 = k1.filter(code => k2.includes(code)) // get common icf items
-        let targets = k3.map(code => ([code, {selected: 1, value: (sd1[code].value + sd2[code].value) / 2}]))
+        let targets = k3.map(code => ([code, {selected: 1, value: Math.ceil((sd1[code].value + sd2[code].value) / 2)}]))
         result.icf = Object.fromEntries(targets)
         result.id = '' // Delete id to create new
       }
@@ -86,7 +87,7 @@ const mergedIcfData = computed(() => {
         let targets = k3.map(code => {
           if (k1.includes(code) && k2.includes(code)) return [code, {
             selected: 1,
-            value: (sd1[code].value + sd2[code].value) / 2
+            value: Math.ceil((sd1[code].value + sd2[code].value) / 2)
           }]
           else return [code, {selected: 1, value: k1.includes(code) ? sd1[code].value : sd2[code].value}]
         })
@@ -101,23 +102,17 @@ const mergedIcfData = computed(() => {
         result.icf = sd1
       }
       // save Merge OperationCharacteristics to current dataset
-      result.merge = {source1: secondaryData1.value.id, source2: secondaryData2.value.id || '', operation: mergeOperations[currentMergeOperationIdx.value].operation}
+      result.merge = {
+        source1: secondaryData1.value.id,
+        source2: secondaryData2.value.id || '',
+        operation: mergeOperations[currentMergeOperationIdx.value].operation
+      }
     }
     return result
   }
 })
 
-const mergeOperations = [
-  {operation: 'and', icon: 'sets_logical_and.svg', descriptor_de: 'und', descriptor_en: 'and'},
-  {
-    operation: 'or',
-    icon: 'sets_logical_or.svg',
-    descriptor_de: 'oder',
-    descriptor_en: 'or'
-  },
-  {operation: 'right', icon: 'sets_logical_right.svg', descriptor_de: 'rechts', descriptor_en: 'right'},
-  {operation: 'left', icon: 'sets_logical_left.svg', descriptor_de: 'links', descriptor_en: 'left'},
-]
+
 const currentMergeOperationIdx = ref(2)
 
 const changeMergeOperationIdx = () => {
@@ -216,9 +211,8 @@ const lastIcfEdited = computed(() => {
   const vals = Object.values(data.value?.icf || {})
   if (vals.length > 0) {
     // check for lastActiveIcf in API data
-    let i=0
-    if (data.value.lastActiveIcf)
-    {
+    let i = 0
+    if (data.value.lastActiveIcf) {
       i = Object.keys(data.value.icf || {}).indexOf(data.value.lastActiveIcf)
       if (i === -1) return 0
       else return i
@@ -237,8 +231,7 @@ const icfEdited = computed(() => {
   const vals = Object.values(data.value?.icf || {})
   if (vals.length > 0) {
     return Math.ceil((lastIcfEdited.value + 1) / vals.length * 100)
-    }
-  else
+  } else
     return 0
 })
 
@@ -301,7 +294,7 @@ const preloadData = (autoassign: boolean) => {
       let s = Object.values(app_store.getState().patient_data).some(v => Object.keys(v).length > 0) ? app_store.getState().patient_data : app_store.emptyDataStore()
       // if this is a naked dataset, set generic as default
       let f = autoassign ? p : s
-      if (Object.keys(f.icf).length===0) setTimeout(()=>core_options.value[0].checked=true,200)
+      if (Object.keys(f.icf).length === 0) setTimeout(() => core_options.value[0].checked = true, 200)
       loadDataSetFromApi(f)
     })
   }
@@ -332,20 +325,39 @@ watch(mergedIcfData, (newVal, oldVal) => {
 })
 
 onMounted(() => {
-  if (props.patientid && _userdata.value?.length > 0) preloadData(preload_other_data.value)
-  else router.push('/')
+  if (props.patientid && _userdata.value?.length > 0) {
+    preloadData(preload_other_data.value)
+    if (props.preloadgroup === 'patient') {
+      setTimeout(() => {
+        document.getElementById('ICFPANEL_LISTHEADER')?.scrollIntoView()
+      }, 500)
+    }
+  } else router.push('/')
 
 })
 </script>
 
 <template>
- <MDBRow class="d-flex align-items-center m-2">
-        <MDBCol class="d-flex justify-content-start">
-          <h1 class="text-secondary">Behandlerseite</h1>
-        </MDBCol>
-      </MDBRow>
+  <MDBRow class="d-flex align-items-center m-2">
+    <MDBCol class="d-flex justify-content-start">
+      <h1 class="text-secondary">Behandlerseite</h1>
+    </MDBCol>
+  </MDBRow>
 
   <MDBAccordion v-model="accordion_activeItem" flush :stay-open="true">
+    <MDBAccordionItem header-title="Evaluation" collapse-id="uxq">
+      <ListHeader
+          label="Benutzerfreundlichkeit"
+          :number-icf-items="0"
+          :patientid="patientid"
+          :last-item-edited="uxq_keys[lastUxqItemEdited]"
+          :percent-edited="uxqEdited"
+          module="uxquestionnaire"
+          :start-button-active="true"
+          @clear="clearAll"
+      ></ListHeader>
+    </MDBAccordionItem>
+
     <MDBAccordionItem header-title="Beurteilungsperspektive" collapse-id="perspective">
       <MDBRow class="d-flex align-items-center m-2">
         <MDBCol class="d-flex justify-content-start">
@@ -466,7 +478,7 @@ onMounted(() => {
       </MDBRow>
     </MDBAccordionItem>
 
-        <MDBAccordionItem header-title="Fallbeispiel" collapse-id="patient_case" v-if="patient_case">
+    <MDBAccordionItem header-title="Fallbeispiel" collapse-id="patient_case" v-if="patient_case">
       <MDBRow class="d-flex align-items-center m-2">
         <PatientCaseCard :casenumber="patient_case" :omit-weiter-button="true"/>
       </MDBRow>
@@ -486,6 +498,7 @@ onMounted(() => {
 
     <MDBAccordionItem header-title="ICFs" collapse-id="icf">
       <ListHeader
+          id="ICFPANEL_LISTHEADER"
           label="ICFs"
           :number-icf-items="Object.keys(icfsFromCoresetData).length"
           :show-details="showIcfDetails"
@@ -494,36 +507,62 @@ onMounted(() => {
           module="icf"
           :percent-edited="icfEdited"
           :startButtonActive="true"
+          :is-creator="secondaryData2.creator === user_store.getState().id"
           @show-details-changed="showIcfDetails=$event"
           @clear="clearAll"
       ></ListHeader>
+      <MDBRow class="d-flex align-items-center m-2 g-0 people-case" v-if="secondaryData1 && (secondaryData1?.creator !== secondaryData2?.creator)">
+
+        <div class="text-center ribbon">
+          <MDBIcon class="text-primary me-4" icon="eye"/>
+          <span class="text-primary">aus Sicht von</span>
+        </div>
+        <MDBCol>
+          <div class="text-center">
+            <h5 class="text-secondary m-2">Meine Sicht</h5>
+            <GroupImage :group="g" v-for="g in currentPerspectiveGroup1"/>
+          </div>
+        </MDBCol>
+
+        <MDBCol>
+          <div class="text-center">
+            <div>
+              <img :src="imageServer()+mergeOperations[currentMergeOperationIdx].icon"
+                   style="height:40px;width:auto;"
+                   class="filter-primary"/>
+            </div>
+            <div>
+              <MDBBtn color="tertiary" @click="changeMergeOperationIdx">
+                <MDBIcon icon="refresh" class="me-2"></MDBIcon>
+              </MDBBtn>
+            </div>
+          </div>
+        </MDBCol>
+
+        <MDBCol>
+          <div class="text-center">
+            <h5 class="text-secondary m-2">Zweite Sicht</h5>
+            <GroupImage :group="g" v-for="g in currentPerspectiveGroup2"/>
+          </div>
+        </MDBCol>
+      </MDBRow>
       <ICFThumbPanel
           :icfs="icfsFromCoresetData" :patientid="patientid"/>
       <router-link :to="`/icfbrowser/${patientid}`">
         <MDBCard style="max-width: 16rem;" class="p-2 text-center">
           <MDBCardHeader>
-            <img style="max-height: 100px; width: auto; object-fit: contain;" :src="imageServer()+'module-types/icf_browser.svg'"/>
+            <img style="max-height: 100px; width: auto; object-fit: contain;"
+                 :src="imageServer()+'module-types/icf_browser.svg'"/>
             <h3 class="mt-2">ICF Browser</h3>
           </MDBCardHeader>
           <MDBCardBody>
             ICF Item selbst auswählen
           </MDBCardBody>
         </MDBCard>
-       </router-link>
+      </router-link>
     </MDBAccordionItem>
 
-    <MDBAccordionItem header-title="Evaluation" collapse-id="uxq">
-      <ListHeader
-           label="Benutzerfreundlichkeit"
-           :number-icf-items="0"
-           :patientid="patientid"
-           :last-item-edited="uxq_keys[lastUxqItemEdited]"
-           :percent-edited="uxqEdited"
-           module="uxquestionnaire"
-           :start-button-active="true"
-           @clear="clearAll"
-           ></ListHeader>
-    </MDBAccordionItem>
+
   </MDBAccordion>
 </template>
 

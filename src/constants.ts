@@ -33,6 +33,18 @@ const roles =[
     {name: 'Sozialarbeiter/in',icon:'caremanager.jpg',group:'caremanager'},
 ]
 
+const mergeOperations = [
+  {operation: 'and', icon: 'sets_logical_and.svg', descriptor_de: 'und', descriptor_en: 'and'},
+  {
+    operation: 'or',
+    icon: 'sets_logical_or.svg',
+    descriptor_de: 'oder',
+    descriptor_en: 'or'
+  },
+  {operation: 'right', icon: 'sets_logical_right.svg', descriptor_de: 'rechts', descriptor_en: 'right'},
+  {operation: 'left', icon: 'sets_logical_left.svg', descriptor_de: 'links', descriptor_en: 'left'},
+]
+
 const modules = ['whodas','env','coreset','icf','sf36']
 
 const default_page_time = 10
@@ -44,5 +56,6 @@ export {dateTimeFormat,
     selector_types,
   dateformat,
   db_dateformat,language,startLabel, statusLabels, roles, modules,
-default_page_time}
+default_page_time,
+mergeOperations}
 

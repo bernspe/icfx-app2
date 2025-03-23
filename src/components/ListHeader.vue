@@ -7,7 +7,7 @@ import {imageServer, mode} from "../process_vars";
 import {app_store} from "../app_store";
 
 
-const props = defineProps(['label', 'showDetails', 'percentEdited', 'patientid', 'lastItemEdited', 'module', 'numberIcfItems', 'showClearIcfItemsButton', 'startButtonActive'])
+const props = defineProps(['label', 'showDetails', 'percentEdited', 'patientid', 'lastItemEdited', 'module', 'numberIcfItems', 'showClearIcfItemsButton', 'startButtonActive','isCreator'])
 const emit = defineEmits(['showDetailsChanged', 'clear'])
 const _showDetails = ref(props.showDetails)
 
@@ -50,7 +50,7 @@ watch(_showDetails, (newVal, oldVal) => {
       <MDBSwitch label="Alle ansehen" v-model="_showDetails"/>
     </MDBCol>
     -->
-    <MDBCol v-if="percentEdited>=95">
+    <MDBCol v-if="isCreator">
       <MDBPopconfirm
           class="me-1 btn-outline-danger"
               tag="button"

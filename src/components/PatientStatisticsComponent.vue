@@ -2,7 +2,7 @@
 import {MDBBadge, MDBRow, MDBCol} from 'mdb-vue-ui-kit'
 import {app_store, type DataStore} from "../app_store";
 import {imageServer} from "../process_vars";
-import {dateformat, dateTimeFormat, modules} from "../constants";
+import {dateformat, dateTimeFormat, mergeOperations, modules} from "../constants";
 import {computed, onMounted, ref} from "vue";
 import moment from "moment";
 import GroupImage from "./GroupImage.vue";
@@ -41,8 +41,14 @@ const mouseClickAct = (e: Event, stats_entry: DataStore) => {
 }
 
 const _userdata = computed(() => user_store.getState().userdata)
-const userFromUserID = (userid: string) => {
+const userFromUserID = (userid: string | undefined) => {
+  if (userid === undefined) return {groups:[]}
   return _userdata.value.filter(user => user.id === userid)[0]
+}
+
+const getMergeFromOperator = (mergeOperation: string) => {
+  let i = mergeOperations.map(o=>o.operation).indexOf(mergeOperation)
+  if (i>-1) return mergeOperations[i]
 }
 
 </script>
@@ -66,11 +72,20 @@ const userFromUserID = (userid: string) => {
     >
       <MDBCol>
         <p class="m-0">{{ moment(stats_entry.date).format(dateformat) }}</p>
-        <p class="text-secondary m-0">{{ moment(stats_entry.date).format('HH:mm') }}</p>
+        <p class="text-secondary m-0">{{ moment(stats_entry.date).format('HH:mm') }}
+
+                    <img  v-if="stats_entry.merge"
+                        :src="imageServer()+getMergeFromOperator(stats_entry.merge?.operation)?.icon"
+                         style="height:20px;width:auto;"
+                         class="filter-primary m-1"/>
+
+        </p>
       </MDBCol>
       <MDBCol>
         <GroupImage :group="g" v-for="g in userFromUserID(stats_entry.creator)?.groups"/>
       </MDBCol>
+
+
       <MDBCol v-for="stats_item_key in modules"
       >
         <img
@@ -93,6 +108,9 @@ const userFromUserID = (userid: string) => {
 </template>
 
 <style scoped>
+.filter-primary {
+  filter: invert(41%) sepia(20%) saturate(1538%) hue-rotate(178deg) brightness(105%) contrast(92%);
+}
 
 .hovered-record {
   border: #2c58a0 solid 2px;
