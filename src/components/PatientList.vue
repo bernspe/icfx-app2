@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import {MDBListGroup, MDBListGroupItem, MDBBadge, MDBInput, MDBRow, MDBCol, MDBSwitch} from 'mdb-vue-ui-kit'
+import {
+  MDBListGroup,
+  MDBListGroupItem,
+  MDBBadge,
+  MDBInput,
+  MDBRow,
+  MDBCol,
+  MDBSwitch,
+  MDBIcon,
+  MDBTooltip
+} from 'mdb-vue-ui-kit'
 
 import {computed, onMounted, provide, ref, watch} from "vue";
 import {RemoteUserAPI, user_store, UserData} from "../user_store";
@@ -14,6 +24,7 @@ import GroupFulfillmentStatsView from "./GroupFulfillmentStatsView.vue";
 import {roles} from "../constants";
 
 const _patientcases: Record<string, any> = __patientcases
+
 
 const patientFromCasenumber = (casenumber?: number) => {
   if (!casenumber) return ''
@@ -43,6 +54,8 @@ const sortNAddTranslatedPseudonym = (r: Array<UserData> | Array<RemoteUserAPI>) 
 }
 
 const patient_list = ref<Array<UserData>>(sortNAddTranslatedPseudonym(user_store.getState().userdata))
+const addInfoTooltip = ref(Object.fromEntries(patient_list.value.map(p=>[p.id,false])))
+
 const props = defineProps(['medprofid'])
 const searchInput = ref('')
 
@@ -150,6 +163,20 @@ onMounted(() => {
 
           <MDBCol v-if="showFulfillment && Object.keys(fulfillmentStatistics).includes(patient.id)" class="d-flex justify-content-center align-items-center">
             <GroupFulfillmentStatsView :ownerid="patient.id" />
+          </MDBCol>
+
+          <MDBCol v-if="showFulfillment && (Object.keys(patient.add_info || {}).length>0)">
+
+
+                <MDBTooltip v-model="addInfoTooltip[patient.id]">
+      <template #reference>
+         <MDBIcon icon="info-circle"></MDBIcon>
+      </template>
+      <template #tip>
+        Enthält zusätzliche Informationen zu
+        {{ Object.keys(patient.add_info || {}).join(', ') }}
+      </template>
+    </MDBTooltip>
           </MDBCol>
 
           <MDBCol class="d-flex justify-content-end">
