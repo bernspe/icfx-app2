@@ -65,7 +65,7 @@ const aggregatedData = computed(() => {
     return _.mean(sc.keys.map(k => {
       let qsize = _sf36[k].answers.length
       let n = pdata_keys.includes(k) ? pdata[k] + 1 : _sf36[k].default + 1
-      return 100 / (qsize - 1) * ((_sf36[k].default === qsize - 1) ? (n - 1) : (qsize - n))
+      return 100 / (qsize - 1) * ((_sf36[k].default === qsize - 1) ? (n + 1) : (qsize - n))
     }))
   })
 })

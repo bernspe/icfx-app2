@@ -26,6 +26,7 @@ export interface UserData {
     is_staff: boolean,
     institution: RemoteInstitutionDataset
     diagnoses: string,
+    add_info?: Record<string,string>,
     patient_case?: number
 }
 
@@ -46,6 +47,7 @@ export interface RemoteUserAPI {
     is_staff?: boolean
     institution: RemoteInstitutionDataset
     diagnoses: string,
+    add_info?: Record<string,string>
     patient_case?: number
 }
 
@@ -63,6 +65,7 @@ export interface User extends Object {
     groups: Array<string>,
     is_staff: boolean,
     diagnoses: string
+    add_info?: Record<string,string>
     patient_case?: number
 }
 
@@ -82,6 +85,7 @@ class UserStore extends Store<User> {
             id: '',
             pseudonym: '',
             diagnoses: '',
+            add_info:undefined,
             institution: Object.assign({}, {
                 id: '',
                 name: '',
@@ -108,6 +112,7 @@ class UserStore extends Store<User> {
         this.state.groups = []
         this.state.is_staff = false
         this.state.diagnoses = ''
+        this.state.add_info=undefined
         this.state.patient_case = undefined
     }
 
@@ -131,6 +136,7 @@ class UserStore extends Store<User> {
         this.state.groups = r.groups
         this.state.is_staff = r.is_staff || false
         this.state.diagnoses = r.diagnoses
+        this.state.add_info = r.add_info
         this.state.institution = Object.assign({}, r['institution'])
         this.state.patient_case = r.patient_case
     }

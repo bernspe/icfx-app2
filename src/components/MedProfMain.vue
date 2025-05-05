@@ -25,6 +25,7 @@ import {useRoute, useRouter} from "vue-router";
 import PatientCaseCard from "./PatientCaseCard.vue";
 import __uxq from "../assets/uxquestionnaire_medprof_de.json";
 import {mergeOperations} from "../constants";
+import AddInfoInput from "./AddInfoInput.vue";
 
 const _uxq: Record<string, Record<string, any>> = __uxq
 
@@ -487,6 +488,12 @@ onMounted(() => {
     <MDBAccordionItem header-title="Diagnosen" collapse-id="diagnoses">
       <MDBRow class="d-flex align-items-center m-2">
         <DiagnosisInput :patientid="patientid"/>
+      </MDBRow>
+    </MDBAccordionItem>
+
+        <MDBAccordionItem header-title="Zusätzliche Angaben" collapse-id="add_info">
+        <MDBRow class="d-flex align-items-center m-2">
+        <AddInfoInput :patientid="patientid"/>
       </MDBRow>
     </MDBAccordionItem>
 

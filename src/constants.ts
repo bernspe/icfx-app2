@@ -49,6 +49,8 @@ const modules = ['whodas','env','coreset','icf','sf36']
 
 const default_page_time = 10
 
+const additional_item_keys = ['Entlassbrief','Teilhabe','Beruf','Medikamente','Sonstiges']
+
 export {dateTimeFormat,
   wbauth_usermode_label,wbauth_token_label,wbauth_username_label,wbauth_current_journey_location_label,
   Auspraegung,AuspraegungBeschwerden,InactiveColor, AuspraegungColor,AuspraegungTextColor,
@@ -57,5 +59,5 @@ export {dateTimeFormat,
   dateformat,
   db_dateformat,language,startLabel, statusLabels, roles, modules,
 default_page_time,
-mergeOperations}
+mergeOperations, additional_item_keys}
 

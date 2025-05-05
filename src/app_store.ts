@@ -84,6 +84,7 @@ export interface DataStoreAPI {
     owner_institution: string,
     data: any
     diagnoses?: string,
+    add_info?: Record<string,string>,
     merge?: MergeProperties
 }
 
@@ -121,6 +122,7 @@ export interface DataStoreStatistics {
 interface ApplicationData extends Object {
     current_patient_id: string
     current_patient_diagnoses: string
+    current_patient_add_info?: Record<string,string>
     active_icf: string
 
     patient_data: DataStore
@@ -135,6 +137,7 @@ class AppStore extends Store<ApplicationData> {
         return {
             current_patient_id: '',
             current_patient_diagnoses: '',
+            current_patient_add_info: undefined,
             active_icf: '',
             patient_data: this.emptyDataStore(), // current dataset
             users_of_this_institution: [],
@@ -175,6 +178,7 @@ class AppStore extends Store<ApplicationData> {
     clearData() {
         this.state.current_patient_id = '';
         this.state.current_patient_diagnoses = '';
+        this.state.current_patient_add_info = undefined;
         this.state.active_icf = '';
         this.state.patient_data = this.emptyDataStore()
         this.state.api_patient_records = []
@@ -266,6 +270,7 @@ class AppStore extends Store<ApplicationData> {
                         this.state.api_patient_records = load_sorted_data
                         this.putCreatorsLastDatasetToCurrentData()
                         this.state.current_patient_diagnoses = response.data[0]?.diagnoses || ''
+                        this.state.current_patient_add_info = response.data[0]?.add_info
                         resolve(load_sorted_data)
                     }).catch((e) => {
                         console.log('Retrieval of ICFDATA results failed', e)
@@ -435,6 +440,35 @@ class AppStore extends Store<ApplicationData> {
         })
     }
 
+
+    updateUserAddInfo(targetUser: string, add_info: Record<string,string>): Promise<Record<string,string> | undefined> {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (targetUser && user_store.getState().access_token) {
+                    const config = {
+                        url: backendURL() + "users/" + targetUser + '/setadd_info/',
+                        method: 'POST',
+                        headers: {
+                            authorization: `Bearer ${user_store.getState().access_token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        data: {add_info: add_info}
+                    }
+                    axios(config).then((response) => {
+                        this.state.current_patient_add_info = response.data.add_info
+                        resolve(this.state.current_patient_add_info)
+                    }).catch((e) => {
+                        reject(e)
+                    })
+                } else {
+                    reject('UpdateAccount: No User active')
+                }
+            }, 1000)
+        })
+    }
 
     loadExplanationsFromApi(refcode?: string): Promise<Array<Explanation>> {
         return new Promise((resolve, reject) => {
