@@ -56,7 +56,7 @@ const saveAddInfo = () => {
   </MDBChip>
       </MDBCol>
     </MDBRow>
-  <MDBRow>
+  <MDBRow v-if="currentkey">
     <MDBTextarea :label="currentkey" rows="4" v-model="textareaValue" @blur="saveAddInfo"/>
   </MDBRow>
 </div>
