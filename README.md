@@ -1,4 +1,5 @@
 # ICFx APP 2
+Node v18.16.0
 ## URL Formula
 https://icfx2.renecol.org/?institution=INSTITUTION_UUID&group=patient (or physician...)
 
@@ -31,9 +32,15 @@ https://icfx2.renecol.org/?institution=fcc46d7b-4809-4480-ad8d-c9902a276ae6&grou
 
 ### Johannesbad Raupennest Klinische Studie
 https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=patient
-https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e
+https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=physician
+https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=physiotherapist
+https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=nurse
+https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=psychologist
+https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=caremanager
+
 
 ## Scientists
  - DWG Forum: denkender Hamster (1234)
  - Raupennest Parcours: lachender Seelöwe (1978)
+ - Johannesbad Raupennest: verschlafene RatteS (1978)
 

@@ -7,6 +7,14 @@ import router from "./router";
 
 import * as Sentry from "@sentry/vue";
 
+import axios from 'axios'
+import axiosRetry from 'axios-retry'
+
+axiosRetry(axios, {
+  retries: 3,
+  retryDelay: axiosRetry.exponentialDelay
+})
+
 const app = createApp(App);
 
 Sentry.init({

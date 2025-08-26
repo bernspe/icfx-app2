@@ -323,6 +323,36 @@ class UserStore extends Store<User> {
         })
     }
 
+        // Login with User UUID
+    login_w_id(user_id: string, password?: string): Promise<string> {
+        let pw = password ? password : 'password'
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                var data = new FormData();
+                data.append('client_id', this.state.oauth_credentials.client_id);
+                data.append('client_secret', this.state.oauth_credentials.client_secret);
+                data.append('grant_type', 'password');
+                data.append('id', user_id);
+                data.append('password', pw);
+                var config = {
+                    method: 'POST',
+                    url: backendURL() + "o/pseudonymtoken/",
+                    data: data
+                };
+                //obtain token
+                axios(config)
+                    .then((response) => {
+                        this.set_access_token(response.data.access_token)
+                        resolve(response.data.access_token)
+                    }).catch((error) => {
+                    console.log("...failed:", error);
+                    reject()
+                })
+            }, 1000)
+        })
+    }
+
+
     // Register through institution id
     register(institution_id: string, password: string, codename?: string, group?: string, casenumber?: number): Promise<string> {
         return new Promise((resolve, reject) => {

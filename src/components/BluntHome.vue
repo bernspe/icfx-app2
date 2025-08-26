@@ -124,6 +124,21 @@ onMounted(() => {
           user_store.getAPIInstitutions().then((res) => apiInstitutions.value = res)
         })
       }
+      // go for the login with user_id which should be a patient's uuid
+      if (ks.includes('userid')) {
+        let id=route.query.userid?.toString()
+        let pin=route.query.pin?.toString()
+        console.log('Logging in with user id ',id)
+        if (id) {
+          user_store.login_w_id(id,pin).then(response => {
+            user_store.setMockMode(false)
+            user_store.checkToken('').then(() => {
+              user_store.getAPIUsersOfThisInstitution(true)
+              router.push({name: 'PatientView', params: {patientid: id}})
+            })
+          })
+        }
+      }
       loadData()
           user_store.getAPIInstitutions().then((res) => apiInstitutions.value = res)
       }
