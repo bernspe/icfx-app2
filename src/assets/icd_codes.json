@@ -24241,10 +24241,20 @@
     "c": [],
     "t": "Zervikaler Bandscheibenschaden mit Radikulopathie"
   },
+  "M51": {
+    "a": "M51",
+    "c": [],
+    "t": "Lumbaler Bandscheibenschaden"
+  },
   "M51.4": {
     "a": "M51",
     "c": [],
     "t": "Schmorl-Knötchen"
+  },
+    "M53": {
+    "a": "M53",
+    "c": [],
+    "t": "Zervikozephales Syndrom"
   },
   "M53.0": {
     "a": "M53",

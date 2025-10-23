@@ -1,46 +1,28 @@
-# ICFx APP 2
-Node v18.16.0
-## URL Formula
-https://icfx2.renecol.org/?institution=INSTITUTION_UUID&group=patient (or physician...)
+# ICFx App 2
 
-### local test coca cola
-http://localhost:5173/?institution=5ae872b1-82d2-45cf-b824-3ad092bbb009&group=patient&casenumber=random
-http://localhost:5173/?institution=5ae872b1-82d2-45cf-b824-3ad092bbb009&group=physician
+Die ICFx WebApp ermöglicht die Eingabe von Teilhabestörungen durch Betroffene und Behandler. Dabei wird die Eingabe auf Betroffenen-Seite durch Screening-Fragebögen in Leichter Sprache und mit Illustrationsunterstützung auf damit verlinkte ICF-Items kondensiert. Die Behandler erreichen dieses Ziel durch die Verwendung von Coresets oder den ICF-Browser. Beide Einschätzungen konvergieren demzufolge auf die ICF Klassifikation von Teilhabestörungen der WHO.
+Die Speicherung der Eingaben erfolgt frictionless in einer API (Django Rest Framework).
+Die Authentifizierung erfolgt über Pseudonyme (Lustige Tiernamen).
 
-http://localhost:5173/?institution=5ae872b1-82d2-45cf-b824-3ad092bbb009&group=random
-http://localhost:5173/?institution=5ae872b1-82d2-45cf-b824-3ad092bbb009
+## Workflow Betroffener
+ - Whodas-Fragebogen (12 Fragen)
+ - Fragebogen zu den Kontextfaktoren (5 Fragen)
+ - ICF Items (generiert aus den vorangegangenen Fragen)
+ - SF-36 Fragebogen zur internen Validierung
+ - SUS-Fragebogen zur Usability
 
-### future hospital
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=patient
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=physician
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=physiotherapist
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=nurse
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=psychologist
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=caremanager
+## Workflow Behandler
+ - Einwählen in die eigene Institution (Registrierung dort ist nur mit Codewort möglich)
+ - Auswahl des Patienten-/Betroffenen-Pseudonyms aus der Liste
+ - Auswahl der Coresets und Bearbeiten der daraus generierten ICF Items
 
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=patient&casenumber=random
-https://icfx2.renecol.org/?institution=9ac110ad-a5db-4ae4-a8a9-68ee6c5c7d42&group=random
+## Testbetrieb
+Ein Ausprobieren ist über folgenden Link möglich:
+https://icfx2.renecol.org
 
-### DWG Wirbelsäulenforum Challenge
-https://icfx2.renecol.org/?institution=d88dd6e5-667f-403a-806a-b2900e97cea1&group=patient&casenumber=random
-https://icfx2.renecol.org/?institution=d88dd6e5-667f-403a-806a-b2900e97cea1&group=random
-
-### Raupennest Parcours
-https://icfx2.renecol.org/?institution=fcc46d7b-4809-4480-ad8d-c9902a276ae6&group=patient&casenumber=random
-https://icfx2.renecol.org/?institution=fcc46d7b-4809-4480-ad8d-c9902a276ae6&group=random
+Die Institutionen mit "St." am Anfang sind reine Testinstitutionen, teilweise mit Fake-Fällen ohne Verbindung zur API, so dass die Oberfläche darüber ausprobiert werden kann.
 
 
-### Johannesbad Raupennest Klinische Studie
-https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=patient
-https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=physician
-https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=physiotherapist
-https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=nurse
-https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=psychologist
-https://icfx2.renecol.org/?institution=0fafe839-34f1-4a3d-9f56-b7d15d815a6e&group=caremanager
 
 
-## Scientists
- - DWG Forum: denkender Hamster (1234)
- - Raupennest Parcours: lachender Seelöwe (1978)
- - Johannesbad Raupennest: verschlafene RatteS (1978)
 
