@@ -7,7 +7,7 @@ import {getWhodasSum, normalizeWhodasSum} from "./calculation_helper";
 import axios from "axios";
 import {v4 as uuidv4} from 'uuid';
 import _userdata from "./assets/mock-userdata.json";
-import * as Sentry from "@sentry/vue";
+
 
 export interface FulfillmentStats {
     [key: string]: Record<string, number>
@@ -357,7 +357,6 @@ class AppStore extends Store<ApplicationData> {
                     this.state.api_patient_records[this.state.api_patient_records.length - 1] = data
                     resolve(data)
                 }).catch((e) => {
-                    Sentry.captureException(e);
                     reject(e)
                 })
             // MOCK
